@@ -24,32 +24,46 @@ class BilibiliAPI:
             "/story/api/bili/data/accountDetail", data={"mid": mid}
         )
 
-    def get_work(self, bvid: str) -> dict:
+    def get_work(
+        self,
+        bvid: str = None,
+        work_url: str = None,
+    ) -> dict:
         """
         获取哔哩哔哩作品内容详情（优质库）
 
-        :param bvid: 作品 BV ID
+        bvid 和 work_url 至少传一个。
+
+        :param bvid: 作品 BV 号
+        :param work_url: 作品链接，支持 bilibili.com/video/BV1xxx 或 b23.tv 格式
         :return: 作品详情字典
         """
-        return self._client.post(
-            "/story/api/bili/data/workDetail", data={"bvid": bvid}
-        )
+        data: Dict[str, Any] = {}
+        if bvid:
+            data["bvId"] = bvid
+        if work_url:
+            data["workUrl"] = work_url
+        return self._client.post("/story/api/bili/data/workDetail", data=data)
 
     def search_users(
         self,
         keyword: str,
-        page_num: int = 1,
+        page: int = 1,
+        page_size: int = None,
         order: str = None,
     ) -> dict:
         """
         搜索关键词获取哔哩哔哩账号（优质库）
 
         :param keyword: 搜索关键词（必填）
-        :param page_num: 页码，默认 1
-        :param order: 排序方式
+        :param page: 页码，从 1 开始（必填）
+        :param page_size: 每页条数，默认 10，最大 50
+        :param order: 排序：follower=粉丝数 / like=获赞数，默认相关性
         :return: 搜索结果字典
         """
-        data: Dict[str, Any] = {"keyword": keyword, "page": str(page_num)}
+        data: Dict[str, Any] = {"keyword": keyword, "page": str(page)}
+        if page_size is not None:
+            data["pageSize"] = page_size
         if order is not None:
             data["order"] = order
         return self._client.post("/story/api/bili/data/accountSearch", data=data)
@@ -57,39 +71,53 @@ class BilibiliAPI:
     def search_articles(
         self,
         keyword: str,
-        page_num: int = 1,
+        page: int = 1,
+        page_size: int = None,
         order: str = None,
     ) -> dict:
         """
         搜索关键词获取哔哩哔哩作品（优质库）
 
         :param keyword: 搜索关键词（必填）
-        :param page_num: 页码，默认 1
-        :param order: 排序方式
+        :param page: 页码，从 1 开始（必填）
+        :param page_size: 每页条数，默认 10，最大 50
+        :param order: 排序：time=发布时间 / play=播放数 / like=点赞数 / comment=评论数 / favorite=收藏数，默认 time
         :return: 搜索结果字典
         """
-        data: Dict[str, Any] = {"keyword": keyword, "page": str(page_num)}
+        data: Dict[str, Any] = {"keyword": keyword, "page": str(page)}
+        if page_size is not None:
+            data["pageSize"] = page_size
         if order is not None:
             data["order"] = order
         return self._client.post("/story/api/bili/data/workSearch", data=data)
 
     def get_user_works(
         self,
-        mid: str,
-        page_num: int = 1,
-        page_size: int = 30,
+        mid: str = None,
+        account_url: str = None,
+        page: int = 1,
+        page_size: int = None,
+        order: str = None,
     ) -> dict:
         """
         获取哔哩哔哩账号作品列表（优质库）
 
-        :param mid: 账号 MID（必填）
-        :param page_num: 页码，默认 1
-        :param page_size: 每页条数，默认 30
+        mid 和 account_url 至少传一个。
+
+        :param mid: 账号 MID
+        :param account_url: 主页链接，如 https://space.bilibili.com/946974
+        :param page: 页码，默认 1
+        :param page_size: 每页条数，默认 10，最大 50
+        :param order: 排序：time=发布时间 / play=播放数 / like=点赞数，默认 time
         :return: 作品列表字典
         """
-        data: Dict[str, Any] = {
-            "mid": mid,
-            "page": str(page_num),
-            "pageSize": str(page_size),
-        }
+        data: Dict[str, Any] = {"page": str(page)}
+        if mid:
+            data["mid"] = mid
+        if account_url:
+            data["accountUrl"] = account_url
+        if page_size is not None:
+            data["pageSize"] = page_size
+        if order is not None:
+            data["order"] = order
         return self._client.post("/story/api/bili/data/accountWorkList", data=data)

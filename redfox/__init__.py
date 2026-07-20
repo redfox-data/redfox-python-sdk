@@ -3,5 +3,5 @@
 from .client import RedFoxClient
 from .exceptions import RedFoxAPIError, RedFoxAuthError, RedFoxRateLimitError
 
-__version__ = "0.2.0"
+__version__ = "0.2.1"
 __all__ = ["RedFoxClient", "RedFoxAPIError", "RedFoxAuthError", "RedFoxRateLimitError"]

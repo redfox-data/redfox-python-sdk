@@ -51,26 +51,26 @@ class WechatAPI:
 
     # ─── 作品相关 ───────────────────────────────────────────
 
-    def get_work(self, uuid: str) -> dict:
+    def get_work(self, work_uuid: str) -> dict:
         """
         根据作品 UUID 获取公众号作品（优质库）
 
-        :param uuid: 作品 UUID
+        :param work_uuid: 作品 UUID（必填）
         :return: 作品详情字典
         """
         return self._client.post(
-            "/story/api/gzhData/queryWork", data={"uuid": uuid}
+            "/story/api/gzhData/queryWork", data={"workUuid": work_uuid}
         )
 
-    def get_article_detail(self, article_url: str) -> dict:
+    def get_article_detail(self, url: str) -> dict:
         """
         根据作品地址获取公众号文章（优质库）
 
-        :param article_url: 文章链接
+        :param url: 文章链接（必填）
         :return: 文章详情字典
         """
         return self._client.post(
-            "/story/api/gzhData/queryArticleDetail", data={"articleUrl": article_url}
+            "/story/api/gzhData/queryArticleDetail", data={"url": url}
         )
 
     def search_articles(
@@ -96,25 +96,35 @@ class WechatAPI:
 
     def get_user_works(
         self,
-        account: str = None,
+        account: str,
         account_name: str = None,
         offset: int = 0,
+        sort_type: str = None,
+        publish_time_start: str = None,
+        publish_time_end: str = None,
     ) -> dict:
         """
         获取公众号账号作品列表（优质库）
 
-        :param account: 公众号微信号
-        :param account_name: 公众号名称
-        :param offset: 偏移量，从 0 开始
+        :param account: 公众号微信号（必填）
+        :param account_name: 公众号名称（可选）
+        :param offset: 偏移量，从 0 开始，每页 +20
+        :param sort_type: 排序方式：_0=默认，_2=最新，_4=最热
+        :param publish_time_start: 发布时间起始，最早 2026-04-01，不传默认 2026-04-01
+        :param publish_time_end: 发布时间结束，不传默认当前时间
         :return: 作品列表字典
         """
-        data: Dict[str, Any] = {}
-        if account:
-            data["account"] = account
+        data: Dict[str, Any] = {"account": account}
         if account_name:
             data["accountName"] = account_name
         if offset is not None:
             data["offset"] = offset
+        if sort_type is not None:
+            data["sortType"] = sort_type
+        if publish_time_start is not None:
+            data["publishTimeStart"] = publish_time_start
+        if publish_time_end is not None:
+            data["publishTimeEnd"] = publish_time_end
         return self._client.post("/story/api/gzhData/queryWorkList", data=data)
 
     # ─── AI 作品 ────────────────────────────────────────────
@@ -131,10 +141,10 @@ class WechatAPI:
         搜索关键词获取公众号 AI 创作作品（优质库）
 
         :param keyword: 搜索关键词（必填）
-        :param page_num: 页码，默认 1
-        :param page_size: 每页条数，默认 20
-        :param start_time: 开始时间
-        :param end_time: 结束时间
+        :param page_num: 页码，默认 1（必填）
+        :param page_size: 每页条数，默认 20（必填）
+        :param start_time: 开始时间，格式 "2026-06-01 00:00:00"
+        :param end_time: 结束时间，格式 "2026-06-01 23:59:59"
         :return: 搜索结果字典
         """
         data: Dict[str, Any] = {

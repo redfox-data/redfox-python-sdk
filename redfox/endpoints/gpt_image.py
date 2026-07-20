@@ -24,6 +24,7 @@ class GPTImageAPI:
         output_compression: int = None,
         model_name: str = "gpt-image-2",
         operation: str = "generate",
+        input_fidelity: str = None,
         images: List[Dict[str, str]] = None,
     ) -> dict:
         """
@@ -38,23 +39,28 @@ class GPTImageAPI:
         :param output_compression: 输出压缩比，0~100
         :param model_name: 模型名称，默认 gpt-image-2
         :param operation: 操作类型，generate（文生图）/ edit（图生图）
+        :param input_fidelity: 输入图保真度，编辑模式（operation=edit）支持 high/low
         :param images: 图片编辑输入图列表，operation=edit 时必填
         :return: 包含 taskId 的字典
         """
+        parameters: Dict[str, Any] = {
+            "modelName": model_name,
+            "n": n,
+            "size": size,
+            "quality": quality,
+            "background": background,
+            "outputFormat": output_format,
+        }
+        if output_compression is not None:
+            parameters["outputCompression"] = output_compression
+        if input_fidelity is not None:
+            parameters["inputFidelity"] = input_fidelity
+
         data: Dict[str, Any] = {
             "prompt": prompt,
             "operation": operation,
-            "parameters": {
-                "modelName": model_name,
-                "n": n,
-                "size": size,
-                "quality": quality,
-                "background": background,
-                "outputFormat": output_format,
-            },
+            "parameters": parameters,
         }
-        if output_compression is not None:
-            data["parameters"]["outputCompression"] = output_compression
         if images is not None:
             data["images"] = images
         return self._client.post("/story/api/parseWork/imageGen/submitSkill", data=data)
