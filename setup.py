@@ -1,7 +1,7 @@
 from setuptools import setup, find_packages
 
 setup(
-    name="redfox-sdk",
+    name="redfox-python-sdk",
     version="0.1.0",
     description="RedFox 红狐数据平台 Python SDK",
     long_description=open("README.md", encoding="utf-8").read(),
