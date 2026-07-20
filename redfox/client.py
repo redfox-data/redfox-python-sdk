@@ -5,6 +5,15 @@ from typing import Optional, Dict, Any
 
 from .exceptions import RedFoxAPIError, RedFoxAuthError, RedFoxRateLimitError
 from .endpoints.douyin import DouyinAPI
+from .endpoints.xiaohongshu import XiaohongshuAPI
+from .endpoints.wechat import WechatAPI
+from .endpoints.bilibili import BilibiliAPI
+from .endpoints.toutiao import ToutiaoAPI
+from .endpoints.tiktok import TikTokAPI
+from .endpoints.gpt_image import GPTImageAPI
+from .endpoints.doubao_image import DoubaoImageAPI
+from .endpoints.doubao_video import DoubaoVideoAPI
+from .endpoints.ai_search import AISearchAPI
 
 
 class RedFoxClient:
@@ -20,8 +29,14 @@ class RedFoxClient:
         # 搜索抖音作品
         result = client.douyin.search_articles(keyword="AI")
 
-        # 获取账号信息
-        user = client.douyin.get_user(account_id="dy_user123")
+        # 搜索小红书作品
+        result = client.xiaohongshu.search_articles(keyword="AI")
+
+        # 搜索公众号文章
+        result = client.wechat.search_articles(keyword="AI")
+
+        # AI 搜索
+        task = client.ai_search.kimi_submit(inquiry_text="夏日茶饮推荐")
 
     :param api_key: RedFox API Key，在 https://redfox.hk/settings/api-keys?source=github 获取
     :param base_url: API 基础地址，默认 https://redfox.hk
@@ -54,6 +69,15 @@ class RedFoxClient:
 
         # 初始化各平台 API 模块
         self.douyin = DouyinAPI(self)
+        self.xiaohongshu = XiaohongshuAPI(self)
+        self.wechat = WechatAPI(self)
+        self.bilibili = BilibiliAPI(self)
+        self.toutiao = ToutiaoAPI(self)
+        self.tiktok = TikTokAPI(self)
+        self.gpt_image = GPTImageAPI(self)
+        self.doubao_image = DoubaoImageAPI(self)
+        self.doubao_video = DoubaoVideoAPI(self)
+        self.ai_search = AISearchAPI(self)
 
     def request(
         self,
