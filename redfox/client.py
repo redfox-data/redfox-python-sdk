@@ -4,7 +4,7 @@ import os
 import time
 import random
 import logging
-from typing import Optional, Dict, Any
+from typing import Optional, Dict, Any, Union, IO, Tuple
 
 import httpx
 
@@ -17,10 +17,20 @@ from .endpoints.wechat import WechatAPI
 from .endpoints.bilibili import BilibiliAPI
 from .endpoints.toutiao import ToutiaoAPI
 from .endpoints.tiktok import TikTokAPI
+from .endpoints.kuaishou import KuaishouAPI
+from .endpoints.wechat_channels import WechatChannelsAPI
+from .endpoints.youtube import YouTubeAPI
+from .endpoints.twitter import TwitterAPI
+from .endpoints.instagram import InstagramAPI
+from .endpoints.dongchedi import DongchediAPI
+from .endpoints.yiche import YicheAPI
+from .endpoints.autohome import AutohomeAPI
+from .endpoints.hotspot import HotspotAPI
 from .endpoints.gpt_image import GPTImageAPI
 from .endpoints.doubao_image import DoubaoImageAPI
 from .endpoints.doubao_video import DoubaoVideoAPI
 from .endpoints.ai_search import AISearchAPI
+from .endpoints.tools import ToolsAPI
 
 logger = logging.getLogger("redfox")
 
@@ -104,6 +114,27 @@ class _RequestMixin:
             return RedFoxAPIError("网络连接失败，请检查网络")
         return RedFoxAPIError(f"请求异常: {str(exc)}")
 
+    @staticmethod
+    def _read_file(file, field_name: str = "file") -> Tuple[str, bytes]:
+        """读取上传文件内容，返回 (文件名, 字节内容)
+
+        支持：文件路径、(filename, bytes) 元组、文件对象、bytes
+        """
+        if isinstance(file, tuple):
+            return file[0], file[1]
+        if isinstance(file, (str, os.PathLike)):
+            path = os.fspath(file)
+            with open(path, "rb") as f:
+                return os.path.basename(path), f.read()
+        if isinstance(file, bytes):
+            return "upload.bin", file
+        if hasattr(file, "read"):
+            content = file.read()
+            name = getattr(file, "name", None)
+            name = os.path.basename(name) if name else "upload.bin"
+            return name, content
+        raise TypeError(f"不支持的文件类型: {type(file)}")
+
 
 class RedFoxClient(_RequestMixin):
     """
@@ -168,7 +199,6 @@ class RedFoxClient(_RequestMixin):
         self._client = httpx.Client(
             timeout=httpx.Timeout(timeout),
             headers={
-                "Content-Type": "application/json",
                 "REDFOX_API_KEY": self.api_key,
             },
         )
@@ -180,10 +210,20 @@ class RedFoxClient(_RequestMixin):
         self.bilibili = BilibiliAPI(self)
         self.toutiao = ToutiaoAPI(self)
         self.tiktok = TikTokAPI(self)
+        self.kuaishou = KuaishouAPI(self)
+        self.wechat_channels = WechatChannelsAPI(self)
+        self.youtube = YouTubeAPI(self)
+        self.twitter = TwitterAPI(self)
+        self.instagram = InstagramAPI(self)
+        self.dongchedi = DongchediAPI(self)
+        self.yiche = YicheAPI(self)
+        self.autohome = AutohomeAPI(self)
+        self.hotspot = HotspotAPI(self)
         self.gpt_image = GPTImageAPI(self)
         self.doubao_image = DoubaoImageAPI(self)
         self.doubao_video = DoubaoVideoAPI(self)
         self.ai_search = AISearchAPI(self)
+        self.tools = ToolsAPI(self)
 
     def request(
         self,
@@ -253,6 +293,59 @@ class RedFoxClient(_RequestMixin):
         """发送 GET 请求"""
         return self.request("GET", path, params=params)
 
+    def upload(
+        self,
+        path: str,
+        file,
+        data: Optional[Dict[str, Any]] = None,
+        field_name: str = "file",
+    ) -> dict:
+        """
+        上传文件（multipart/form-data，含自动重试）
+
+        :param path: API 路径
+        :param file: 文件，支持文件路径 / (filename, bytes) 元组 / 文件对象 / bytes
+        :param data: 附加表单字段
+        :param field_name: 文件表单字段名，默认 "file"
+        :return: API 响应 data 字段内容
+        """
+        url = f"{self.base_url}{path}"
+        filename, content = self._read_file(file, field_name)
+        if data:
+            data = {k: v for k, v in data.items() if v is not None}
+        last_exception = None
+
+        for attempt in range(self.max_retries + 1):
+            try:
+                response = self._client.post(
+                    url,
+                    files={field_name: (filename, content)},
+                    data=data,
+                )
+
+                if response.status_code in RETRYABLE_STATUSES and attempt < self.max_retries:
+                    delay = _compute_delay(attempt, self.backoff_factor)
+                    logger.debug(
+                        "上传收到 %d，第 %d/%d 次重试，等待 %.1fs",
+                        response.status_code, attempt + 1, self.max_retries, delay,
+                    )
+                    time.sleep(delay)
+                    continue
+
+                return self._handle_response(response)
+
+            except RETRYABLE_EXCEPTIONS as exc:
+                last_exception = exc
+                if attempt < self.max_retries:
+                    time.sleep(_compute_delay(attempt, self.backoff_factor))
+                else:
+                    raise self._map_exception(exc)
+
+            except (RedFoxAPIError, RedFoxAuthError, RedFoxRateLimitError):
+                raise
+
+        raise self._map_exception(last_exception) if last_exception else RedFoxAPIError("上传失败")
+
     def close(self):
         """关闭 HTTP 连接"""
         self._client.close()
@@ -320,7 +413,6 @@ class AsyncRedFoxClient(_RequestMixin):
         self._client = httpx.AsyncClient(
             timeout=httpx.Timeout(timeout),
             headers={
-                "Content-Type": "application/json",
                 "REDFOX_API_KEY": self.api_key,
             },
         )
@@ -332,10 +424,20 @@ class AsyncRedFoxClient(_RequestMixin):
         self.bilibili = BilibiliAPI(self)
         self.toutiao = ToutiaoAPI(self)
         self.tiktok = TikTokAPI(self)
+        self.kuaishou = KuaishouAPI(self)
+        self.wechat_channels = WechatChannelsAPI(self)
+        self.youtube = YouTubeAPI(self)
+        self.twitter = TwitterAPI(self)
+        self.instagram = InstagramAPI(self)
+        self.dongchedi = DongchediAPI(self)
+        self.yiche = YicheAPI(self)
+        self.autohome = AutohomeAPI(self)
+        self.hotspot = HotspotAPI(self)
         self.gpt_image = GPTImageAPI(self)
         self.doubao_image = DoubaoImageAPI(self)
         self.doubao_video = DoubaoVideoAPI(self)
         self.ai_search = AISearchAPI(self)
+        self.tools = ToolsAPI(self)
 
     async def request(
         self,
@@ -400,6 +502,59 @@ class AsyncRedFoxClient(_RequestMixin):
     async def get(self, path: str, params: Optional[Dict[str, Any]] = None) -> dict:
         """异步发送 GET 请求"""
         return await self.request("GET", path, params=params)
+
+    async def upload(
+        self,
+        path: str,
+        file,
+        data: Optional[Dict[str, Any]] = None,
+        field_name: str = "file",
+    ) -> dict:
+        """
+        异步上传文件（multipart/form-data，含自动重试）
+
+        :param path: API 路径
+        :param file: 文件，支持文件路径 / (filename, bytes) 元组 / 文件对象 / bytes
+        :param data: 附加表单字段
+        :param field_name: 文件表单字段名，默认 "file"
+        :return: API 响应 data 字段内容
+        """
+        url = f"{self.base_url}{path}"
+        filename, content = self._read_file(file, field_name)
+        if data:
+            data = {k: v for k, v in data.items() if v is not None}
+        last_exception = None
+
+        for attempt in range(self.max_retries + 1):
+            try:
+                response = await self._client.post(
+                    url,
+                    files={field_name: (filename, content)},
+                    data=data,
+                )
+
+                if response.status_code in RETRYABLE_STATUSES and attempt < self.max_retries:
+                    delay = _compute_delay(attempt, self.backoff_factor)
+                    logger.debug(
+                        "上传收到 %d，第 %d/%d 次重试，等待 %.1fs",
+                        response.status_code, attempt + 1, self.max_retries, delay,
+                    )
+                    await self._async_sleep(delay)
+                    continue
+
+                return self._handle_response(response)
+
+            except RETRYABLE_EXCEPTIONS as exc:
+                last_exception = exc
+                if attempt < self.max_retries:
+                    await self._async_sleep(_compute_delay(attempt, self.backoff_factor))
+                else:
+                    raise self._map_exception(exc)
+
+            except (RedFoxAPIError, RedFoxAuthError, RedFoxRateLimitError):
+                raise
+
+        raise self._map_exception(last_exception) if last_exception else RedFoxAPIError("上传失败")
 
     async def _async_sleep(self, seconds: float):
         """异步延时"""

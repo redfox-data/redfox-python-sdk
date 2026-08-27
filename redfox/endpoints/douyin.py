@@ -162,3 +162,210 @@ class DouyinAPI:
             data["endTime"] = end_time
 
         return self._client.post("/story/api/parseWork/queryDyAiMsgs", data=data)
+
+    # ─── 广域库（更大覆盖范围） ──────────────────────────────
+
+    def search_works_wide(
+        self,
+        keyword: str,
+        start_date: str = None,
+        end_date: str = None,
+        page_num: int = 1,
+        page_size: int = 10,
+    ) -> dict:
+        """
+        搜索关键词获取抖音作品（广域库）
+
+        :param keyword: 搜索关键词（必填，匹配作品正文）
+        :param start_date: 开始日期，格式 yyyy-MM-dd
+        :param end_date: 结束日期，格式 yyyy-MM-dd
+        :param page_num: 页码，从 1 开始，默认 1
+        :param page_size: 每页大小，默认 10，最大 50
+        :return: 搜索结果字典，包含 total/pageNum/pageSize/list
+        """
+        data: Dict[str, Any] = {
+            "keyword": keyword,
+            "pageNum": page_num,
+            "pageSize": page_size,
+        }
+        if start_date is not None:
+            data["startDate"] = start_date
+        if end_date is not None:
+            data["endDate"] = end_date
+        return self._client.post("/story/api/dy/data/searchWork", data=data)
+
+    def search_accounts_wide(
+        self,
+        keyword: str,
+        page_num: int = 1,
+        page_size: int = 10,
+    ) -> dict:
+        """
+        搜索关键词获取抖音账号（广域库）
+
+        :param keyword: 搜索关键词（必填，匹配账号名）
+        :param page_num: 页码，从 1 开始，默认 1
+        :param page_size: 每页大小，默认 10，最大 50
+        :return: 搜索结果字典
+        """
+        return self._client.post(
+            "/story/api/dy/data/searchAccount",
+            data={"keyword": keyword, "pageNum": page_num, "pageSize": page_size},
+        )
+
+    def get_work_wide(self, video_id: str) -> dict:
+        """
+        获取抖音作品内容详情（广域库）
+
+        :param video_id: 作品 ID（对应 aweme_id，必填）
+        :return: 作品详情字典
+        """
+        return self._client.post(
+            "/story/api/dy/data/workDetail", data={"videoId": video_id}
+        )
+
+    def get_user_works_wide(
+        self,
+        user_id: str = None,
+        unique_name: str = None,
+        short_id: str = None,
+        page_num: int = 1,
+        page_size: int = 10,
+        start_date: str = None,
+        end_date: str = None,
+    ) -> dict:
+        """
+        获取抖音账号作品列表（广域库）
+
+        user_id / unique_name / short_id 三选一必填。
+
+        :param user_id: 账号主键 id / uid
+        :param unique_name: 账号平台展示 id
+        :param short_id: 账号平台展示 id-short
+        :param page_num: 页码，从 1 开始，默认 1
+        :param page_size: 每页大小，默认 10，最大 50
+        :param start_date: 开始时间，格式 yyyy-MM-dd
+        :param end_date: 结束时间，格式 yyyy-MM-dd
+        :return: 作品列表字典
+        """
+        data: Dict[str, Any] = {"pageNum": page_num, "pageSize": page_size}
+        if user_id:
+            data["userId"] = user_id
+        if unique_name:
+            data["uniqueName"] = unique_name
+        if short_id:
+            data["shortId"] = short_id
+        if start_date is not None:
+            data["startDate"] = start_date
+        if end_date is not None:
+            data["endDate"] = end_date
+        return self._client.post("/story/api/dy/data/listWorkByAccount", data=data)
+
+    # ─── 榜单 ───────────────────────────────────────────
+
+    def get_daily_hot_rank(
+        self,
+        type: str = None,
+        start_time: str = None,
+        end_time: str = None,
+    ) -> dict:
+        """
+        抖音每日热门作品榜
+
+        :param type: 类别（不传则查询全部）：小剧场、财富理财、二次元、美食、旅行、汽车等
+        :param start_time: 开始时间，格式 yyyy-MM-dd（不传则默认昨日，每日 10 点后更新昨日数据）
+        :param end_time: 结束时间，格式 yyyy-MM-dd（不传则默认昨日）
+        :return: 榜单字典
+        """
+        data: Dict[str, Any] = {}
+        if type is not None:
+            data["type"] = type
+        if start_time is not None:
+            data["startTime"] = start_time
+        if end_time is not None:
+            data["endTime"] = end_time
+        return self._client.post("/story/api/dy/search/likesRank", data=data)
+
+    def get_daily_surge_rank(
+        self,
+        type: str = None,
+        start_time: str = None,
+    ) -> dict:
+        """
+        抖音每日点赞猟升榜
+
+        :param type: 分类展示名称：小剧场 财富理财 二次元 美食 旅行 等；为空或"全部"时查询全部分类
+        :param start_time: 榜单日期，格式 yyyy-MM-dd（不传则默认昨日，每日 16 点更新昨日数据）
+        :return: 榜单字典
+        """
+        data: Dict[str, Any] = {}
+        if type is not None:
+            data["type"] = type
+        if start_time is not None:
+            data["startTime"] = start_time
+        return self._client.post("/story/api/dy/search/getDailyRank", data=data)
+
+    def get_weekly_surge_rank(
+        self,
+        type: str = None,
+        start_time: str = None,
+    ) -> dict:
+        """
+        抖音七日点赞猟升榜
+
+        :param type: 分类展示名称：小剧场 财富理财 二次元 美食 旅行 等；为空或"全部"时查询全部分类
+        :param start_time: 榜单日期，格式 yyyy-MM-dd（不传则默认昨日，每日 16:30 更新昨日数据）
+        :return: 榜单字典
+        """
+        data: Dict[str, Any] = {}
+        if type is not None:
+            data["type"] = type
+        if start_time is not None:
+            data["startTime"] = start_time
+        return self._client.post("/story/api/dy/search/getWeeklyRank", data=data)
+
+    def get_hot_accounts(
+        self,
+        date_type: str,
+        rank_date: str,
+        type: str,
+    ) -> dict:
+        """
+        抖音热门账号推荐
+
+        :param date_type: 日期类型：days=日，weeks=周，months=月（必填）
+        :param rank_date: 日期格式 yyyy-MM-dd（必填）。days 传所需日的起始时间（每晚 8 点更新昨日数据）；
+            weeks 传所需周的周一时间（每周一更新上周数据）；months 传所需月的一号时间（每月一号更新上月数据）
+        :param type: 类别（必填）：全部、个人才艺、生活vlog、财富理财、二次元、美食、汽车等
+        :return: 热门账号字典
+        """
+        return self._client.post(
+            "/story/api/dyData/query",
+            data={"dateType": date_type, "rankDate": rank_date, "type": type},
+        )
+
+    # ─── 视频提文案 ─────────────────────────────────────────
+
+    def transcript_submit(self, url: str) -> dict:
+        """
+        抖音视频提文案 - 提交任务
+
+        :param url: 视频链接（必填），支持口令分享文本
+        :return: 包含 taskId 的字典
+        """
+        return self._client.post(
+            "/story/api/parseWork/audioTextExtract/submit/douyin",
+            data={"url": url},
+        )
+
+    def transcript_result(self, task_id: str) -> dict:
+        """
+        抖音视频提文案 - 查询结果
+
+        :param task_id: 任务 ID（由 transcript_submit 返回）
+        :return: 文案提取结果字典
+        """
+        return self._client.post(
+            "/story/api/parseWork/audioTextExtract/result/douyin",
+            data={"taskId": task_id},
+        )

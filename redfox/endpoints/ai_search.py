@@ -7,7 +7,7 @@ class AISearchAPI:
     """
     AI 搜索工具 API 集合
 
-    支持 Kimi、豆包、Deepseek 三种 AI 搜索引擎。
+    支持 Kimi、豆包、Deepseek、元宝、千问、百度六种 AI 搜索引擎。
     每种引擎均为异步模式：先 submit 提交任务，再 result 查询结果。
     """
 
@@ -84,4 +84,76 @@ class AISearchAPI:
         """
         return self._client.post(
             "/story/api/deepSearch/dsResult", data={"taskId": task_id}
+        )
+
+    # ─── 元宝 ───────────────────────────────────────────────
+
+    def yuanbao_submit(self, inquiry_text: str) -> dict:
+        """
+        元宝纯文字搜索 - 提交任务
+
+        :param inquiry_text: 搜索文本（必填）
+        :return: 包含 taskId 的字典
+        """
+        return self._client.post(
+            "/story/api/deepSearch/ybSubmit", data={"inquiryText": inquiry_text}
+        )
+
+    def yuanbao_result(self, task_id: str) -> dict:
+        """
+        元宝纯文字搜索 - 查询任务结果
+
+        :param task_id: 任务 ID（由 yuanbao_submit 返回）
+        :return: 任务结果字典
+        """
+        return self._client.post(
+            "/story/api/deepSearch/ybResult", data={"taskId": task_id}
+        )
+
+    # ─── 千问 ───────────────────────────────────────────────
+
+    def qianwen_submit(self, inquiry_text: str) -> dict:
+        """
+        千问纯文字搜索 - 提交任务
+
+        :param inquiry_text: 搜索文本（必填）
+        :return: 包含 taskId 的字典
+        """
+        return self._client.post(
+            "/story/api/deepSearch/qwSubmit", data={"inquiryText": inquiry_text}
+        )
+
+    def qianwen_result(self, task_id: str) -> dict:
+        """
+        千问纯文字搜索 - 查询任务结果
+
+        :param task_id: 任务 ID（由 qianwen_submit 返回）
+        :return: 任务结果字典
+        """
+        return self._client.post(
+            "/story/api/deepSearch/qwResult", data={"taskId": task_id}
+        )
+
+    # ─── 百度 ───────────────────────────────────────────────
+
+    def baidu_submit(self, inquiry_text: str) -> dict:
+        """
+        百度纯文字搜索 - 提交任务
+
+        :param inquiry_text: 搜索文本（必填）
+        :return: 包含 taskId 的字典
+        """
+        return self._client.post(
+            "/story/api/deepSearch/bdSubmit", data={"inquiryText": inquiry_text}
+        )
+
+    def baidu_result(self, task_id: str) -> dict:
+        """
+        百度纯文字搜索 - 查询任务结果
+
+        :param task_id: 任务 ID（由 baidu_submit 返回）
+        :return: 任务结果字典
+        """
+        return self._client.post(
+            "/story/api/deepSearch/bdResult", data={"taskId": task_id}
         )

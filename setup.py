@@ -2,7 +2,7 @@ from setuptools import setup, find_packages
 
 setup(
     name="redfox-python-sdk",
-    version="0.2.2",
+    version="0.3.0",
     description="RedFox 红狐数据平台 Python SDK — 同步+异步双客户端，自动重试，零配置",
     long_description=open("README.md", encoding="utf-8").read(),
     long_description_content_type="text/markdown",

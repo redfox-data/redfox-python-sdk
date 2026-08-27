@@ -121,3 +121,38 @@ class BilibiliAPI:
         if order is not None:
             data["order"] = order
         return self._client.post("/story/api/bili/data/accountWorkList", data=data)
+
+    # ─── 音频 / 提文案 ─────────────────────────────────────
+
+    def get_audio(self, url: str) -> dict:
+        """
+        获取哔哩哔哩音频地址
+
+        :param url: 作品链接（必填）
+        :return: 音频地址字典
+        """
+        return self._client.post(
+            "/story/api/parseWork/audioExtract/bilibili", data={"url": url}
+        )
+
+    def transcript_submit(self, url: str) -> dict:
+        """
+        哔哩哔哩链接提文案 - 提交任务
+
+        :param url: 作品地址（必填）
+        :return: 包含 taskId 的字典
+        """
+        return self._client.post(
+            "/story/api/parseWork/bilibiliSubtitle/submit", data={"url": url}
+        )
+
+    def transcript_result(self, task_id: str) -> dict:
+        """
+        哔哩哔哩链接提文案 - 查询结果
+
+        :param task_id: 任务 ID（由 transcript_submit 返回）
+        :return: 文案提取结果字典
+        """
+        return self._client.post(
+            "/story/api/parseWork/bilibiliSubtitle/result", data={"taskId": task_id}
+        )

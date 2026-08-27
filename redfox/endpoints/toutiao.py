@@ -38,3 +38,51 @@ class ToutiaoAPI:
         return self._client.post(
             "/story/api/toutiao/workDetail", data={"opusId": opus_id}
         )
+
+    def get_comments(self, opus_id: str, offset: str = None) -> dict:
+        """
+        获取今日头条作品评论（实时）
+
+        :param opus_id: 作品 ID（必填）
+        :param offset: 翻页偏移量
+        :return: 评论列表字典
+        """
+        data: Dict[str, Any] = {"opusId": opus_id}
+        if offset is not None:
+            data["offset"] = offset
+        return self._client.post("/story/api/toutiao/workComment", data=data)
+
+    def search_users(
+        self,
+        name: str,
+        offset: str = None,
+        search_id: str = None,
+    ) -> dict:
+        """
+        获取今日头条关键词搜索账号（实时）
+
+        :param name: 搜索关键词（必填）
+        :param offset: 翻页偏移量，hasMore 为 1 时使用返回的 offset
+        :param search_id: 搜索 ID，hasMore 为 1 时使用返回的 searchId
+        :return: 搜索结果字典
+        """
+        data: Dict[str, Any] = {"name": name}
+        if offset is not None:
+            data["offset"] = offset
+        if search_id is not None:
+            data["searchId"] = search_id
+        return self._client.post("/story/api/toutiao/searchAccount", data=data)
+
+    def get_user_works(self, category: str, token: str) -> dict:
+        """
+        获取今日头条账号作品列表（实时）
+
+        :param category: 内容分类（必填）：profile_all 全部；pc_profile_article 文章；
+            pc_profile_video 视频；pc_profile_ugc 微头条；profile_wenda 问答；pc_profile_short_video 小视频
+        :param token: web 端 uid（必填）
+        :return: 作品列表字典
+        """
+        return self._client.post(
+            "/story/api/toutiao/userWorkList",
+            data={"category": category, "token": token},
+        )
