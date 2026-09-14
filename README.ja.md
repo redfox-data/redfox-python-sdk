@@ -568,7 +568,7 @@ task = client.gpt_image.submit(
 result = client.gpt_image.result(task_id=task["taskId"])
 ```
 
-> **注意**：`result()` が返す `imageUrls` は数分で失効し（以降404）、直ちにダウンロードが必要です。`status` は `queued`/`in_progress`/`completed`/`failed` で、終端は後者の2つのみ。生成画像を参照画像に使う場合は失効前に投稿してください。
+> **注意**：`status` は `queued`/`in_progress`/`completed`/`failed` で、終端は後者の2つのみ（APIドキュメントに記載の `processing` は実際には返されません）。
 
 ### Doubao画像生成
 

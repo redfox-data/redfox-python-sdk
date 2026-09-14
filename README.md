@@ -568,7 +568,7 @@ task = client.gpt_image.submit(
 result = client.gpt_image.result(task_id=task["taskId"])
 ```
 
-> **注意**：`result()` 返回的 `imageUrls` 有效期仅数分钟，过期即 404，请立即下载保存；`status` 实测取值 `queued`/`in_progress`/`completed`/`failed`，仅后两者为终态。用平台生成图作参考图时，必须在其失效前提交。
+> **注意**：`status` 实测取值 `queued`/`in_progress`/`completed`/`failed`，仅后两者为终态（接口文档所写的 `processing` 实测不会返回）。
 
 ### 豆包图片生成
 

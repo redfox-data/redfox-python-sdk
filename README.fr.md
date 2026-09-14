@@ -568,7 +568,7 @@ task = client.gpt_image.submit(
 result = client.gpt_image.result(task_id=task["taskId"])
 ```
 
-> **Remarque** : les `imageUrls` renvoyés par `result()` expirent en quelques minutes (404 ensuite) — téléchargez-les immédiatement. `status` vaut `queued`/`in_progress`/`completed`/`failed` ; seuls les deux derniers sont terminaux. Pour réutiliser une image générée comme référence, soumettez avant son expiration.
+> **Remarque** : `status` vaut `queued`/`in_progress`/`completed`/`failed` ; seuls les deux derniers sont terminaux (la valeur `processing` de la documentation API n'est jamais renvoyée en pratique).
 
 ### Génération d'Images Doubao
 
