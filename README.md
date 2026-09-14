@@ -550,25 +550,25 @@ result = client.ai_search.baidu_result(task_id=task["taskId"])
 # 文生图
 task = client.gpt_image.submit(
     prompt="一只坐在窗台上的橘猫，阳光洒在毛发上",
-    size="1024x1024",
-    quality="medium",
-    output_format="png",
-    model_name="gpt-image-2",
-    operation="generate",
+    resolution="1k",   # 1k / 2k / 4k
+    size="1:1",        # 宽高比，支持 1:1、16:9、9:16 等 13 种
+    n=1,               # 生成数量，最多 4 张
 )
 result = client.gpt_image.result(task_id=task["taskId"])
+print(result["status"], result["imageUrls"])
 
 # 图生图/编辑
 task = client.gpt_image.submit(
     prompt="将背景替换成海滩",
-    size="1024x1024",
-    model_name="gpt-image-2",
-    operation="edit",
-    input_fidelity=5,
-    images=[{"url": "https://example.com/your-image.jpg"}],
+    resolution="2k",
+    size="16:9",
+    n=2,
+    reference_images=["https://example.com/your-image.jpg"],  # 参考图 URL，最多 2 张
 )
 result = client.gpt_image.result(task_id=task["taskId"])
 ```
+
+> **注意**：`result()` 返回的 `imageUrls` 有效期仅数分钟，过期即 404，请立即下载保存；`status` 实测取值 `queued`/`in_progress`/`completed`/`failed`，仅后两者为终态。用平台生成图作参考图时，必须在其失效前提交。
 
 ### 豆包图片生成
 

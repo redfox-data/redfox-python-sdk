@@ -550,25 +550,25 @@ result = client.ai_search.baidu_result(task_id=task["taskId"])
 # Texte → Image
 task = client.gpt_image.submit(
     prompt="Un chat orange assis sur un rebord de fenêtre, la lumière du soleil sur son pelage",
-    size="1024x1024",
-    quality="medium",
-    output_format="png",
-    model_name="gpt-image-2",
-    operation="generate",
+    resolution="1k",   # 1k / 2k / 4k
+    size="1:1",        # ratio — 13 valeurs dont 1:1, 16:9, 9:16
+    n=1,               # nombre d'images, jusqu'à 4
 )
 result = client.gpt_image.result(task_id=task["taskId"])
+print(result["status"], result["imageUrls"])
 
 # Édition d'image
 task = client.gpt_image.submit(
     prompt="Remplacer l'arrière-plan par une plage",
-    size="1024x1024",
-    model_name="gpt-image-2",
-    operation="edit",
-    input_fidelity=5,
-    images=[{"url": "https://example.com/your-image.jpg"}],
+    resolution="2k",
+    size="16:9",
+    n=2,
+    reference_images=["https://example.com/your-image.jpg"],  # URL d'images de référence, jusqu'à 2
 )
 result = client.gpt_image.result(task_id=task["taskId"])
 ```
+
+> **Remarque** : les `imageUrls` renvoyés par `result()` expirent en quelques minutes (404 ensuite) — téléchargez-les immédiatement. `status` vaut `queued`/`in_progress`/`completed`/`failed` ; seuls les deux derniers sont terminaux. Pour réutiliser une image générée comme référence, soumettez avant son expiration.
 
 ### Génération d'Images Doubao
 

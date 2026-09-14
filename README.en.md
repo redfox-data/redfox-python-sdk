@@ -550,25 +550,25 @@ result = client.ai_search.baidu_result(task_id=task["taskId"])
 # Text-to-image
 task = client.gpt_image.submit(
     prompt="An orange cat sitting on a windowsill with sunlight on its fur",
-    size="1024x1024",
-    quality="medium",
-    output_format="png",
-    model_name="gpt-image-2",
-    operation="generate",
+    resolution="1k",   # 1k / 2k / 4k
+    size="1:1",        # aspect ratio — 13 values incl. 1:1, 16:9, 9:16
+    n=1,               # number of images, up to 4
 )
 result = client.gpt_image.result(task_id=task["taskId"])
+print(result["status"], result["imageUrls"])
 
 # Image-to-image / editing
 task = client.gpt_image.submit(
     prompt="Replace the background with a beach",
-    size="1024x1024",
-    model_name="gpt-image-2",
-    operation="edit",
-    input_fidelity=5,
-    images=[{"url": "https://example.com/your-image.jpg"}],
+    resolution="2k",
+    size="16:9",
+    n=2,
+    reference_images=["https://example.com/your-image.jpg"],  # reference image URLs, up to 2
 )
 result = client.gpt_image.result(task_id=task["taskId"])
 ```
+
+> **Note**: the `imageUrls` returned by `result()` expire within minutes (404 afterwards) — download them immediately. `status` is one of `queued`/`in_progress`/`completed`/`failed`; only the last two are terminal. When feeding a generated image back as a reference, submit before it expires.
 
 ### Doubao Image Generation
 

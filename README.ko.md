@@ -550,25 +550,25 @@ result = client.ai_search.baidu_result(task_id=task["taskId"])
 # 텍스트 → 이미지
 task = client.gpt_image.submit(
     prompt="햇살 아래 창틀에 앉아 있는 주황색 고양이",
-    size="1024x1024",
-    quality="medium",
-    output_format="png",
-    model_name="gpt-image-2",
-    operation="generate",
+    resolution="1k",   # 1k / 2k / 4k
+    size="1:1",        # 가로세로 비율 (1:1, 16:9, 9:16 등 13종)
+    n=1,               # 생성 개수, 최대 4
 )
 result = client.gpt_image.result(task_id=task["taskId"])
+print(result["status"], result["imageUrls"])
 
 # 이미지 편집
 task = client.gpt_image.submit(
     prompt="배경을 해변으로 변경",
-    size="1024x1024",
-    model_name="gpt-image-2",
-    operation="edit",
-    input_fidelity=5,
-    images=[{"url": "https://example.com/your-image.jpg"}],
+    resolution="2k",
+    size="16:9",
+    n=2,
+    reference_images=["https://example.com/your-image.jpg"],  # 참조 이미지 URL, 최대 2장
 )
 result = client.gpt_image.result(task_id=task["taskId"])
 ```
+
+> **참고**: `result()`가 반환하는 `imageUrls`는 몇 분 후 만료되어 404가 되므로 즉시 다운로드하세요. `status`는 `queued`/`in_progress`/`completed`/`failed` 중 하나이며 종료 상태는 뒤의 둘뿐입니다. 생성된 이미지를 참조 이미지로 쓰려면 만료 전에 제출하세요.
 
 ### Doubao 이미지 생성
 
