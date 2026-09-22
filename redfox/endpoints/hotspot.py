@@ -20,6 +20,7 @@ class HotspotAPI:
         platform: int,
         start_date: str,
         end_date: str,
+        source: str = "各平台热点榜-SDK",
     ) -> dict:
         """
         各平台热点榜
@@ -36,6 +37,7 @@ class HotspotAPI:
                 "startDate": start_date,
                 "endDate": end_date,
             },
+            source=source,
         )
 
     def search_by_keywords(
@@ -44,6 +46,7 @@ class HotspotAPI:
         start_date: str,
         end_date: str,
         platforms: List[int] = None,
+        source: str = "全网热搜查询-SDK",
     ) -> dict:
         """
         全网热搜查询（关键词）
@@ -64,10 +67,10 @@ class HotspotAPI:
         if platforms is not None:
             data["platforms"] = platforms
         return self._client.post(
-            "/story/api/hotSpot/getListByPlatformWithKeyword", data=data
+            "/story/api/hotSpot/getListByPlatformWithKeyword", data=data, source=source
         )
 
-    def get_top10(self, start_date: str, end_date: str) -> dict:
+    def get_top10(self, start_date: str, end_date: str, source: str = "全网聚合热点 TOP10 列表-SDK") -> dict:
         """
         全网聚合热点 TOP10 列表
 
@@ -78,4 +81,5 @@ class HotspotAPI:
         return self._client.post(
             "/story/api/hotKeyword/list",
             data={"startDate": start_date, "endDate": end_date},
+            source=source,
         )

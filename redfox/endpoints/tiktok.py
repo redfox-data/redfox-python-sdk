@@ -18,6 +18,7 @@ class TikTokAPI:
         keyword: str,
         cursor: int = 0,
         rid: str = None,
+        source: str = "搜索 TikTok 账号-SDK",
     ) -> dict:
         """
         TikTok 关键词搜索账号
@@ -30,7 +31,7 @@ class TikTokAPI:
         data: Dict[str, Any] = {"keyword": keyword, "cursor": cursor}
         if rid is not None:
             data["rid"] = rid
-        return self._client.post("/story/api/deepSearch/tk/searchUser", data=data)
+        return self._client.post("/story/api/deepSearch/tk/searchUser", data=data, source=source)
 
     def search_videos(
         self,
@@ -40,6 +41,7 @@ class TikTokAPI:
         sort_type: str = "0",
         publish_time: str = "0",
         region: str = "US",
+        source: str = "TikTok 关键词视频搜索-SDK",
     ) -> dict:
         """
         TikTok 关键词视频搜索
@@ -62,9 +64,10 @@ class TikTokAPI:
                 "publishTime": publish_time,
                 "region": region,
             },
+            source=source,
         )
 
-    def get_work(self, aweme_id: str) -> dict:
+    def get_work(self, aweme_id: str, source: str = "获取 TikTok 单个作品数据-SDK") -> dict:
         """
         获取 TikTok 单个作品数据
 
@@ -72,10 +75,10 @@ class TikTokAPI:
         :return: 作品详情字典
         """
         return self._client.post(
-            "/story/api/tiktok/ability/awemeDetail", data={"awemeId": aweme_id}
+            "/story/api/tiktok/ability/awemeDetail", data={"awemeId": aweme_id}, source=source
         )
 
-    def get_user_works(self, sec_user_id: str) -> dict:
+    def get_user_works(self, sec_user_id: str, source: str = "获取 TikTok 用户主页作品数据-SDK") -> dict:
         """
         获取 TikTok 用户主页作品数据
 
@@ -85,4 +88,5 @@ class TikTokAPI:
         return self._client.post(
             "/story/api/tiktok/ability/userAwemeList",
             data={"secUserId": sec_user_id},
+            source=source,
         )

@@ -18,6 +18,7 @@ class YicheAPI:
         keyword: str,
         page: int = 1,
         source_type: str = "xinwen",
+        source: str = "易车关键词搜索作品-SDK",
     ) -> dict:
         """
         易车关键词搜索作品
@@ -32,9 +33,9 @@ class YicheAPI:
             "page": page,
             "sourceType": source_type,
         }
-        return self._client.post("/story/api/yiche/searchWork", data=data)
+        return self._client.post("/story/api/yiche/searchWork", data=data, source=source)
 
-    def get_article(self, url: str) -> dict:
+    def get_article(self, url: str, source: str = "获取易车文章详情-SDK") -> dict:
         """
         易车文章详情
 
@@ -42,10 +43,10 @@ class YicheAPI:
         :return: 文章详情字典
         """
         return self._client.post(
-            "/story/api/yiche/articleDetail", data={"url": url}
+            "/story/api/yiche/articleDetail", data={"url": url}, source=source
         )
 
-    def get_video(self, work_id: str) -> dict:
+    def get_video(self, work_id: str, source: str = "获取易车视频详情-SDK") -> dict:
         """
         易车视频详情
 
@@ -53,10 +54,10 @@ class YicheAPI:
         :return: 视频详情字典
         """
         return self._client.post(
-            "/story/api/yiche/videoDetail", data={"workId": work_id}
+            "/story/api/yiche/videoDetail", data={"workId": work_id}, source=source
         )
 
-    def get_user_works(self, user_id: str, timestamp: str = None) -> dict:
+    def get_user_works(self, user_id: str, timestamp: str = None, source: str = "获取易车用户作品列表-SDK") -> dict:
         """
         易车全部作品列表
 
@@ -67,9 +68,9 @@ class YicheAPI:
         data: Dict[str, Any] = {"userId": user_id}
         if timestamp is not None:
             data["timestamp"] = timestamp
-        return self._client.post("/story/api/yiche/workList", data=data)
+        return self._client.post("/story/api/yiche/workList", data=data, source=source)
 
-    def search_users(self, keyword: str, page: int = 1) -> dict:
+    def search_users(self, keyword: str, page: int = 1, source: str = "易车关键词搜索账号-SDK") -> dict:
         """
         易车账号搜索
 
@@ -80,4 +81,5 @@ class YicheAPI:
         return self._client.post(
             "/story/api/yiche/searchAccount",
             data={"keyword": keyword, "page": page},
+            source=source,
         )

@@ -18,6 +18,7 @@ class DongchediAPI:
         keyword: str,
         offset: str = "0",
         source_type: str = "1",
+        source: str = "懂车帝关键词搜索作品-SDK",
     ) -> dict:
         """
         懂车帝关键词搜索作品
@@ -32,9 +33,9 @@ class DongchediAPI:
             "offset": str(offset),
             "sourceType": str(source_type),
         }
-        return self._client.post("/story/api/dongchedi/searchWork", data=data)
+        return self._client.post("/story/api/dongchedi/searchWork", data=data, source=source)
 
-    def get_work(self, work_id: str, work_type: str) -> dict:
+    def get_work(self, work_id: str, work_type: str, source: str = "获取懂车帝作品详情-SDK") -> dict:
         """
         懂车帝作品详情
 
@@ -45,9 +46,10 @@ class DongchediAPI:
         return self._client.post(
             "/story/api/dongchedi/workDetail",
             data={"workId": work_id, "workType": work_type},
+            source=source,
         )
 
-    def get_user_works(self, user_id: str, cursor: int = 0) -> dict:
+    def get_user_works(self, user_id: str, cursor: int = 0, source: str = "获取懂车帝用户作品列表-SDK") -> dict:
         """
         懂车帝用户作品列表
 
@@ -58,9 +60,10 @@ class DongchediAPI:
         return self._client.post(
             "/story/api/dongchedi/workList",
             data={"userId": user_id, "cursor": cursor},
+            source=source,
         )
 
-    def search_users(self, keyword: str, offset: int = 0) -> dict:
+    def search_users(self, keyword: str, offset: int = 0, source: str = "懂车帝关键词搜索账号-SDK") -> dict:
         """
         懂车帝用户搜索
 
@@ -71,4 +74,5 @@ class DongchediAPI:
         return self._client.post(
             "/story/api/dongchedi/searchUser",
             data={"keyword": keyword, "offset": offset},
+            source=source,
         )

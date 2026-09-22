@@ -20,6 +20,7 @@ class XiaohongshuAPI:
         keyword: str,
         offset: int = 0,
         sort_type: str = None,
+        source: str = "搜索小红书博主账号-SDK",
     ) -> dict:
         """
         搜索关键词获取小红书账号（优质库）
@@ -35,13 +36,14 @@ class XiaohongshuAPI:
         if sort_type is not None:
             data["sortType"] = sort_type
         return self._client.post(
-            "/story/api/xhsUser/searchUser", data=data
+            "/story/api/xhsUser/searchUser", data=data, source=source
         )
 
     def get_account(
         self,
         account_id: str,
         user_id: str = None,
+        source: str = "获取小红书账号信息-SDK",
     ) -> dict:
         """
         获取小红书账号信息（优质库）
@@ -54,7 +56,7 @@ class XiaohongshuAPI:
         if user_id is not None:
             data["userId"] = user_id
         return self._client.post(
-            "/story/api/xhsUser/queryAccountDetail", data=data
+            "/story/api/xhsUser/queryAccountDetail", data=data, source=source
         )
 
     # ─── 作品相关 ───────────────────────────────────────────
@@ -64,6 +66,7 @@ class XiaohongshuAPI:
         keyword: str,
         offset: int = 0,
         sort_type: str = None,
+        source: str = "搜索小红书笔记-SDK",
     ) -> dict:
         """
         搜索关键词获取小红书作品（优质库）
@@ -79,13 +82,14 @@ class XiaohongshuAPI:
         if sort_type is not None:
             data["sortType"] = sort_type
         return self._client.post(
-            "/story/api/xhsUser/searchArticle", data=data
+            "/story/api/xhsUser/searchArticle", data=data, source=source
         )
 
     def get_work(
         self,
         work_id: str = None,
         work_link: str = None,
+        source: str = "获取小红书笔记详情-SDK",
     ) -> dict:
         """
         获取小红书作品内容详情（优质库）
@@ -102,7 +106,7 @@ class XiaohongshuAPI:
         if work_link:
             data["workLink"] = work_link
         return self._client.post(
-            "/story/api/xhsUser/queryWorkDetail", data=data
+            "/story/api/xhsUser/queryWorkDetail", data=data, source=source
         )
 
     def get_user_works(
@@ -113,6 +117,7 @@ class XiaohongshuAPI:
         sort_type: str = None,
         publish_time_start: str = None,
         publish_time_end: str = None,
+        source: str = "查询小红书账号作品列表-SDK",
     ) -> dict:
         """
         查询小红书账号作品列表（优质库）
@@ -139,7 +144,7 @@ class XiaohongshuAPI:
         if publish_time_end is not None:
             data["publishTimeEnd"] = publish_time_end
         return self._client.post(
-            "/story/api/xhsUser/queryWorkList", data=data
+            "/story/api/xhsUser/queryWorkList", data=data, source=source
         )
 
     # ─── AI 作品 ────────────────────────────────────────────
@@ -151,7 +156,7 @@ class XiaohongshuAPI:
         page_size: int = 20,
         start_time: str = None,
         end_time: str = None,
-        source: str = None,
+        source: str = "搜索小红书 AI 创作相关笔记-SDK",
     ) -> dict:
         """
         搜索关键词获取小红书 AI 创作作品（优质库）
@@ -161,7 +166,7 @@ class XiaohongshuAPI:
         :param page_size: 每页条数，默认 20
         :param start_time: 起始时间，格式 "2026-06-01 00:00:00"
         :param end_time: 结束时间，格式 "2026-06-02 00:00:00"
-        :param source: 来源平台（可选）
+        :param source: 调用来源标识（默认 "搜索小红书 AI 创作相关笔记-SDK"）
         :return: 搜索结果字典
         """
         data: Dict[str, Any] = {
@@ -173,15 +178,13 @@ class XiaohongshuAPI:
             data["startTime"] = start_time
         if end_time is not None:
             data["endTime"] = end_time
-        if source is not None:
-            data["source"] = source
         return self._client.post(
-            "/story/api/parseWork/queryXhsAiMsgs", data=data
+            "/story/api/parseWork/queryXhsAiMsgs", data=data, source=source
         )
 
     # ─── 评论相关 ───────────────────────────────────────────
 
-    def comment_submit(self, opus_id: str, data_num: int) -> dict:
+    def comment_submit(self, opus_id: str, data_num: int, source: str = "获取小红书笔记一级评论-SDK") -> dict:
         """
         获取小红书一级评论（广域库）- 提交任务
 
@@ -192,9 +195,10 @@ class XiaohongshuAPI:
         return self._client.post(
             "/story/api/xhs/commentSubmit",
             data={"opusId": opus_id, "dataNum": data_num},
+            source=source,
         )
 
-    def comment_result(self, task_id: str) -> dict:
+    def comment_result(self, task_id: str, source: str = "查询小红书评论任务结果-SDK") -> dict:
         """
         获取小红书一级评论（广域库）- 查询结果
 
@@ -202,12 +206,12 @@ class XiaohongshuAPI:
         :return: 评论结果字典
         """
         return self._client.post(
-            "/story/api/xhs/commentResult", data={"taskId": task_id}
+            "/story/api/xhs/commentResult", data={"taskId": task_id}, source=source
         )
 
     # ─── 榜单 ───────────────────────────────────────────
 
-    def get_daily_hot_rank(self, rank_date: str, category: str) -> dict:
+    def get_daily_hot_rank(self, rank_date: str, category: str, source: str = "小红书每日爆款笔记榜单-SDK") -> dict:
         """
         小红书每日爆款笔记榜单
 
@@ -218,12 +222,14 @@ class XiaohongshuAPI:
         return self._client.get(
             "/story/api/cozeSkill/getXhsCozeSkillDataOne",
             params={"rankDate": rank_date, "category": category},
+            source=source,
         )
 
     def get_weekly_hot_rank(
         self,
         rank_date: str = None,
         category: str = None,
+        source: str = "小红书七日爆款笔记-SDK",
     ) -> dict:
         """
         小红书七日爆款笔记
@@ -238,7 +244,7 @@ class XiaohongshuAPI:
         if category is not None:
             params["category"] = category
         return self._client.get(
-            "/story/api/cozeSkill/getXhsCozeSkillDataSeven", params=params
+            "/story/api/cozeSkill/getXhsCozeSkillDataSeven", params=params, source=source
         )
 
     def get_hot_accounts(
@@ -246,6 +252,7 @@ class XiaohongshuAPI:
         date_type: int = None,
         rank_date: str = None,
         type: str = None,
+        source: str = "小红书热门账号推荐-SDK",
     ) -> dict:
         """
         小红书热门账号推荐
@@ -263,7 +270,7 @@ class XiaohongshuAPI:
             data["rankDate"] = rank_date
         if type is not None:
             data["type"] = type
-        return self._client.post("/story/api/xhsData/query", data=data)
+        return self._client.post("/story/api/xhsData/query", data=data, source=source)
 
     def search_hot_notes(
         self,
@@ -272,6 +279,7 @@ class XiaohongshuAPI:
         page_size: int = 10,
         start_date: str = None,
         end_date: str = None,
+        source: str = "小红书爆款笔记洞察-SDK",
     ) -> dict:
         """
         小红书爆款笔记洞察
@@ -290,9 +298,9 @@ class XiaohongshuAPI:
             data["startDate"] = start_date
         if end_date is not None:
             data["endDate"] = end_date
-        return self._client.post("/story/api/xhs/search/search", data=data)
+        return self._client.post("/story/api/xhs/search/search", data=data, source=source)
 
-    def get_dark_horse_notes(self, keyword: str, start_date: str) -> dict:
+    def get_dark_horse_notes(self, keyword: str, start_date: str, source: str = "小红书黑马爆文榜-SDK") -> dict:
         """
         小红书黑马爆文榜
 
@@ -303,11 +311,12 @@ class XiaohongshuAPI:
         return self._client.post(
             "/story/api/cozeSkill/getLowPowderExplosiveArticle",
             data={"keyword": keyword, "startDate": start_date},
+            source=source,
         )
 
     # ─── 视频提文案 ─────────────────────────────────────────
 
-    def transcript_submit(self, url: str) -> dict:
+    def transcript_submit(self, url: str, source: str = "小红书视频提文案-SDK") -> dict:
         """
         小红书视频提文案 - 提交任务
 
@@ -317,9 +326,10 @@ class XiaohongshuAPI:
         return self._client.post(
             "/story/api/parseWork/audioTextExtract/submit/xhs",
             data={"url": url},
+            source=source,
         )
 
-    def transcript_result(self, task_id: str) -> dict:
+    def transcript_result(self, task_id: str, source: str = "查询小红书视频提文案任务结果-SDK") -> dict:
         """
         小红书视频提文案 - 查询结果
 
@@ -329,4 +339,5 @@ class XiaohongshuAPI:
         return self._client.post(
             "/story/api/parseWork/audioTextExtract/result/xhs",
             data={"taskId": task_id},
+            source=source,
         )

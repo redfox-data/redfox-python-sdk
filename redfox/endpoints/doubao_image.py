@@ -25,6 +25,7 @@ class DoubaoImageAPI:
         watermark: bool = True,
         optimize_prompt: bool = False,
         optimize_mode: str = "standard",
+        source: str = "豆包 Seedream 5.0 Pro 图片生成-SDK",
     ) -> dict:
         """
         提交 Seedream 5.0 Pro 图片生成任务
@@ -50,9 +51,9 @@ class DoubaoImageAPI:
             data["image"] = image
         if optimize_prompt:
             data["optimizePromptOptions"] = {"mode": optimize_mode}
-        return self._client.post("/story/api/parseWork/imageGen/arkProSubmit", data=data)
+        return self._client.post("/story/api/parseWork/imageGen/arkProSubmit", data=data, source=source)
 
-    def pro_result(self, task_id: str) -> dict:
+    def pro_result(self, task_id: str, source: str = "查询 Seedream 5.0 Pro 任务结果-SDK") -> dict:
         """
         查询 Seedream 5.0 Pro 任务结果
 
@@ -60,7 +61,7 @@ class DoubaoImageAPI:
         :return: 任务结果字典
         """
         return self._client.post(
-            "/story/api/parseWork/imageGen/arkProResult", data={"taskId": task_id}
+            "/story/api/parseWork/imageGen/arkProResult", data={"taskId": task_id}, source=source
         )
 
     # ─── Seedream 5.0 Lite ──────────────────────────────────
@@ -77,6 +78,7 @@ class DoubaoImageAPI:
         max_images: int = 4,
         optimize_prompt: bool = False,
         optimize_mode: str = "standard",
+        source: str = "豆包 Seedream 5.0 Lite 图片生成-SDK",
     ) -> dict:
         """
         提交 Seedream 5.0 Lite 图片生成任务
@@ -107,9 +109,9 @@ class DoubaoImageAPI:
             data["sequentialImageGenerationOptions"] = {"maxImages": max_images}
         if optimize_prompt:
             data["optimizePromptOptions"] = {"mode": optimize_mode}
-        return self._client.post("/story/api/parseWork/imageGen/arkSubmit", data=data)
+        return self._client.post("/story/api/parseWork/imageGen/arkSubmit", data=data, source=source)
 
-    def lite_result(self, task_id: str) -> dict:
+    def lite_result(self, task_id: str, source: str = "查询 Seedream 5.0 Lite 任务结果-SDK") -> dict:
         """
         查询 Seedream 5.0 Lite 任务结果
 
@@ -117,5 +119,5 @@ class DoubaoImageAPI:
         :return: 任务结果字典
         """
         return self._client.post(
-            "/story/api/parseWork/imageGen/arkResult", data={"taskId": task_id}
+            "/story/api/parseWork/imageGen/arkResult", data={"taskId": task_id}, source=source
         )

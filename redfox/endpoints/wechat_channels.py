@@ -21,6 +21,7 @@ class WechatChannelsAPI:
         sort: str = None,
         page: int = 1,
         size: int = 20,
+        source: str = "微信视频号关键词搜索作品-SDK",
     ) -> dict:
         """
         搜索关键词获取视频号作品（广域库）
@@ -34,9 +35,9 @@ class WechatChannelsAPI:
         data: Dict[str, Any] = {"keyword": keyword, "page": page, "size": size}
         if sort is not None:
             data["sort"] = sort
-        return self._client.post("/story/api/sphAllData/searchWork", data=data)
+        return self._client.post("/story/api/sphAllData/searchWork", data=data, source=source)
 
-    def get_work(self, video_id: str) -> dict:
+    def get_work(self, video_id: str, source: str = "获取微信视频号单个作品详情-SDK") -> dict:
         """
         获取视频号作品内容详情（广域库）
 
@@ -44,7 +45,7 @@ class WechatChannelsAPI:
         :return: 作品详情字典
         """
         return self._client.post(
-            "/story/api/sphAllData/queryWorkDetail", data={"videoId": video_id}
+            "/story/api/sphAllData/queryWorkDetail", data={"videoId": video_id}, source=source
         )
 
     def get_user_works(
@@ -52,6 +53,7 @@ class WechatChannelsAPI:
         nickname: str,
         page: int = 1,
         size: int = 20,
+        source: str = "获取微信视频号用户作品列表-SDK",
     ) -> dict:
         """
         获取视频号账号作品列表（广域库）
@@ -62,9 +64,9 @@ class WechatChannelsAPI:
         :return: 作品列表字典
         """
         data: Dict[str, Any] = {"nickname": nickname, "page": page, "size": size}
-        return self._client.post("/story/api/sphAllData/queryWorkList", data=data)
+        return self._client.post("/story/api/sphAllData/queryWorkList", data=data, source=source)
 
-    def get_work_by_link(self, url: str) -> dict:
+    def get_work_by_link(self, url: str, source: str = "通过链接获取微信视频号作品详情-SDK") -> dict:
         """
         视频号作品链接更新详情（实时）
 
@@ -72,7 +74,7 @@ class WechatChannelsAPI:
         :return: 作品详情字典
         """
         return self._client.post(
-            "/story/api/sph/ability/workLinkDetail", data={"url": url}
+            "/story/api/sph/ability/workLinkDetail", data={"url": url}, source=source
         )
 
     # ─── 账号相关 ───────────────────────────────────────────
@@ -82,6 +84,7 @@ class WechatChannelsAPI:
         account_name: str,
         page: int = 1,
         page_size: int = 20,
+        source: str = "微信视频号关键词搜索账号-SDK",
     ) -> dict:
         """
         搜索关键词获取视频号账号（广域库）
@@ -96,11 +99,11 @@ class WechatChannelsAPI:
             "page": page,
             "pageSize": page_size,
         }
-        return self._client.post("/story/api/sphAllData/searchUser", data=data)
+        return self._client.post("/story/api/sphAllData/searchUser", data=data, source=source)
 
     # ─── 链接提文案 ─────────────────────────────────────────
 
-    def transcript_submit(self, url: str) -> dict:
+    def transcript_submit(self, url: str, source: str = "微信视频号视频字幕/文案提取-SDK") -> dict:
         """
         视频号链接提文案 - 提交任务
 
@@ -108,10 +111,10 @@ class WechatChannelsAPI:
         :return: 包含 taskId 的字典
         """
         return self._client.post(
-            "/story/api/parseWork/sphSubtitle/submit", data={"url": url}
+            "/story/api/parseWork/sphSubtitle/submit", data={"url": url}, source=source
         )
 
-    def transcript_result(self, task_id: str) -> dict:
+    def transcript_result(self, task_id: str, source: str = "查询微信视频号字幕提取任务结果-SDK") -> dict:
         """
         视频号链接提文案 - 查询结果
 
@@ -119,5 +122,5 @@ class WechatChannelsAPI:
         :return: 文案提取结果字典
         """
         return self._client.post(
-            "/story/api/parseWork/sphSubtitle/result", data={"taskId": task_id}
+            "/story/api/parseWork/sphSubtitle/result", data={"taskId": task_id}, source=source
         )

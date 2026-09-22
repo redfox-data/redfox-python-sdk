@@ -33,6 +33,7 @@ class GPTImageAPI:
         size: str = "1:1",
         n: int = 1,
         reference_images: Optional[List[str]] = None,
+        source: str = "GPT-Image-2 图片生成-SDK",
     ) -> dict:
         """
         提交 GPT-Image-2 图片生成任务
@@ -55,10 +56,10 @@ class GPTImageAPI:
         if reference_images:
             data["referenceImages"] = reference_images
         return self._client.post(
-            "/story/api/parseWork/imageGen/gptImage2Submit", data=data
+            "/story/api/parseWork/imageGen/gptImage2Submit", data=data, source=source
         )
 
-    def result(self, task_id: str) -> dict:
+    def result(self, task_id: str, source: str = "查询 GPT-Image-2 图片生成任务结果-SDK") -> dict:
         """
         查询 GPT-Image-2 图片生成任务结果
 
@@ -68,5 +69,5 @@ class GPTImageAPI:
                  failed，仅 completed 与 failed 为终态；imageUrls 数量与 n 一致
         """
         return self._client.post(
-            "/story/api/parseWork/imageGen/gptImage2Result", data={"taskId": task_id}
+            "/story/api/parseWork/imageGen/gptImage2Result", data={"taskId": task_id}, source=source
         )

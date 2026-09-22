@@ -13,7 +13,7 @@ class BilibiliAPI:
     def __init__(self, client):
         self._client = client
 
-    def get_account(self, mid: str) -> dict:
+    def get_account(self, mid: str, source: str = "获取 B 站 UP 主信息-SDK") -> dict:
         """
         获取哔哩哔哩账号信息（优质库）
 
@@ -21,13 +21,14 @@ class BilibiliAPI:
         :return: 账号信息字典
         """
         return self._client.post(
-            "/story/api/bili/data/accountDetail", data={"mid": mid}
+            "/story/api/bili/data/accountDetail", data={"mid": mid}, source=source
         )
 
     def get_work(
         self,
         bvid: str = None,
         work_url: str = None,
+        source: str = "获取 B 站视频详情-SDK",
     ) -> dict:
         """
         获取哔哩哔哩作品内容详情（优质库）
@@ -43,7 +44,7 @@ class BilibiliAPI:
             data["bvId"] = bvid
         if work_url:
             data["workUrl"] = work_url
-        return self._client.post("/story/api/bili/data/workDetail", data=data)
+        return self._client.post("/story/api/bili/data/workDetail", data=data, source=source)
 
     def search_users(
         self,
@@ -51,6 +52,7 @@ class BilibiliAPI:
         page: int = 1,
         page_size: int = None,
         order: str = None,
+        source: str = "搜索 B 站 UP 主-SDK",
     ) -> dict:
         """
         搜索关键词获取哔哩哔哩账号（优质库）
@@ -66,7 +68,7 @@ class BilibiliAPI:
             data["pageSize"] = page_size
         if order is not None:
             data["order"] = order
-        return self._client.post("/story/api/bili/data/accountSearch", data=data)
+        return self._client.post("/story/api/bili/data/accountSearch", data=data, source=source)
 
     def search_articles(
         self,
@@ -74,6 +76,7 @@ class BilibiliAPI:
         page: int = 1,
         page_size: int = None,
         order: str = None,
+        source: str = "搜索 B 站视频-SDK",
     ) -> dict:
         """
         搜索关键词获取哔哩哔哩作品（优质库）
@@ -89,7 +92,7 @@ class BilibiliAPI:
             data["pageSize"] = page_size
         if order is not None:
             data["order"] = order
-        return self._client.post("/story/api/bili/data/workSearch", data=data)
+        return self._client.post("/story/api/bili/data/workSearch", data=data, source=source)
 
     def get_user_works(
         self,
@@ -98,6 +101,7 @@ class BilibiliAPI:
         page: int = 1,
         page_size: int = None,
         order: str = None,
+        source: str = "获取 B 站 UP 主视频列表-SDK",
     ) -> dict:
         """
         获取哔哩哔哩账号作品列表（优质库）
@@ -120,11 +124,11 @@ class BilibiliAPI:
             data["pageSize"] = page_size
         if order is not None:
             data["order"] = order
-        return self._client.post("/story/api/bili/data/accountWorkList", data=data)
+        return self._client.post("/story/api/bili/data/accountWorkList", data=data, source=source)
 
     # ─── 音频 / 提文案 ─────────────────────────────────────
 
-    def get_audio(self, url: str) -> dict:
+    def get_audio(self, url: str, source: str = "获取 B 站视频音频地址-SDK") -> dict:
         """
         获取哔哩哔哩音频地址
 
@@ -132,10 +136,10 @@ class BilibiliAPI:
         :return: 音频地址字典
         """
         return self._client.post(
-            "/story/api/parseWork/audioExtract/bilibili", data={"url": url}
+            "/story/api/parseWork/audioExtract/bilibili", data={"url": url}, source=source
         )
 
-    def transcript_submit(self, url: str) -> dict:
+    def transcript_submit(self, url: str, source: str = "B 站视频字幕/文案提取-SDK") -> dict:
         """
         哔哩哔哩链接提文案 - 提交任务
 
@@ -143,10 +147,10 @@ class BilibiliAPI:
         :return: 包含 taskId 的字典
         """
         return self._client.post(
-            "/story/api/parseWork/bilibiliSubtitle/submit", data={"url": url}
+            "/story/api/parseWork/bilibiliSubtitle/submit", data={"url": url}, source=source
         )
 
-    def transcript_result(self, task_id: str) -> dict:
+    def transcript_result(self, task_id: str, source: str = "查询 B 站字幕提取任务结果-SDK") -> dict:
         """
         哔哩哔哩链接提文案 - 查询结果
 
@@ -154,5 +158,5 @@ class BilibiliAPI:
         :return: 文案提取结果字典
         """
         return self._client.post(
-            "/story/api/parseWork/bilibiliSubtitle/result", data={"taskId": task_id}
+            "/story/api/parseWork/bilibiliSubtitle/result", data={"taskId": task_id}, source=source
         )

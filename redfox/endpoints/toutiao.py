@@ -17,6 +17,7 @@ class ToutiaoAPI:
         self,
         keyword: str,
         offset: int = 0,
+        source: str = "搜索今日头条内容-SDK",
     ) -> dict:
         """
         获取今日头条账号作品列表（实时）
@@ -26,9 +27,9 @@ class ToutiaoAPI:
         :return: 作品列表
         """
         data: Dict[str, Any] = {"keyword": keyword, "offset": str(offset)}
-        return self._client.post("/story/api/toutiao/searchWork", data=data)
+        return self._client.post("/story/api/toutiao/searchWork", data=data, source=source)
 
-    def get_work(self, opus_id: str) -> dict:
+    def get_work(self, opus_id: str, source: str = "获取今日头条作品详情-SDK") -> dict:
         """
         获取今日头条作品内容详情（实时）
 
@@ -36,10 +37,10 @@ class ToutiaoAPI:
         :return: 作品详情字典
         """
         return self._client.post(
-            "/story/api/toutiao/workDetail", data={"opusId": opus_id}
+            "/story/api/toutiao/workDetail", data={"opusId": opus_id}, source=source
         )
 
-    def get_comments(self, opus_id: str, offset: str = None) -> dict:
+    def get_comments(self, opus_id: str, offset: str = None, source: str = "获取今日头条作品评论-SDK") -> dict:
         """
         获取今日头条作品评论（实时）
 
@@ -50,13 +51,14 @@ class ToutiaoAPI:
         data: Dict[str, Any] = {"opusId": opus_id}
         if offset is not None:
             data["offset"] = offset
-        return self._client.post("/story/api/toutiao/workComment", data=data)
+        return self._client.post("/story/api/toutiao/workComment", data=data, source=source)
 
     def search_users(
         self,
         name: str,
         offset: str = None,
         search_id: str = None,
+        source: str = "今日头条关键词搜索账号-SDK",
     ) -> dict:
         """
         获取今日头条关键词搜索账号（实时）
@@ -71,9 +73,9 @@ class ToutiaoAPI:
             data["offset"] = offset
         if search_id is not None:
             data["searchId"] = search_id
-        return self._client.post("/story/api/toutiao/searchAccount", data=data)
+        return self._client.post("/story/api/toutiao/searchAccount", data=data, source=source)
 
-    def get_user_works(self, category: str, token: str) -> dict:
+    def get_user_works(self, category: str, token: str, source: str = "获取今日头条账号作品列表-SDK") -> dict:
         """
         获取今日头条账号作品列表（实时）
 
@@ -85,4 +87,5 @@ class ToutiaoAPI:
         return self._client.post(
             "/story/api/toutiao/userWorkList",
             data={"category": category, "token": token},
+            source=source,
         )

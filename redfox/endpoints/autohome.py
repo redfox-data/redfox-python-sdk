@@ -19,6 +19,7 @@ class AutohomeAPI:
         offset: str = "0",
         page: str = "1",
         source_type: str = "video",
+        source: str = "汽车之家关键词搜索作品-SDK",
     ) -> dict:
         """
         汽车之家关键词搜索作品
@@ -35,9 +36,9 @@ class AutohomeAPI:
             "page": str(page),
             "sourceType": source_type,
         }
-        return self._client.post("/story/api/autohome/searchWork", data=data)
+        return self._client.post("/story/api/autohome/searchWork", data=data, source=source)
 
-    def get_article(self, work_id: str, page: int = 0) -> dict:
+    def get_article(self, work_id: str, page: int = 0, source: str = "获取汽车之家文章详情-SDK") -> dict:
         """
         汽车之家文章详情（车家号）
 
@@ -48,9 +49,10 @@ class AutohomeAPI:
         return self._client.post(
             "/story/api/autohome/articleDetail",
             data={"workId": work_id, "page": page},
+            source=source,
         )
 
-    def get_video(self, video_id: str, video_type: int) -> dict:
+    def get_video(self, video_id: str, video_type: int, source: str = "获取汽车之家视频详情-SDK") -> dict:
         """
         汽车之家视频详情（原创账号+车家号）
 
@@ -61,9 +63,10 @@ class AutohomeAPI:
         return self._client.post(
             "/story/api/autohome/videoDetail",
             data={"videoId": video_id, "videoType": video_type},
+            source=source,
         )
 
-    def get_user_works(self, author_id: str, page: int = 0) -> dict:
+    def get_user_works(self, author_id: str, page: int = 0, source: str = "获取汽车之家作者作品列表-SDK") -> dict:
         """
         汽车之家作品列表（原创账号）
 
@@ -74,4 +77,5 @@ class AutohomeAPI:
         return self._client.post(
             "/story/api/autohome/workList",
             data={"authorId": author_id, "page": page},
+            source=source,
         )

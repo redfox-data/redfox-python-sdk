@@ -15,7 +15,7 @@ class WechatAPI:
 
     # ─── 账号相关 ───────────────────────────────────────────
 
-    def get_account(self, account: str, account_name: str = None) -> dict:
+    def get_account(self, account: str, account_name: str = None, source: str = "获取公众号账号信息（优质库）-SDK") -> dict:
         """
         获取公众号账号信息（优质库）
 
@@ -26,13 +26,14 @@ class WechatAPI:
         data: Dict[str, Any] = {"account": account}
         if account_name is not None:
             data["accountName"] = account_name
-        return self._client.post("/story/api/gzhData/queryUser", data=data)
+        return self._client.post("/story/api/gzhData/queryUser", data=data, source=source)
 
     def search_users(
         self,
         keyword: str,
         offset: int = 0,
         sort_type: str = None,
+        source: str = "搜索公众号账号（优质库）-SDK",
     ) -> dict:
         """
         搜索关键词获取公众号账号（优质库）
@@ -47,11 +48,11 @@ class WechatAPI:
             data["offset"] = offset
         if sort_type is not None:
             data["sortType"] = sort_type
-        return self._client.post("/story/api/gzhData/searchUser", data=data)
+        return self._client.post("/story/api/gzhData/searchUser", data=data, source=source)
 
     # ─── 作品相关 ───────────────────────────────────────────
 
-    def get_work(self, work_uuid: str) -> dict:
+    def get_work(self, work_uuid: str, source: str = "根据作品 UUID 获取公众号文章元数据-SDK") -> dict:
         """
         根据作品 UUID 获取公众号作品（优质库）
 
@@ -59,10 +60,10 @@ class WechatAPI:
         :return: 作品详情字典
         """
         return self._client.post(
-            "/story/api/gzhData/queryWork", data={"workUuid": work_uuid}
+            "/story/api/gzhData/queryWork", data={"workUuid": work_uuid}, source=source
         )
 
-    def get_article_detail(self, url: str) -> dict:
+    def get_article_detail(self, url: str, source: str = "根据文章链接获取公众号文章详情-SDK") -> dict:
         """
         根据作品地址获取公众号文章（优质库）
 
@@ -70,7 +71,7 @@ class WechatAPI:
         :return: 文章详情字典
         """
         return self._client.post(
-            "/story/api/gzhData/queryArticleDetail", data={"url": url}
+            "/story/api/gzhData/queryArticleDetail", data={"url": url}, source=source
         )
 
     def search_articles(
@@ -78,6 +79,7 @@ class WechatAPI:
         keyword: str,
         offset: int = 0,
         sort_type: str = None,
+        source: str = "搜索公众号文章-SDK",
     ) -> dict:
         """
         搜索关键词获取公众号作品（优质库）
@@ -92,7 +94,7 @@ class WechatAPI:
             data["offset"] = offset
         if sort_type is not None:
             data["sortType"] = sort_type
-        return self._client.post("/story/api/gzhData/searchArticle", data=data)
+        return self._client.post("/story/api/gzhData/searchArticle", data=data, source=source)
 
     def get_user_works(
         self,
@@ -102,6 +104,7 @@ class WechatAPI:
         sort_type: str = None,
         publish_time_start: str = None,
         publish_time_end: str = None,
+        source: str = "获取公众号文章列表-SDK",
     ) -> dict:
         """
         获取公众号账号作品列表（优质库）
@@ -125,7 +128,7 @@ class WechatAPI:
             data["publishTimeStart"] = publish_time_start
         if publish_time_end is not None:
             data["publishTimeEnd"] = publish_time_end
-        return self._client.post("/story/api/gzhData/queryWorkList", data=data)
+        return self._client.post("/story/api/gzhData/queryWorkList", data=data, source=source)
 
     # ─── AI 作品 ────────────────────────────────────────────
 
@@ -136,6 +139,7 @@ class WechatAPI:
         page_size: int = 20,
         start_time: str = None,
         end_time: str = None,
+        source: str = "搜索公众号 AI 创作相关文章-SDK",
     ) -> dict:
         """
         搜索关键词获取公众号 AI 创作作品（优质库）
@@ -156,7 +160,7 @@ class WechatAPI:
             data["startTime"] = start_time
         if end_time is not None:
             data["endTime"] = end_time
-        return self._client.post("/story/api/parseWork/queryAiMsgs", data=data)
+        return self._client.post("/story/api/parseWork/queryAiMsgs", data=data, source=source)
 
     # ─── 广域库（更大覆盖范围） ──────────────────────────────
 
@@ -165,6 +169,7 @@ class WechatAPI:
         keyword: str,
         offset: int = 0,
         sort_type: str = None,
+        source: str = "搜索公众号作品-SDK",
     ) -> dict:
         """
         搜索关键词获取公众号作品（广域库）
@@ -179,9 +184,9 @@ class WechatAPI:
             data["offset"] = offset
         if sort_type is not None:
             data["sortType"] = sort_type
-        return self._client.post("/story/api/gzh/data/searchArticle", data=data)
+        return self._client.post("/story/api/gzh/data/searchArticle", data=data, source=source)
 
-    def search_users_wide(self, keyword: str, offset: int = 0) -> dict:
+    def search_users_wide(self, keyword: str, offset: int = 0, source: str = "搜索公众号账号（广域库）-SDK") -> dict:
         """
         搜索关键词获取公众号账号（广域库）
 
@@ -192,9 +197,10 @@ class WechatAPI:
         return self._client.post(
             "/story/api/gzh/data/searchUser",
             data={"keyword": keyword, "offset": offset},
+            source=source,
         )
 
-    def get_work_wide(self, work_uuid: str) -> dict:
+    def get_work_wide(self, work_uuid: str, source: str = "根据作品 UUID 获取公众号作品-SDK") -> dict:
         """
         根据作品 UUID 获取公众号作品（广域库）
 
@@ -202,7 +208,7 @@ class WechatAPI:
         :return: 作品详情字典
         """
         return self._client.post(
-            "/story/api/gzh/data/workDetail", data={"workUuid": work_uuid}
+            "/story/api/gzh/data/workDetail", data={"workUuid": work_uuid}, source=source
         )
 
     def get_user_works_wide(
@@ -212,6 +218,7 @@ class WechatAPI:
         biz_info: str = None,
         offset: int = 0,
         sort_type: str = None,
+        source: str = "获取公众号账号作品列表-SDK",
     ) -> dict:
         """
         获取公众号账号作品列表（广域库）
@@ -234,13 +241,14 @@ class WechatAPI:
             data["bizInfo"] = biz_info
         if sort_type is not None:
             data["sortType"] = sort_type
-        return self._client.post("/story/api/gzh/data/queryWorkList", data=data)
+        return self._client.post("/story/api/gzh/data/queryWorkList", data=data, source=source)
 
     def get_account_wide(
         self,
         account: str = None,
         wx_id: str = None,
         biz_info: str = None,
+        source: str = "获取公众号账号信息（广域库）-SDK",
     ) -> dict:
         """
         获取公众号账号信息（广域库）
@@ -259,7 +267,7 @@ class WechatAPI:
             data["wxId"] = wx_id
         if biz_info:
             data["bizInfo"] = biz_info
-        return self._client.post("/story/api/gzh/data/accountInfo", data=data)
+        return self._client.post("/story/api/gzh/data/accountInfo", data=data, source=source)
 
     # ─── 榜单 ───────────────────────────────────────────
 
@@ -268,6 +276,7 @@ class WechatAPI:
         type: str,
         start_date: str,
         end_date: str,
+        source: str = "公众号 10W+ 阅读文章推荐-SDK",
     ) -> dict:
         """
         公众号 10W+ 文章推荐
@@ -280,6 +289,7 @@ class WechatAPI:
         return self._client.post(
             "/story/api/cozeSkill/getTenWReadingRank",
             data={"type": type, "startDate": start_date, "endDate": end_date},
+            source=source,
         )
 
     def get_original_rank(
@@ -287,6 +297,7 @@ class WechatAPI:
         type: str,
         start_date: str,
         end_date: str,
+        source: str = "公众号原创爆款文章推荐-SDK",
     ) -> dict:
         """
         公众号原创爆款文章推荐
@@ -299,6 +310,7 @@ class WechatAPI:
         return self._client.post(
             "/story/api/cozeSkill/getOriginalRank",
             data={"type": type, "startDate": start_date, "endDate": end_date},
+            source=source,
         )
 
     def get_strength_rank(
@@ -306,6 +318,7 @@ class WechatAPI:
         rank_type: str,
         rank_date: str,
         category: str,
+        source: str = "公众号综合实力榜-SDK",
     ) -> dict:
         """
         公众号综合实力榜
@@ -322,9 +335,10 @@ class WechatAPI:
                 "rankDate": rank_date,
                 "category": category,
             },
+            source=source,
         )
 
-    def get_reading_growth_rank(self, rank_date: str) -> dict:
+    def get_reading_growth_rank(self, rank_date: str, source: str = "公众号阅读增长榜单-SDK") -> dict:
         """
         公众号阅读增长榜单
 
@@ -334,4 +348,5 @@ class WechatAPI:
         return self._client.get(
             "/story/api/cozeSkill/getGzhCozeSkillDataRaise",
             params={"rankDate": rank_date},
+            source=source,
         )

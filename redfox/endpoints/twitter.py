@@ -18,6 +18,7 @@ class TwitterAPI:
         keyword: str,
         search_type: str = None,
         cursor: str = None,
+        source: str = "X(Twitter) 关键词搜索推文-SDK",
     ) -> dict:
         """
         搜索推文
@@ -32,9 +33,9 @@ class TwitterAPI:
             data["searchType"] = search_type
         if cursor is not None:
             data["cursor"] = cursor
-        return self._client.post("/story/api/x/search", data=data)
+        return self._client.post("/story/api/x/search", data=data, source=source)
 
-    def get_tweet(self, tweet_id: str) -> dict:
+    def get_tweet(self, tweet_id: str, source: str = "获取 X(Twitter) 单条推文详情-SDK") -> dict:
         """
         获取单个推文详情
 
@@ -42,13 +43,14 @@ class TwitterAPI:
         :return: 推文详情字典
         """
         return self._client.post(
-            "/story/api/x/tweetDetail", data={"tweetId": tweet_id}
+            "/story/api/x/tweetDetail", data={"tweetId": tweet_id}, source=source
         )
 
     def get_user(
         self,
         screen_name: str = None,
         rest_id: str = None,
+        source: str = "获取 X(Twitter) 用户信息-SDK",
     ) -> dict:
         """
         获取 X 用户信息
@@ -64,12 +66,13 @@ class TwitterAPI:
             data["screenName"] = screen_name
         if rest_id is not None:
             data["restId"] = rest_id
-        return self._client.post("/story/api/x/userInfo", data=data)
+        return self._client.post("/story/api/x/userInfo", data=data, source=source)
 
     def get_comments(
         self,
         tweet_id: str,
         cursor: str = None,
+        source: str = "获取 X(Twitter) 推文评论/回复-SDK",
     ) -> dict:
         """
         获取推文评论
@@ -81,4 +84,4 @@ class TwitterAPI:
         data: Dict[str, Any] = {"tweetId": tweet_id}
         if cursor is not None:
             data["cursor"] = cursor
-        return self._client.post("/story/api/x/tweetComments", data=data)
+        return self._client.post("/story/api/x/tweetComments", data=data, source=source)

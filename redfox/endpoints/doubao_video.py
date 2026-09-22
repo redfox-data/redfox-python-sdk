@@ -24,6 +24,7 @@ class DoubaoVideoAPI:
         watermark: bool = False,
         generate_audio: bool = True,
         return_last_frame: bool = False,
+        source: str = "豆包 Seedance 2.0 视频生成-SDK",
     ) -> dict:
         """
         提交视频生成任务（Seedance 2.0）
@@ -58,10 +59,10 @@ class DoubaoVideoAPI:
         if model is not None:
             data["model"] = model
         return self._client.post(
-            "/story/api/parseWork/videoGen/submit", data=data
+            "/story/api/parseWork/videoGen/submit", data=data, source=source
         )
 
-    def result(self, task_id: str) -> dict:
+    def result(self, task_id: str, source: str = "查询豆包视频生成任务结果-SDK") -> dict:
         """
         查询视频生成任务结果
 
@@ -71,4 +72,5 @@ class DoubaoVideoAPI:
         return self._client.post(
             "/story/api/parseWork/videoGen/result",
             data={"taskId": task_id},
+            source=source,
         )

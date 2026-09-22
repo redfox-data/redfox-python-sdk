@@ -17,6 +17,7 @@ class InstagramAPI:
         self,
         keyword: str,
         pagination_token: str = None,
+        source: str = "Instagram 关键词搜索-SDK",
     ) -> dict:
         """
         Instagram 综合搜索
@@ -28,9 +29,9 @@ class InstagramAPI:
         data: Dict[str, Any] = {"keyword": keyword}
         if pagination_token is not None:
             data["paginationToken"] = pagination_token
-        return self._client.post("/story/api/ins/search", data=data)
+        return self._client.post("/story/api/ins/search", data=data, source=source)
 
-    def get_post(self, code_or_url: str) -> dict:
+    def get_post(self, code_or_url: str, source: str = "获取 Instagram 单个帖子详情-SDK") -> dict:
         """
         获取 Instagram 帖子详情
 
@@ -39,7 +40,7 @@ class InstagramAPI:
         :return: 帖子详情字典
         """
         return self._client.post(
-            "/story/api/ins/postDetail", data={"codeOrUrl": code_or_url}
+            "/story/api/ins/postDetail", data={"codeOrUrl": code_or_url}, source=source
         )
 
     def get_comments(
@@ -47,6 +48,7 @@ class InstagramAPI:
         code_or_url: str,
         sort_by: str = "recent",
         pagination_token: str = None,
+        source: str = "获取 Instagram 帖子评论-SDK",
     ) -> dict:
         """
         获取 Instagram 帖子评论
@@ -59,12 +61,13 @@ class InstagramAPI:
         data: Dict[str, Any] = {"codeOrUrl": code_or_url, "sortBy": sort_by}
         if pagination_token is not None:
             data["paginationToken"] = pagination_token
-        return self._client.post("/story/api/ins/postComment", data=data)
+        return self._client.post("/story/api/ins/postComment", data=data, source=source)
 
     def get_user(
         self,
         username: str = None,
         user_id: str = None,
+        source: str = "获取 Instagram 用户信息-SDK",
     ) -> dict:
         """
         获取 Instagram 用户信息
@@ -80,4 +83,4 @@ class InstagramAPI:
             data["username"] = username
         if user_id is not None:
             data["userId"] = user_id
-        return self._client.post("/story/api/ins/userInfo", data=data)
+        return self._client.post("/story/api/ins/userInfo", data=data, source=source)

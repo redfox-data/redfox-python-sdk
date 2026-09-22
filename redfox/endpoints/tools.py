@@ -15,16 +15,16 @@ class ToolsAPI:
 
     # ─── 短视频下载（去水印） ─────────────────────────────────
 
-    def download(self, url: str) -> dict:
+    def download(self, url: str, source: str = "通用作品下载-SDK") -> dict:
         """
         短视频下载器（通用）
 
         :param url: 视频链接地址（必填）
         :return: 解析结果字典，包含下载链接等信息
         """
-        return self._client.post("/story/api/parseWork/parse", data={"url": url})
+        return self._client.post("/story/api/parseWork/parse", data={"url": url}, source=source)
 
-    def download_douyin(self, url: str) -> dict:
+    def download_douyin(self, url: str, source: str = "抖音作品下载-SDK") -> dict:
         """
         抖音视频下载（去水印）
 
@@ -32,10 +32,10 @@ class ToolsAPI:
         :return: 解析结果字典
         """
         return self._client.post(
-            "/story/api/parseWork/videoDownload/douyin", data={"url": url}
+            "/story/api/parseWork/videoDownload/douyin", data={"url": url}, source=source
         )
 
-    def download_kuaishou(self, url: str) -> dict:
+    def download_kuaishou(self, url: str, source: str = "快手作品下载-SDK") -> dict:
         """
         快手视频下载（去水印）
 
@@ -43,10 +43,10 @@ class ToolsAPI:
         :return: 解析结果字典
         """
         return self._client.post(
-            "/story/api/parseWork/videoDownload/kuaishou", data={"url": url}
+            "/story/api/parseWork/videoDownload/kuaishou", data={"url": url}, source=source
         )
 
-    def download_xiaohongshu(self, url: str) -> dict:
+    def download_xiaohongshu(self, url: str, source: str = "小红书作品下载-SDK") -> dict:
         """
         小红书视频下载（去水印）
 
@@ -54,10 +54,10 @@ class ToolsAPI:
         :return: 解析结果字典
         """
         return self._client.post(
-            "/story/api/parseWork/videoDownload/xhs", data={"url": url}
+            "/story/api/parseWork/videoDownload/xhs", data={"url": url}, source=source
         )
 
-    def download_bilibili(self, url: str) -> dict:
+    def download_bilibili(self, url: str, source: str = "B 站作品下载-SDK") -> dict:
         """
         哔哩哔哩视频下载（去水印）
 
@@ -65,10 +65,10 @@ class ToolsAPI:
         :return: 解析结果字典
         """
         return self._client.post(
-            "/story/api/parseWork/videoDownload/bilibili", data={"url": url}
+            "/story/api/parseWork/videoDownload/bilibili", data={"url": url}, source=source
         )
 
-    def download_wechat_channels(self, url: str) -> dict:
+    def download_wechat_channels(self, url: str, source: str = "微信视频号作品下载-SDK") -> dict:
         """
         视频号视频下载（去水印）
 
@@ -76,10 +76,10 @@ class ToolsAPI:
         :return: 解析结果字典
         """
         return self._client.post(
-            "/story/api/parseWork/videoDownload/sph", data={"url": url}
+            "/story/api/parseWork/videoDownload/sph", data={"url": url}, source=source
         )
 
-    def download_tiktok(self, url: str) -> dict:
+    def download_tiktok(self, url: str, source: str = "TikTok 作品下载-SDK") -> dict:
         """
         TikTok 视频下载（去水印）
 
@@ -87,10 +87,10 @@ class ToolsAPI:
         :return: 解析结果字典
         """
         return self._client.post(
-            "/story/api/parseWork/videoDownload/tiktok", data={"url": url}
+            "/story/api/parseWork/videoDownload/tiktok", data={"url": url}, source=source
         )
 
-    def download_youtube(self, url: str) -> dict:
+    def download_youtube(self, url: str, source: str = "YouTube 视频下载-SDK") -> dict:
         """
         YouTube 视频下载
 
@@ -98,10 +98,10 @@ class ToolsAPI:
         :return: 解析结果字典
         """
         return self._client.post(
-            "/story/api/parseWork/videoDownload/youtube", data={"url": url}
+            "/story/api/parseWork/videoDownload/youtube", data={"url": url}, source=source
         )
 
-    def download_instagram(self, url: str) -> dict:
+    def download_instagram(self, url: str, source: str = "Instagram 作品下载-SDK") -> dict:
         """
         Instagram 视频下载（去水印）
 
@@ -109,10 +109,10 @@ class ToolsAPI:
         :return: 解析结果字典
         """
         return self._client.post(
-            "/story/api/parseWork/videoDownload/instagram", data={"url": url}
+            "/story/api/parseWork/videoDownload/instagram", data={"url": url}, source=source
         )
 
-    def download_twitter(self, url: str) -> dict:
+    def download_twitter(self, url: str, source: str = "X(Twitter) 作品下载-SDK") -> dict:
         """
         X (Twitter) 视频下载（去水印）
 
@@ -120,12 +120,12 @@ class ToolsAPI:
         :return: 解析结果字典
         """
         return self._client.post(
-            "/story/api/parseWork/videoDownload/x", data={"url": url}
+            "/story/api/parseWork/videoDownload/x", data={"url": url}, source=source
         )
 
     # ─── 素材上传 ───────────────────────────────────────────
 
-    def upload_image(self, file, format: str) -> dict:
+    def upload_image(self, file, format: str, source: str = "上传图片到红狐素材库-SDK") -> dict:
         """
         上传图片
 
@@ -137,9 +137,10 @@ class ToolsAPI:
             "/story/api/parseWork/imageGen/uploadImage",
             file=file,
             data={"format": format},
+            source=source,
         )
 
-    def upload_file(self, file, format: str) -> dict:
+    def upload_file(self, file, format: str, source: str = "上传文件到红狐素材库-SDK") -> dict:
         """
         上传视频/图片/音频素材
 
@@ -154,4 +155,5 @@ class ToolsAPI:
             "/story/api/parseWork/videoGen/uploadFile",
             file=file,
             data={"format": format},
+            source=source,
         )

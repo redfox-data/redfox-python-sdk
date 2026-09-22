@@ -17,6 +17,7 @@ class YouTubeAPI:
         self,
         search_query: str,
         continuation_token: str = None,
+        source: str = "YouTube 关键词视频搜索-SDK",
     ) -> dict:
         """
         搜索 YouTube 视频
@@ -28,9 +29,9 @@ class YouTubeAPI:
         data: Dict[str, Any] = {"searchQuery": search_query}
         if continuation_token is not None:
             data["continuationToken"] = continuation_token
-        return self._client.post("/story/api/youtube/searchVideo", data=data)
+        return self._client.post("/story/api/youtube/searchVideo", data=data, source=source)
 
-    def get_video(self, video_id: str) -> dict:
+    def get_video(self, video_id: str, source: str = "获取 YouTube 单个视频详情-SDK") -> dict:
         """
         获取 YouTube 视频详情
 
@@ -38,7 +39,7 @@ class YouTubeAPI:
         :return: 视频详情字典
         """
         return self._client.post(
-            "/story/api/youtube/videoDetail", data={"videoId": video_id}
+            "/story/api/youtube/videoDetail", data={"videoId": video_id}, source=source
         )
 
     def get_comments(
@@ -48,6 +49,7 @@ class YouTubeAPI:
         country_code: str = None,
         sort_by: str = None,
         continuation_token: str = None,
+        source: str = "获取 YouTube 视频评论-SDK",
     ) -> dict:
         """
         获取 YouTube 视频评论
@@ -68,7 +70,7 @@ class YouTubeAPI:
             data["sortBy"] = sort_by
         if continuation_token is not None:
             data["continuationToken"] = continuation_token
-        return self._client.post("/story/api/youtube/videoComments", data=data)
+        return self._client.post("/story/api/youtube/videoComments", data=data, source=source)
 
     def get_transcript(
         self,
@@ -77,6 +79,7 @@ class YouTubeAPI:
         include_timestamp: bool = None,
         send_metadata: bool = None,
         language: str = None,
+        source: str = "提取 YouTube 视频字幕/文案-SDK",
     ) -> dict:
         """
         YouTube 视频提文案（提取字幕/口播文案）
@@ -98,4 +101,4 @@ class YouTubeAPI:
             data["sendMetadata"] = send_metadata
         if language is not None:
             data["language"] = language
-        return self._client.post("/story/api/youtube/transcript", data=data)
+        return self._client.post("/story/api/youtube/transcript", data=data, source=source)

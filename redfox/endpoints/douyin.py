@@ -20,6 +20,7 @@ class DouyinAPI:
         self,
         work_id: str = None,
         work_url: str = None,
+        source: str = "获取抖音作品详情（优质库）-SDK",
     ) -> dict:
         """
         获取抖音作品内容详情（优质库）
@@ -37,13 +38,14 @@ class DouyinAPI:
         if work_url:
             data["workUrl"] = work_url
 
-        return self._client.post("/story/api/dyData/queryWork", data=data)
+        return self._client.post("/story/api/dyData/queryWork", data=data, source=source)
 
     def search_articles(
         self,
         keyword: str,
         offset: int = 0,
         sort_type: str = None,
+        source: str = "搜索抖音作品（优质库）-SDK",
     ) -> dict:
         """
         搜索关键词获取抖音作品（优质库）
@@ -59,7 +61,7 @@ class DouyinAPI:
         if sort_type is not None:
             data["sortType"] = sort_type
 
-        return self._client.post("/story/api/dyData/searchArticle", data=data)
+        return self._client.post("/story/api/dyData/searchArticle", data=data, source=source)
 
     def get_user_works(
         self,
@@ -68,6 +70,7 @@ class DouyinAPI:
         sec_user_id: str = None,
         offset: int = 0,
         sort_type: str = None,
+        source: str = "获取抖音账号作品列表（优质库）-SDK",
     ) -> dict:
         """
         获取抖音账号作品列表（优质库）
@@ -93,11 +96,11 @@ class DouyinAPI:
         if sort_type is not None:
             data["sortType"] = sort_type
 
-        return self._client.post("/story/api/dyData/queryWorkList", data=data)
+        return self._client.post("/story/api/dyData/queryWorkList", data=data, source=source)
 
     # ─── 账号相关 ───────────────────────────────────────────
 
-    def get_user(self, account_id: str) -> dict:
+    def get_user(self, account_id: str, source: str = "获取抖音账号信息-SDK") -> dict:
         """
         获取抖音账号信息（优质库）
 
@@ -107,6 +110,7 @@ class DouyinAPI:
         return self._client.post(
             "/story/api/dyData/queryUser",
             data={"accountId": account_id},
+            source=source,
         )
 
     def search_users(
@@ -114,6 +118,7 @@ class DouyinAPI:
         keyword: str,
         offset: int = 0,
         sort_type: str = None,
+        source: str = "搜索抖音账号（优质库）-SDK",
     ) -> dict:
         """
         搜索关键词获取抖音账号（优质库）
@@ -129,7 +134,7 @@ class DouyinAPI:
         if sort_type is not None:
             data["sortType"] = sort_type
 
-        return self._client.post("/story/api/dyData/searchUser", data=data)
+        return self._client.post("/story/api/dyData/searchUser", data=data, source=source)
 
     # ─── AI 作品 ────────────────────────────────────────────
 
@@ -140,6 +145,7 @@ class DouyinAPI:
         page_size: int = 20,
         start_time: str = None,
         end_time: str = None,
+        source: str = "搜索抖音 AI 相关作品-SDK",
     ) -> dict:
         """
         搜索关键词获取抖音 AI 作品（优质库）
@@ -161,7 +167,7 @@ class DouyinAPI:
         if end_time is not None:
             data["endTime"] = end_time
 
-        return self._client.post("/story/api/parseWork/queryDyAiMsgs", data=data)
+        return self._client.post("/story/api/parseWork/queryDyAiMsgs", data=data, source=source)
 
     # ─── 广域库（更大覆盖范围） ──────────────────────────────
 
@@ -172,6 +178,7 @@ class DouyinAPI:
         end_date: str = None,
         page_num: int = 1,
         page_size: int = 10,
+        source: str = "搜索抖音作品（广域库）-SDK",
     ) -> dict:
         """
         搜索关键词获取抖音作品（广域库）
@@ -192,13 +199,14 @@ class DouyinAPI:
             data["startDate"] = start_date
         if end_date is not None:
             data["endDate"] = end_date
-        return self._client.post("/story/api/dy/data/searchWork", data=data)
+        return self._client.post("/story/api/dy/data/searchWork", data=data, source=source)
 
     def search_accounts_wide(
         self,
         keyword: str,
         page_num: int = 1,
         page_size: int = 10,
+        source: str = "搜索抖音账号（广域库）-SDK",
     ) -> dict:
         """
         搜索关键词获取抖音账号（广域库）
@@ -211,9 +219,10 @@ class DouyinAPI:
         return self._client.post(
             "/story/api/dy/data/searchAccount",
             data={"keyword": keyword, "pageNum": page_num, "pageSize": page_size},
+            source=source,
         )
 
-    def get_work_wide(self, video_id: str) -> dict:
+    def get_work_wide(self, video_id: str, source: str = "获取抖音作品详情（广域库）-SDK") -> dict:
         """
         获取抖音作品内容详情（广域库）
 
@@ -221,7 +230,7 @@ class DouyinAPI:
         :return: 作品详情字典
         """
         return self._client.post(
-            "/story/api/dy/data/workDetail", data={"videoId": video_id}
+            "/story/api/dy/data/workDetail", data={"videoId": video_id}, source=source
         )
 
     def get_user_works_wide(
@@ -233,6 +242,7 @@ class DouyinAPI:
         page_size: int = 10,
         start_date: str = None,
         end_date: str = None,
+        source: str = "获取抖音账号作品列表（广域库）-SDK",
     ) -> dict:
         """
         获取抖音账号作品列表（广域库）
@@ -259,7 +269,7 @@ class DouyinAPI:
             data["startDate"] = start_date
         if end_date is not None:
             data["endDate"] = end_date
-        return self._client.post("/story/api/dy/data/listWorkByAccount", data=data)
+        return self._client.post("/story/api/dy/data/listWorkByAccount", data=data, source=source)
 
     # ─── 榜单 ───────────────────────────────────────────
 
@@ -268,6 +278,7 @@ class DouyinAPI:
         type: str = None,
         start_time: str = None,
         end_time: str = None,
+        source: str = "抖音每日热门作品榜-SDK",
     ) -> dict:
         """
         抖音每日热门作品榜
@@ -284,12 +295,13 @@ class DouyinAPI:
             data["startTime"] = start_time
         if end_time is not None:
             data["endTime"] = end_time
-        return self._client.post("/story/api/dy/search/likesRank", data=data)
+        return self._client.post("/story/api/dy/search/likesRank", data=data, source=source)
 
     def get_daily_surge_rank(
         self,
         type: str = None,
         start_time: str = None,
+        source: str = "抖音每日点赞飙升榜-SDK",
     ) -> dict:
         """
         抖音每日点赞猟升榜
@@ -303,12 +315,13 @@ class DouyinAPI:
             data["type"] = type
         if start_time is not None:
             data["startTime"] = start_time
-        return self._client.post("/story/api/dy/search/getDailyRank", data=data)
+        return self._client.post("/story/api/dy/search/getDailyRank", data=data, source=source)
 
     def get_weekly_surge_rank(
         self,
         type: str = None,
         start_time: str = None,
+        source: str = "抖音七日点赞飙升榜-SDK",
     ) -> dict:
         """
         抖音七日点赞猟升榜
@@ -322,13 +335,14 @@ class DouyinAPI:
             data["type"] = type
         if start_time is not None:
             data["startTime"] = start_time
-        return self._client.post("/story/api/dy/search/getWeeklyRank", data=data)
+        return self._client.post("/story/api/dy/search/getWeeklyRank", data=data, source=source)
 
     def get_hot_accounts(
         self,
         date_type: str,
         rank_date: str,
         type: str,
+        source: str = "抖音热门账号推荐-SDK",
     ) -> dict:
         """
         抖音热门账号推荐
@@ -342,11 +356,12 @@ class DouyinAPI:
         return self._client.post(
             "/story/api/dyData/query",
             data={"dateType": date_type, "rankDate": rank_date, "type": type},
+            source=source,
         )
 
     # ─── 视频提文案 ─────────────────────────────────────────
 
-    def transcript_submit(self, url: str) -> dict:
+    def transcript_submit(self, url: str, source: str = "抖音视频提文案-SDK") -> dict:
         """
         抖音视频提文案 - 提交任务
 
@@ -356,9 +371,10 @@ class DouyinAPI:
         return self._client.post(
             "/story/api/parseWork/audioTextExtract/submit/douyin",
             data={"url": url},
+            source=source,
         )
 
-    def transcript_result(self, task_id: str) -> dict:
+    def transcript_result(self, task_id: str, source: str = "查询抖音视频提文案任务结果-SDK") -> dict:
         """
         抖音视频提文案 - 查询结果
 
@@ -368,4 +384,5 @@ class DouyinAPI:
         return self._client.post(
             "/story/api/parseWork/audioTextExtract/result/douyin",
             data={"taskId": task_id},
+            source=source,
         )

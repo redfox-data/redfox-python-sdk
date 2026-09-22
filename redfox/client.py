@@ -67,13 +67,22 @@ class _RequestMixin:
         self, method: str, path: str,
         params: Optional[Dict[str, Any]] = None,
         data: Optional[Dict[str, Any]] = None,
+        source: Optional[str] = None,
     ) -> tuple:
-        """准备请求 URL 和清洗后的参数"""
+        """准备请求 URL 和清洗后的参数
+
+        source 为调用来源标识：GET 请求放入 query，其余放入请求体 body。
+        """
         url = f"{self.base_url}{path}"
         if data:
             data = {k: v for k, v in data.items() if v is not None}
         if params:
             params = {k: v for k, v in params.items() if v is not None}
+        if source is not None:
+            if method.upper() == "GET":
+                params = {**(params or {}), "source": source}
+            else:
+                data = {**(data or {}), "source": source}
         return url, params, data
 
     def _handle_response(self, response) -> dict:
@@ -231,6 +240,7 @@ class RedFoxClient(_RequestMixin):
         path: str,
         params: Optional[Dict[str, Any]] = None,
         data: Optional[Dict[str, Any]] = None,
+        source: Optional[str] = None,
     ) -> dict:
         """
         发送 API 请求（含自动重试 + 指数退避）
@@ -242,7 +252,7 @@ class RedFoxClient(_RequestMixin):
         :return: API 响应 data 字段内容
         :raises RedFoxAPIError: 重试耗尽后仍失败时抛出
         """
-        url, params, data = self._prepare_request(method, path, params, data)
+        url, params, data = self._prepare_request(method, path, params, data, source)
         last_exception = None
 
         for attempt in range(self.max_retries + 1):
@@ -285,13 +295,15 @@ class RedFoxClient(_RequestMixin):
         # 重试耗尽
         raise self._map_exception(last_exception) if last_exception else RedFoxAPIError("请求失败")
 
-    def post(self, path: str, data: Optional[Dict[str, Any]] = None) -> dict:
+    def post(self, path: str, data: Optional[Dict[str, Any]] = None,
+             source: Optional[str] = None) -> dict:
         """发送 POST 请求"""
-        return self.request("POST", path, data=data)
+        return self.request("POST", path, data=data, source=source)
 
-    def get(self, path: str, params: Optional[Dict[str, Any]] = None) -> dict:
+    def get(self, path: str, params: Optional[Dict[str, Any]] = None,
+            source: Optional[str] = None) -> dict:
         """发送 GET 请求"""
-        return self.request("GET", path, params=params)
+        return self.request("GET", path, params=params, source=source)
 
     def upload(
         self,
@@ -299,6 +311,7 @@ class RedFoxClient(_RequestMixin):
         file,
         data: Optional[Dict[str, Any]] = None,
         field_name: str = "file",
+        source: Optional[str] = None,
     ) -> dict:
         """
         上传文件（multipart/form-data，含自动重试）
@@ -313,6 +326,8 @@ class RedFoxClient(_RequestMixin):
         filename, content = self._read_file(file, field_name)
         if data:
             data = {k: v for k, v in data.items() if v is not None}
+        if source is not None:
+            data = {**(data or {}), "source": source}
         last_exception = None
 
         for attempt in range(self.max_retries + 1):
@@ -445,6 +460,7 @@ class AsyncRedFoxClient(_RequestMixin):
         path: str,
         params: Optional[Dict[str, Any]] = None,
         data: Optional[Dict[str, Any]] = None,
+        source: Optional[str] = None,
     ) -> dict:
         """
         异步发送 API 请求（含自动重试 + 指数退避）
@@ -455,7 +471,7 @@ class AsyncRedFoxClient(_RequestMixin):
         :param data: 请求体 JSON 数据
         :return: API 响应 data 字段内容
         """
-        url, params, data = self._prepare_request(method, path, params, data)
+        url, params, data = self._prepare_request(method, path, params, data, source)
         last_exception = None
 
         for attempt in range(self.max_retries + 1):
@@ -495,13 +511,15 @@ class AsyncRedFoxClient(_RequestMixin):
 
         raise self._map_exception(last_exception) if last_exception else RedFoxAPIError("请求失败")
 
-    async def post(self, path: str, data: Optional[Dict[str, Any]] = None) -> dict:
+    async def post(self, path: str, data: Optional[Dict[str, Any]] = None,
+                   source: Optional[str] = None) -> dict:
         """异步发送 POST 请求"""
-        return await self.request("POST", path, data=data)
+        return await self.request("POST", path, data=data, source=source)
 
-    async def get(self, path: str, params: Optional[Dict[str, Any]] = None) -> dict:
+    async def get(self, path: str, params: Optional[Dict[str, Any]] = None,
+                  source: Optional[str] = None) -> dict:
         """异步发送 GET 请求"""
-        return await self.request("GET", path, params=params)
+        return await self.request("GET", path, params=params, source=source)
 
     async def upload(
         self,
@@ -509,6 +527,7 @@ class AsyncRedFoxClient(_RequestMixin):
         file,
         data: Optional[Dict[str, Any]] = None,
         field_name: str = "file",
+        source: Optional[str] = None,
     ) -> dict:
         """
         异步上传文件（multipart/form-data，含自动重试）
@@ -523,6 +542,8 @@ class AsyncRedFoxClient(_RequestMixin):
         filename, content = self._read_file(file, field_name)
         if data:
             data = {k: v for k, v in data.items() if v is not None}
+        if source is not None:
+            data = {**(data or {}), "source": source}
         last_exception = None
 
         for attempt in range(self.max_retries + 1):

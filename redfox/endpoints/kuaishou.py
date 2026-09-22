@@ -21,6 +21,7 @@ class KuaishouAPI:
         page: int = 1,
         size: int = 20,
         sort: str = "综合",
+        source: str = "快手关键词搜索作品-SDK",
     ) -> dict:
         """
         快手按关键词搜索作品（广域库）
@@ -37,9 +38,9 @@ class KuaishouAPI:
             "size": size,
             "sort": sort,
         }
-        return self._client.post("/story/api/ksAllData/searchWork", data=data)
+        return self._client.post("/story/api/ksAllData/searchWork", data=data, source=source)
 
-    def get_work(self, photo_id: str) -> dict:
+    def get_work(self, photo_id: str, source: str = "获取快手单个作品详情-SDK") -> dict:
         """
         快手按作品获取正文详情（广域库）
 
@@ -47,7 +48,7 @@ class KuaishouAPI:
         :return: 作品详情字典
         """
         return self._client.post(
-            "/story/api/ksAllData/queryWorkDetail", data={"photoId": photo_id}
+            "/story/api/ksAllData/queryWorkDetail", data={"photoId": photo_id}, source=source
         )
 
     def get_user_works(
@@ -56,6 +57,7 @@ class KuaishouAPI:
         three_x_id: str = None,
         page: int = 1,
         size: int = 20,
+        source: str = "获取快手用户作品列表-SDK",
     ) -> dict:
         """
         快手按账号获取作品列表（广域库）
@@ -74,7 +76,7 @@ class KuaishouAPI:
             data["kwaiId"] = kwai_id
         if three_x_id:
             data["threeXId"] = three_x_id
-        return self._client.post("/story/api/ksAllData/queryWorkList", data=data)
+        return self._client.post("/story/api/ksAllData/queryWorkList", data=data, source=source)
 
     # ─── 账号相关 ───────────────────────────────────────────
 
@@ -83,6 +85,7 @@ class KuaishouAPI:
         account_name: str,
         page: int = 1,
         page_size: int = 20,
+        source: str = "快手关键词搜索账号-SDK",
     ) -> dict:
         """
         快手账号搜索（广域库）
@@ -97,11 +100,11 @@ class KuaishouAPI:
             "page": page,
             "pageSize": page_size,
         }
-        return self._client.post("/story/api/ksAllData/searchUser", data=data)
+        return self._client.post("/story/api/ksAllData/searchUser", data=data, source=source)
 
     # ─── 视频提文案 ─────────────────────────────────────────
 
-    def transcript_submit(self, url: str) -> dict:
+    def transcript_submit(self, url: str, source: str = "快手视频字幕/文案提取-SDK") -> dict:
         """
         快手视频提文案 - 提交任务
 
@@ -111,9 +114,10 @@ class KuaishouAPI:
         return self._client.post(
             "/story/api/parseWork/audioTextExtract/submit/kuaishou",
             data={"url": url},
+            source=source,
         )
 
-    def transcript_result(self, task_id: str) -> dict:
+    def transcript_result(self, task_id: str, source: str = "查询快手字幕提取任务结果-SDK") -> dict:
         """
         快手视频提文案 - 查询结果
 
@@ -123,4 +127,5 @@ class KuaishouAPI:
         return self._client.post(
             "/story/api/parseWork/audioTextExtract/result/kuaishou",
             data={"taskId": task_id},
+            source=source,
         )
