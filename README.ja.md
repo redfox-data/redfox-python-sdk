@@ -12,7 +12,7 @@
   </a>
 </p>
 
-[RedFoxHub](https://redfox.hk/?source=github) Python SDK。14大コンテンツプラットフォーム（[抖音](https://redfox.hk/apis/douyin/0OT1E306)、[小紅書](https://redfox.hk/apis/xiaohongshu/4IVIDHEN)、[WeChat公衆号](https://redfox.hk/apis/gongzhonghao/6C4A77XR)、[Bilibili](https://redfox.hk/apis/bilibili/TIN1NMTZ)、[今日頭条](https://redfox.hk/apis/jinritoutiao/28CFGF5I)、[TikTok](https://redfox.hk/apis/tool-tiktok/20070019)、快手、WeChatチャンネル、YouTube、X (Twitter)、Instagram、懂車帝、易車、汽車之家）のデータ取得API、マルチプラットフォーム急上昇ランキング集約、透かし除去動画ダウンロード・メディアアップロードツール、およびAI機能（GPT画像生成、Doubao画像/動画生成、Kimi/Doubao/Deepseek/Yuanbao/Qianwen/Baidu AI検索）を提供します。
+[RedFoxHub](https://redfox.hk/?source=github) Python SDK。17大コンテンツプラットフォーム（[抖音](https://redfox.hk/apis/douyin/0OT1E306)、[小紅書](https://redfox.hk/apis/xiaohongshu/4IVIDHEN)、[WeChat公衆号](https://redfox.hk/apis/gongzhonghao/6C4A77XR)、[Bilibili](https://redfox.hk/apis/bilibili/TIN1NMTZ)、[今日頭条](https://redfox.hk/apis/jinritoutiao/28CFGF5I)、[TikTok](https://redfox.hk/apis/tool-tiktok/20070019)、快手、WeChatチャンネル、YouTube、X (Twitter)、Instagram、微博、百家號、知乎、懂車帝、易車、汽車之家）のデータ取得API、マルチプラットフォーム急上昇ランキング集約、透かし除去動画ダウンロード・メディアアップロードツール、およびAI機能（GPT画像生成、Doubao画像/動画生成、Kimi/Doubao/Deepseek/Yuanbao/Qianwen/Baidu AI検索）を提供します。
 
 ## RedFoxHubを選ぶ理由
 
@@ -131,11 +131,14 @@ result = client.ai_search.kimi_result(task_id=task["taskId"])
 | 🎵 TikTok | `client.tiktok` | 4 | ユーザー検索、動画検索、動画詳細、ユーザー動画一覧 |
 | 🎬 快手 | `client.kuaishou` | 6 | コンテンツ検索、コンテンツ詳細、アカウントコンテンツ、アカウント検索、動画テキスト抽出 |
 | 💚 WeChatチャンネル | `client.wechat_channels` | 7 | コンテンツ検索、コンテンツ詳細、アカウントコンテンツ、リンクリアルタイム詳細、アカウント検索、リンクテキスト抽出 |
-| ▶️ YouTube | `client.youtube` | 4 | 動画検索、動画詳細、動画コメント、動画テキスト抽出（字幕） |
-| 🐦 X (Twitter) | `client.twitter` | 4 | ツイート検索、ツイート詳細、ユーザー情報、ツイートコメント |
+| ▶️ YouTube | `client.youtube` | 5 | 動画検索、動画詳細、動画コメント、動画テキスト抽出（字幕）、字幕詳細 |
+| 🐦 X (Twitter) | `client.twitter` | 7 | ツイート検索、ツイート詳細、ユーザー情報、ツイートコメント、フォローリスト、ユーザー投稿、人気アカウントランキング |
 | 📸 Instagram | `client.instagram` | 4 | 総合検索、投稿詳細、投稿コメント、ユーザー情報 |
+| 🔵 微博 | `client.weibo` | 3 | アカウント検索、コンテンツ詳細、ユーザー詳細 |
+| 📰 百家號 | `client.baijiahao` | 5 | アカウント検索、コンテンツ検索、動画詳細、HTMLコンテンツ、アカウント情報 |
+| 💡 知乎 | `client.zhihu` | 1 | キーワードコンテンツ検索 |
 | 🚗 懂車帝 | `client.dongchedi` | 4 | コンテンツ検索、コンテンツ詳細、ユーザーコンテンツ、ユーザー検索 |
-| 🚙 易車 | `client.yiche` | 5 | コンテンツ検索、記事詳細、動画詳細、アカウントコンテンツ、アカウント検索 |
+| 🚙 易車 | `client.yiche` | 6 | コンテンツ検索、記事詳細、記事詳細V2、動画詳細、アカウントコンテンツ、アカウント検索 |
 | 🚘 汽車之家 | `client.autohome` | 4 | コンテンツ検索、記事詳細、動画詳細、アカウントコンテンツ |
 | 🔥 急上昇ランキング | `client.hotspot` | 3 | プラットフォーム別急上昇ランキング、全プラットフォームキーワード検索、統合急上昇TOP10 |
 | 🖼️ GPT画像 | `client.gpt_image` | 2 | 画像生成と結果照会 |
@@ -382,6 +385,9 @@ client.youtube.get_comments(video_id="sa8AzBK4dao", sort_by="top")
 
 # 動画テキスト抽出（字幕/音声）
 client.youtube.get_transcript(video_url="https://www.youtube.com/watch?v=sa8AzBK4dao")
+
+# 動画字幕詳細取得（動画情報 + 利用可能な字幕言語）
+client.youtube.get_info(video_url="https://www.youtube.com/watch?v=sa8AzBK4dao")
 ```
 
 ### X (Twitter)
@@ -398,6 +404,15 @@ client.twitter.get_user(screen_name="elonmusk")
 
 # ツイートコメント取得
 client.twitter.get_comments(tweet_id="1957000000000000000")
+
+# ユーザーフォローリスト取得
+client.twitter.get_following(screen_name="elonmusk")
+
+# ユーザー投稿取得（screen_name / rest_id のいずれか必須）
+client.twitter.get_user_works(screen_name="elonmusk")
+
+# X 人気アカウントランキング（rank_date 必須、性別/カテゴリ絞り込み対応）
+client.twitter.get_hot_account_rank(rank_date="2026-09-23", page_num=1, gender="all")
 ```
 
 ### Instagram
@@ -414,6 +429,45 @@ client.instagram.get_comments(code_or_url="DRhvwVLAHAG", sort_by="recent")
 
 # ユーザー情報取得（username / user_id のいずれか必須）
 client.instagram.get_user(username="natgeo")
+```
+
+### 微博
+
+```python
+# アカウント検索
+client.weibo.search_users(keyword="汽水音乐", page=1)
+
+# コンテンツ詳細取得
+client.weibo.get_work(opus_id="5200000000000000")
+
+# ユーザー詳細取得
+client.weibo.get_user(user_id="7799374443")
+```
+
+### 百家號
+
+```python
+# アカウント検索（最初のページは page="0"、次ページはレスポンスの page 値を指定）
+client.baijiahao.search_users(keyword="头条", page="0")
+
+# コンテンツ検索（pn は +10 でページング、sort="1" フォーカス / "2" 日時）
+client.baijiahao.search_works(keyword="新能源汽车", pn="0", sort="2")
+
+# 動画詳細取得
+client.baijiahao.get_video(sv_id="1000000000000000000")
+
+# コンテンツHTML取得
+client.baijiahao.get_article_html(article_id="1000000000000000000")
+
+# アカウント情報取得
+client.baijiahao.get_user(uk="d0000000000000000")
+```
+
+### 知乎
+
+```python
+# キーワードコンテンツ検索（offset は +20 でページング、並び替え/期間/タイプ絞り込み対応）
+client.zhihu.search_works(keyword="人工智能", offset="0", sort="upvoted_count", vertical="answer")
 ```
 
 ### 懂車帝
@@ -440,6 +494,9 @@ client.yiche.search_works(keyword="小米SU7", page=1, source_type="xinwen")
 
 # 記事詳細取得
 client.yiche.get_article(url="https://news.yiche.com/hao/wenzhang/xxx.html")
+
+# 記事詳細V2取得
+client.yiche.get_article_v2(url="https://news.yiche.com/hao/wenzhang/xxx.html")
 
 # 動画詳細取得
 client.yiche.get_video(work_id="50000000")

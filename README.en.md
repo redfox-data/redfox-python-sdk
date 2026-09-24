@@ -12,7 +12,7 @@
   </a>
 </p>
 
-[RedFoxHub](https://redfox.hk/?source=github) Python SDK, providing data acquisition APIs for 14 major content platforms — [Douyin](https://redfox.hk/apis/douyin/0OT1E306), [Xiaohongshu](https://redfox.hk/apis/xiaohongshu/4IVIDHEN), [WeChat Official Accounts](https://redfox.hk/apis/gongzhonghao/6C4A77XR), [Bilibili](https://redfox.hk/apis/bilibili/TIN1NMTZ), [Toutiao](https://redfox.hk/apis/jinritoutiao/28CFGF5I), [TikTok](https://redfox.hk/apis/tool-tiktok/20070019), Kuaishou, WeChat Channels, YouTube, X (Twitter), Instagram, Dongchedi, Yiche, Autohome — plus multi-platform hot-trend aggregation, watermark-free video download & media upload tools, and AI capabilities: GPT Image Generation, Doubao Image/Video Generation, and AI Search (Kimi/Doubao/Deepseek/Yuanbao/Qianwen/Baidu).
+[RedFoxHub](https://redfox.hk/?source=github) Python SDK, providing data acquisition APIs for 17 major content platforms — [Douyin](https://redfox.hk/apis/douyin/0OT1E306), [Xiaohongshu](https://redfox.hk/apis/xiaohongshu/4IVIDHEN), [WeChat Official Accounts](https://redfox.hk/apis/gongzhonghao/6C4A77XR), [Bilibili](https://redfox.hk/apis/bilibili/TIN1NMTZ), [Toutiao](https://redfox.hk/apis/jinritoutiao/28CFGF5I), [TikTok](https://redfox.hk/apis/tool-tiktok/20070019), Kuaishou, WeChat Channels, YouTube, X (Twitter), Instagram, Weibo, Baijiahao, Zhihu, Dongchedi, Yiche, Autohome — plus multi-platform hot-trend aggregation, watermark-free video download & media upload tools, and AI capabilities: GPT Image Generation, Doubao Image/Video Generation, and AI Search (Kimi/Doubao/Deepseek/Yuanbao/Qianwen/Baidu).
 
 ## Why Choose RedFoxHub
 
@@ -131,11 +131,14 @@ result = client.ai_search.kimi_result(task_id=task["taskId"])
 | 🎵 TikTok | `client.tiktok` | 4 | User search, video search, video detail, user videos |
 | 🎬 Kuaishou | `client.kuaishou` | 6 | Video search, video detail, user videos, user search, transcript |
 | 💚 WeChat Channels | `client.wechat_channels` | 7 | Video search, video detail, user videos, realtime detail by link, user search, transcript |
-| ▶️ YouTube | `client.youtube` | 4 | Video search, video detail, video comments, transcript (subtitle extraction) |
-| 🐦 X (Twitter) | `client.twitter` | 4 | Tweet search, tweet detail, user info, tweet comments |
+| ▶️ YouTube | `client.youtube` | 5 | Video search, video detail, video comments, transcript (subtitle extraction), subtitle info |
+| 🐦 X (Twitter) | `client.twitter` | 7 | Tweet search, tweet detail, user info, tweet comments, following list, user timeline, hot account rank |
 | 📸 Instagram | `client.instagram` | 4 | General search, post detail, post comments, user info |
+| 🔵 Weibo | `client.weibo` | 3 | Account search, opus detail, user detail |
+| 📰 Baijiahao | `client.baijiahao` | 5 | Account search, work search, video detail, opus HTML content, account info |
+| 💡 Zhihu | `client.zhihu` | 1 | Keyword work search |
 | 🚗 Dongchedi | `client.dongchedi` | 4 | Work search, work detail, user works, user search |
-| 🚙 Yiche | `client.yiche` | 5 | Work search, article detail, video detail, user works, user search |
+| 🚙 Yiche | `client.yiche` | 6 | Work search, article detail, article detail V2, video detail, user works, user search |
 | 🚘 Autohome | `client.autohome` | 4 | Work search, article detail, video detail, user works |
 | 🔥 Hot Trends | `client.hotspot` | 3 | Per-platform hot rankings, cross-platform keyword search, aggregated TOP10 |
 | 🖼️ GPT Image | `client.gpt_image` | 2 | Image generation & result query |
@@ -382,6 +385,9 @@ client.youtube.get_comments(video_id="sa8AzBK4dao", sort_by="top")
 
 # Video transcript (subtitle / speech-to-text)
 client.youtube.get_transcript(video_url="https://www.youtube.com/watch?v=sa8AzBK4dao")
+
+# Get video subtitle info (metadata + available subtitle languages)
+client.youtube.get_info(video_url="https://www.youtube.com/watch?v=sa8AzBK4dao")
 ```
 
 ### X (Twitter)
@@ -398,6 +404,15 @@ client.twitter.get_user(screen_name="elonmusk")
 
 # Get tweet comments
 client.twitter.get_comments(tweet_id="1957000000000000000")
+
+# Get user following list
+client.twitter.get_following(screen_name="elonmusk")
+
+# Get user timeline (screen_name or rest_id)
+client.twitter.get_user_works(screen_name="elonmusk")
+
+# X hot account rank (rank_date required; gender/category filters)
+client.twitter.get_hot_account_rank(rank_date="2026-09-23", page_num=1, gender="all")
 ```
 
 ### Instagram
@@ -414,6 +429,45 @@ client.instagram.get_comments(code_or_url="DRhvwVLAHAG", sort_by="recent")
 
 # Get user info (username or user_id)
 client.instagram.get_user(username="natgeo")
+```
+
+### Weibo
+
+```python
+# Search accounts
+client.weibo.search_users(keyword="汽水音乐", page=1)
+
+# Get opus detail
+client.weibo.get_work(opus_id="5200000000000000")
+
+# Get user detail
+client.weibo.get_user(user_id="7799374443")
+```
+
+### Baijiahao
+
+```python
+# Search accounts (first page: page="0", then pass the page value from the response)
+client.baijiahao.search_users(keyword="头条", page="0")
+
+# Search works (pn pagination +10; sort="1" focus / "2" time)
+client.baijiahao.search_works(keyword="新能源汽车", pn="0", sort="2")
+
+# Get video detail
+client.baijiahao.get_video(sv_id="1000000000000000000")
+
+# Get opus HTML content
+client.baijiahao.get_article_html(article_id="1000000000000000000")
+
+# Get account info
+client.baijiahao.get_user(uk="d0000000000000000")
+```
+
+### Zhihu
+
+```python
+# Search works (offset +20 pagination; sort / time range / type filters)
+client.zhihu.search_works(keyword="人工智能", offset="0", sort="upvoted_count", vertical="answer")
 ```
 
 ### Dongchedi
@@ -440,6 +494,9 @@ client.yiche.search_works(keyword="小米SU7", page=1, source_type="xinwen")
 
 # Get article detail
 client.yiche.get_article(url="https://news.yiche.com/hao/wenzhang/xxx.html")
+
+# Get article detail V2
+client.yiche.get_article_v2(url="https://news.yiche.com/hao/wenzhang/xxx.html")
 
 # Get video detail
 client.yiche.get_video(work_id="50000000")

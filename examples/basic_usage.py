@@ -45,6 +45,24 @@ def example_auto_platforms():
     client.autohome.search_works(keyword="小米SU7", source_type="video")
 
 
+def example_social_platforms():
+    """新平台示例：微博 / 百家号 / 知乎"""
+    # 微博账号搜索
+    client.weibo.search_users(keyword="汽水音乐", page=1)
+
+    # 百家号关键词搜索作品
+    client.baijiahao.search_works(keyword="新能源汽车", pn="0", sort="2")
+
+    # 知乎关键词搜索作品
+    client.zhihu.search_works(keyword="人工智能", offset="0", sort="upvoted_count")
+
+    # X 热门账号榜
+    client.twitter.get_hot_account_rank(rank_date="2026-09-23", page_num=1)
+
+    # YouTube 视频字幕详情
+    client.youtube.get_info(video_url="https://www.youtube.com/watch?v=sa8AzBK4dao")
+
+
 def example_hotspot():
     """多平台热点榜单"""
     # 抖音热点榜

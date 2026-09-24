@@ -7,7 +7,7 @@ class TwitterAPI:
     """
     X (Twitter) 平台 API 集合
 
-    包含推文搜索、推文详情、用户信息、评论等接口。
+    包含推文搜索、推文详情、用户信息、评论、关注列表、用户发帖、热门账号榜等接口。
     """
 
     def __init__(self, client):
@@ -85,3 +85,71 @@ class TwitterAPI:
         if cursor is not None:
             data["cursor"] = cursor
         return self._client.post("/story/api/x/tweetComments", data=data, source=source)
+
+    def get_following(
+        self,
+        screen_name: str,
+        cursor: str = None,
+        source: str = "获取 X(Twitter) 用户关注列表-SDK",
+    ) -> dict:
+        """
+        获取用户关注列表
+
+        :param screen_name: 用户名，如 "elonmusk"（必填）
+        :param cursor: 翻页游标，首次不传，后续从上一次返回结果中获取
+        :return: 关注列表字典
+        """
+        data: Dict[str, Any] = {"screenName": screen_name}
+        if cursor is not None:
+            data["cursor"] = cursor
+        return self._client.post("/story/api/x/userFollowing", data=data, source=source)
+
+    def get_user_works(
+        self,
+        screen_name: str = None,
+        rest_id: str = None,
+        cursor: str = None,
+        source: str = "获取 X(Twitter) 用户发帖-SDK",
+    ) -> dict:
+        """
+        获取用户发帖（时间线）
+
+        screen_name 和 rest_id 至少传一个，同时传入时优先使用 rest_id。
+
+        :param screen_name: 用户名，如 "elonmusk"
+        :param rest_id: 用户 ID
+        :param cursor: 翻页游标，首次不传，后续从上一次返回结果中获取
+        :return: 用户发帖列表字典
+        """
+        data: Dict[str, Any] = {}
+        if screen_name is not None:
+            data["screenName"] = screen_name
+        if rest_id is not None:
+            data["restId"] = rest_id
+        if cursor is not None:
+            data["cursor"] = cursor
+        return self._client.post("/story/api/x/userTimeline", data=data, source=source)
+
+    def get_hot_account_rank(
+        self,
+        rank_date: str,
+        page_num: int = 1,
+        gender: str = "all",
+        category: str = None,
+        source: str = "X 热门账号榜-SDK",
+    ) -> dict:
+        """
+        X 热门账号榜
+
+        每页固定 20 条，最多 200 条。
+
+        :param rank_date: 榜单日期，格式 "YYYY-MM-DD"（必填）
+        :param page_num: 页码，从 1 开始
+        :param gender: 性别筛选：all 全部（默认）/ male 男 / female 女，也支持中文 全部/男/女
+        :param category: 行业分类，如 "科技软件"、"市场营销"、"政治新闻" 等
+        :return: 榜单字典
+        """
+        data: Dict[str, Any] = {"rankDate": rank_date, "pageNum": page_num, "gender": gender}
+        if category is not None:
+            data["category"] = category
+        return self._client.post("/story/api/x/hotAccount/rankList", data=data, source=source)

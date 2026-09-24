@@ -46,6 +46,17 @@ class YicheAPI:
             "/story/api/yiche/articleDetail", data={"url": url}, source=source
         )
 
+    def get_article_v2(self, url: str, source: str = "获取易车文章详情V2-SDK") -> dict:
+        """
+        易车文章详情 V2
+
+        :param url: 文章 URL（必填）
+        :return: 文章详情字典
+        """
+        return self._client.post(
+            "/story/api/yiche/articleDetailV2", data={"url": url}, source=source
+        )
+
     def get_video(self, work_id: str, source: str = "获取易车视频详情-SDK") -> dict:
         """
         易车视频详情

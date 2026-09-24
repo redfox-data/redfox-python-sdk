@@ -12,7 +12,7 @@
   </a>
 </p>
 
-[RedFoxHub](https://redfox.hk/?source=github) Python SDK — 14대 콘텐츠 플랫폼([더우인](https://redfox.hk/apis/douyin/0OT1E306), [샤오홍슈](https://redfox.hk/apis/xiaohongshu/4IVIDHEN), [위챗 공식 계정](https://redfox.hk/apis/gongzhonghao/6C4A77XR), [빌리빌리](https://redfox.hk/apis/bilibili/TIN1NMTZ), [진르터우탸오](https://redfox.hk/apis/jinritoutiao/28CFGF5I), [TikTok](https://redfox.hk/apis/tool-tiktok/20070019), 콰이쇼우, 위챗 채널스, YouTube, X (Twitter), Instagram, 둥처디, 이처, 오토홈)의 데이터 수집 API, 멀티 플랫폼 실시간 인기 순위 집계, 워터마크 제거 영상 다운로드 및 미디어 업로드 도구, 그리고 AI 기능(GPT 이미지 생성, Doubao 이미지/비디오 생성, Kimi/Doubao/Deepseek/Yuanbao/Qianwen/Baidu AI 검색)을 제공합니다.
+[RedFoxHub](https://redfox.hk/?source=github) Python SDK — 17대 콘텐츠 플랫폼([더우인](https://redfox.hk/apis/douyin/0OT1E306), [샤오홍슈](https://redfox.hk/apis/xiaohongshu/4IVIDHEN), [위챗 공식 계정](https://redfox.hk/apis/gongzhonghao/6C4A77XR), [빌리빌리](https://redfox.hk/apis/bilibili/TIN1NMTZ), [진르터우탸오](https://redfox.hk/apis/jinritoutiao/28CFGF5I), [TikTok](https://redfox.hk/apis/tool-tiktok/20070019), 콰이쇼우, 위챗 채널스, YouTube, X (Twitter), Instagram, 웨이보, 바이자하오, 지후, 둥처디, 이처, 오토홈)의 데이터 수집 API, 멀티 플랫폼 실시간 인기 순위 집계, 워터마크 제거 영상 다운로드 및 미디어 업로드 도구, 그리고 AI 기능(GPT 이미지 생성, Doubao 이미지/비디오 생성, Kimi/Doubao/Deepseek/Yuanbao/Qianwen/Baidu AI 검색)을 제공합니다.
 
 ## RedFoxHub를 선택해야 하는 이유
 
@@ -131,11 +131,14 @@ result = client.ai_search.kimi_result(task_id=task["taskId"])
 | 🎵 TikTok | `client.tiktok` | 4 | 사용자 검색, 비디오 검색, 비디오 상세, 사용자 비디오 목록 |
 | 🎬 콰이쇼우 | `client.kuaishou` | 6 | 콘텐츠 검색, 콘텐츠 상세, 계정 콘텐츠, 계정 검색, 영상 텍스트 추출 |
 | 💚 위챗 채널스 | `client.wechat_channels` | 7 | 콘텐츠 검색, 콘텐츠 상세, 계정 콘텐츠, 링크 실시간 상세, 계정 검색, 링크 텍스트 추출 |
-| ▶️ YouTube | `client.youtube` | 4 | 비디오 검색, 비디오 상세, 비디오 댓글, 영상 텍스트 추출(자막) |
-| 🐦 X (Twitter) | `client.twitter` | 4 | 트윗 검색, 트윗 상세, 사용자 정보, 트윗 댓글 |
+| ▶️ YouTube | `client.youtube` | 5 | 비디오 검색, 비디오 상세, 비디오 댓글, 영상 텍스트 추출(자막), 자막 상세 |
+| 🐦 X (Twitter) | `client.twitter` | 7 | 트윗 검색, 트윗 상세, 사용자 정보, 트윗 댓글, 팔로잉 목록, 사용자 게시물, 인기 계정 순위 |
 | 📸 Instagram | `client.instagram` | 4 | 통합 검색, 게시물 상세, 게시물 댓글, 사용자 정보 |
+| 🔵 웨이보 | `client.weibo` | 3 | 계정 검색, 콘텐츠 상세, 사용자 상세 |
+| 📰 바이자하오 | `client.baijiahao` | 5 | 계정 검색, 콘텐츠 검색, 비디오 상세, HTML 콘텐츠, 계정 정보 |
+| 💡 지후 | `client.zhihu` | 1 | 키워드 콘텐츠 검색 |
 | 🚗 둥처디 | `client.dongchedi` | 4 | 콘텐츠 검색, 콘텐츠 상세, 사용자 콘텐츠, 사용자 검색 |
-| 🚙 이처 | `client.yiche` | 5 | 콘텐츠 검색, 글 상세, 비디오 상세, 계정 콘텐츠, 계정 검색 |
+| 🚙 이처 | `client.yiche` | 6 | 콘텐츠 검색, 글 상세, 글 상세 V2, 비디오 상세, 계정 콘텐츠, 계정 검색 |
 | 🚘 오토홈 | `client.autohome` | 4 | 콘텐츠 검색, 글 상세, 비디오 상세, 계정 콘텐츠 |
 | 🔥 인기 순위 | `client.hotspot` | 3 | 플랫폼별 인기 순위, 전 플랫폼 키워드 검색, 통합 인기 TOP10 |
 | 🖼️ GPT 이미지 | `client.gpt_image` | 2 | 이미지 생성 및 결과 조회 |
@@ -382,6 +385,9 @@ client.youtube.get_comments(video_id="sa8AzBK4dao", sort_by="top")
 
 # 영상 텍스트 추출 (자막/음성)
 client.youtube.get_transcript(video_url="https://www.youtube.com/watch?v=sa8AzBK4dao")
+
+# 비디오 자막 상세 조회 (비디오 정보 + 사용 가능한 자막 언어)
+client.youtube.get_info(video_url="https://www.youtube.com/watch?v=sa8AzBK4dao")
 ```
 
 ### X (Twitter)
@@ -398,6 +404,15 @@ client.twitter.get_user(screen_name="elonmusk")
 
 # 트윗 댓글 조회
 client.twitter.get_comments(tweet_id="1957000000000000000")
+
+# 사용자 팔로잉 목록 조회
+client.twitter.get_following(screen_name="elonmusk")
+
+# 사용자 게시물 조회 (screen_name / rest_id 중 하나 이상)
+client.twitter.get_user_works(screen_name="elonmusk")
+
+# X 인기 계정 순위 (rank_date 필수, 성별/카테고리 필터 지원)
+client.twitter.get_hot_account_rank(rank_date="2026-09-23", page_num=1, gender="all")
 ```
 
 ### Instagram
@@ -414,6 +429,45 @@ client.instagram.get_comments(code_or_url="DRhvwVLAHAG", sort_by="recent")
 
 # 사용자 정보 조회 (username / user_id 중 하나 이상)
 client.instagram.get_user(username="natgeo")
+```
+
+### 웨이보
+
+```python
+# 계정 검색
+client.weibo.search_users(keyword="汽水音乐", page=1)
+
+# 콘텐츠 상세 조회
+client.weibo.get_work(opus_id="5200000000000000")
+
+# 사용자 상세 조회
+client.weibo.get_user(user_id="7799374443")
+```
+
+### 바이자하오
+
+```python
+# 계정 검색 (첫 페이지는 page="0", 다음 페이지는 응답의 page 값 사용)
+client.baijiahao.search_users(keyword="头条", page="0")
+
+# 콘텐츠 검색 (pn은 +10씩 증가, sort="1" 포커스 / "2" 시간순)
+client.baijiahao.search_works(keyword="新能源汽车", pn="0", sort="2")
+
+# 비디오 상세 조회
+client.baijiahao.get_video(sv_id="1000000000000000000")
+
+# 콘텐츠 HTML 조회
+client.baijiahao.get_article_html(article_id="1000000000000000000")
+
+# 계정 정보 조회
+client.baijiahao.get_user(uk="d0000000000000000")
+```
+
+### 지후
+
+```python
+# 키워드 콘텐츠 검색 (offset은 +20씩 증가, 정렬/기간/유형 필터 지원)
+client.zhihu.search_works(keyword="人工智能", offset="0", sort="upvoted_count", vertical="answer")
 ```
 
 ### 둥처디
@@ -440,6 +494,9 @@ client.yiche.search_works(keyword="小米SU7", page=1, source_type="xinwen")
 
 # 글 상세 조회
 client.yiche.get_article(url="https://news.yiche.com/hao/wenzhang/xxx.html")
+
+# 글 상세 V2 조회
+client.yiche.get_article_v2(url="https://news.yiche.com/hao/wenzhang/xxx.html")
 
 # 비디오 상세 조회
 client.yiche.get_video(work_id="50000000")

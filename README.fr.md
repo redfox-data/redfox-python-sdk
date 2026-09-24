@@ -12,7 +12,7 @@
   </a>
 </p>
 
-SDK Python [RedFoxHub](https://redfox.hk/?source=github), fournissant des API d'acquisition de données pour 14 grandes plateformes de contenu — [Douyin](https://redfox.hk/apis/douyin/0OT1E306), [Xiaohongshu](https://redfox.hk/apis/xiaohongshu/4IVIDHEN), [Comptes Officiels WeChat](https://redfox.hk/apis/gongzhonghao/6C4A77XR), [Bilibili](https://redfox.hk/apis/bilibili/TIN1NMTZ), [Toutiao](https://redfox.hk/apis/jinritoutiao/28CFGF5I), [TikTok](https://redfox.hk/apis/tool-tiktok/20070019), Kuaishou, WeChat Channels, YouTube, X (Twitter), Instagram, Dongchedi, Yiche, Autohome — plus l'agrégation de tendances multi-plateformes, des outils de téléchargement de vidéos sans filigrane et d'upload de médias, et des capacités d'IA : Génération d'images GPT, Génération d'images/vidéos Doubao, et Recherche IA (Kimi/Doubao/Deepseek/Yuanbao/Qianwen/Baidu).
+SDK Python [RedFoxHub](https://redfox.hk/?source=github), fournissant des API d'acquisition de données pour 17 grandes plateformes de contenu — [Douyin](https://redfox.hk/apis/douyin/0OT1E306), [Xiaohongshu](https://redfox.hk/apis/xiaohongshu/4IVIDHEN), [Comptes Officiels WeChat](https://redfox.hk/apis/gongzhonghao/6C4A77XR), [Bilibili](https://redfox.hk/apis/bilibili/TIN1NMTZ), [Toutiao](https://redfox.hk/apis/jinritoutiao/28CFGF5I), [TikTok](https://redfox.hk/apis/tool-tiktok/20070019), Kuaishou, WeChat Channels, YouTube, X (Twitter), Instagram, Weibo, Baijiahao, Zhihu, Dongchedi, Yiche, Autohome — plus l'agrégation de tendances multi-plateformes, des outils de téléchargement de vidéos sans filigrane et d'upload de médias, et des capacités d'IA : Génération d'images GPT, Génération d'images/vidéos Doubao, et Recherche IA (Kimi/Doubao/Deepseek/Yuanbao/Qianwen/Baidu).
 
 ## Pourquoi Choisir RedFoxHub
 
@@ -131,11 +131,14 @@ result = client.ai_search.kimi_result(task_id=task["taskId"])
 | 🎵 TikTok | `client.tiktok` | 4 | Recherche d'utilisateurs, recherche de vidéos, détail vidéo, vidéos d'un utilisateur |
 | 🎬 Kuaishou | `client.kuaishou` | 6 | Recherche de contenu, détail du contenu, contenus d'un compte, recherche de comptes, transcription |
 | 💚 WeChat Channels | `client.wechat_channels` | 7 | Recherche de contenu, détail du contenu, contenus d'un compte, détail temps réel par lien, recherche de comptes, transcription |
-| ▶️ YouTube | `client.youtube` | 4 | Recherche de vidéos, détail vidéo, commentaires, transcription (sous-titres) |
-| 🐦 X (Twitter) | `client.twitter` | 4 | Recherche de tweets, détail tweet, info utilisateur, commentaires |
+| ▶️ YouTube | `client.youtube` | 5 | Recherche de vidéos, détail vidéo, commentaires, transcription (sous-titres), info sous-titres |
+| 🐦 X (Twitter) | `client.twitter` | 7 | Recherche de tweets, détail tweet, info utilisateur, commentaires, liste d'abonnements, publications utilisateur, classement des comptes populaires |
 | 📸 Instagram | `client.instagram` | 4 | Recherche générale, détail post, commentaires, info utilisateur |
+| 🔵 Weibo | `client.weibo` | 3 | Recherche de comptes, détail du contenu, détail utilisateur |
+| 📰 Baijiahao | `client.baijiahao` | 5 | Recherche de comptes, recherche de contenus, détail vidéo, contenu HTML, info compte |
+| 💡 Zhihu | `client.zhihu` | 1 | Recherche de contenus par mots-clés |
 | 🚗 Dongchedi | `client.dongchedi` | 4 | Recherche de contenu, détail du contenu, contenus utilisateur, recherche d'utilisateurs |
-| 🚙 Yiche | `client.yiche` | 5 | Recherche de contenu, détail article, détail vidéo, contenus d'un compte, recherche de comptes |
+| 🚙 Yiche | `client.yiche` | 6 | Recherche de contenu, détail article, détail article V2, détail vidéo, contenus d'un compte, recherche de comptes |
 | 🚘 Autohome | `client.autohome` | 4 | Recherche de contenu, détail article, détail vidéo, contenus d'un compte |
 | 🔥 Tendances | `client.hotspot` | 3 | Classements par plateforme, recherche par mots-clés multi-plateformes, TOP10 agrégé |
 | 🖼️ GPT Image | `client.gpt_image` | 2 | Génération d'images et requête de résultat |
@@ -382,6 +385,9 @@ client.youtube.get_comments(video_id="sa8AzBK4dao", sort_by="top")
 
 # Transcription vidéo (sous-titres / parole)
 client.youtube.get_transcript(video_url="https://www.youtube.com/watch?v=sa8AzBK4dao")
+
+# Obtenir les infos sous-titres (métadonnées + langues disponibles)
+client.youtube.get_info(video_url="https://www.youtube.com/watch?v=sa8AzBK4dao")
 ```
 
 ### X (Twitter)
@@ -398,6 +404,15 @@ client.twitter.get_user(screen_name="elonmusk")
 
 # Obtenir les commentaires d'un tweet
 client.twitter.get_comments(tweet_id="1957000000000000000")
+
+# Obtenir la liste d'abonnements d'un utilisateur
+client.twitter.get_following(screen_name="elonmusk")
+
+# Obtenir les publications d'un utilisateur (screen_name ou rest_id)
+client.twitter.get_user_works(screen_name="elonmusk")
+
+# Classement des comptes populaires X (rank_date requis ; filtres genre/catégorie)
+client.twitter.get_hot_account_rank(rank_date="2026-09-23", page_num=1, gender="all")
 ```
 
 ### Instagram
@@ -414,6 +429,45 @@ client.instagram.get_comments(code_or_url="DRhvwVLAHAG", sort_by="recent")
 
 # Obtenir les infos d'un utilisateur (username ou user_id)
 client.instagram.get_user(username="natgeo")
+```
+
+### Weibo
+
+```python
+# Rechercher des comptes
+client.weibo.search_users(keyword="汽水音乐", page=1)
+
+# Obtenir le détail d'un contenu
+client.weibo.get_work(opus_id="5200000000000000")
+
+# Obtenir le détail d'un utilisateur
+client.weibo.get_user(user_id="7799374443")
+```
+
+### Baijiahao
+
+```python
+# Rechercher des comptes (première page : page="0", puis passer la valeur page de la réponse)
+client.baijiahao.search_users(keyword="头条", page="0")
+
+# Rechercher des contenus (pagination pn +10 ; sort="1" focus / "2" date)
+client.baijiahao.search_works(keyword="新能源汽车", pn="0", sort="2")
+
+# Obtenir le détail d'une vidéo
+client.baijiahao.get_video(sv_id="1000000000000000000")
+
+# Obtenir le contenu HTML d'un article
+client.baijiahao.get_article_html(article_id="1000000000000000000")
+
+# Obtenir les infos d'un compte
+client.baijiahao.get_user(uk="d0000000000000000")
+```
+
+### Zhihu
+
+```python
+# Rechercher des contenus (pagination offset +20 ; filtres tri/période/type)
+client.zhihu.search_works(keyword="人工智能", offset="0", sort="upvoted_count", vertical="answer")
 ```
 
 ### Dongchedi
@@ -440,6 +494,9 @@ client.yiche.search_works(keyword="小米SU7", page=1, source_type="xinwen")
 
 # Obtenir le détail d'un article
 client.yiche.get_article(url="https://news.yiche.com/hao/wenzhang/xxx.html")
+
+# Obtenir le détail d'un article V2
+client.yiche.get_article_v2(url="https://news.yiche.com/hao/wenzhang/xxx.html")
 
 # Obtenir le détail d'une vidéo
 client.yiche.get_video(work_id="50000000")

@@ -12,7 +12,7 @@
   </a>
 </p>
 
-[RedFoxHub](https://redfox.hk/?source=github) Python SDK，提供 [抖音](https://redfox.hk/apis/douyin/0OT1E306)、[小红书](https://redfox.hk/apis/xiaohongshu/4IVIDHEN)、[公众号](https://redfox.hk/apis/gongzhonghao/6C4A77XR)、[B站](https://redfox.hk/apis/bilibili/TIN1NMTZ)、[今日头条](https://redfox.hk/apis/jinritoutiao/28CFGF5I)、[TikTok](https://redfox.hk/apis/tool-tiktok/20070019)、快手、视频号、YouTube、X (Twitter)、Instagram、懂车帝、易车、汽车之家 14 大内容平台的数据采集接口，多平台热点榜单聚合接口，短视频去水印下载与素材上传工具，以及 GPT 图片生成、豆包图片/视频生成、AI 搜索（Kimi/豆包/Deepseek/元宝/千问/百度）AI 能力接口。
+[RedFoxHub](https://redfox.hk/?source=github) Python SDK，提供 [抖音](https://redfox.hk/apis/douyin/0OT1E306)、[小红书](https://redfox.hk/apis/xiaohongshu/4IVIDHEN)、[公众号](https://redfox.hk/apis/gongzhonghao/6C4A77XR)、[B站](https://redfox.hk/apis/bilibili/TIN1NMTZ)、[今日头条](https://redfox.hk/apis/jinritoutiao/28CFGF5I)、[TikTok](https://redfox.hk/apis/tool-tiktok/20070019)、快手、视频号、YouTube、X (Twitter)、Instagram、微博、百家号、知乎、懂车帝、易车、汽车之家 17 大内容平台的数据采集接口，多平台热点榜单聚合接口，短视频去水印下载与素材上传工具，以及 GPT 图片生成、豆包图片/视频生成、AI 搜索（Kimi/豆包/Deepseek/元宝/千问/百度）AI 能力接口。
 
 ## 为什么选择 RedFoxHub
 
@@ -131,11 +131,14 @@ result = client.ai_search.kimi_result(task_id=task["taskId"])
 | 🎵 TikTok | `client.tiktok` | 4 | 用户搜索、视频搜索、作品详情、用户作品列表 |
 | 🎬 快手 | `client.kuaishou` | 6 | 作品搜索、作品详情、账号作品、账号搜索、视频提文案 |
 | 💚 视频号 | `client.wechat_channels` | 7 | 作品搜索、作品详情、账号作品、链接实时详情、账号搜索、链接提文案 |
-| ▶️ YouTube | `client.youtube` | 4 | 视频搜索、视频详情、视频评论、视频提文案（字幕提取） |
-| 🐦 X (Twitter) | `client.twitter` | 4 | 推文搜索、推文详情、用户信息、推文评论 |
+| ▶️ YouTube | `client.youtube` | 5 | 视频搜索、视频详情、视频评论、视频提文案（字幕提取）、字幕详情 |
+| 🐦 X (Twitter) | `client.twitter` | 7 | 推文搜索、推文详情、用户信息、推文评论、关注列表、用户发帖、热门账号榜 |
 | 📸 Instagram | `client.instagram` | 4 | 综合搜索、帖子详情、帖子评论、用户信息 |
+| 🔵 微博 | `client.weibo` | 3 | 账号搜索、内容详情、用户详情 |
+| 📰 百家号 | `client.baijiahao` | 5 | 账号搜索、作品搜索、视频详情、作品内容 html、账号信息 |
+| 💡 知乎 | `client.zhihu` | 1 | 关键词搜索作品 |
 | 🚗 懂车帝 | `client.dongchedi` | 4 | 作品搜索、作品详情、用户作品、用户搜索 |
-| 🚙 易车 | `client.yiche` | 5 | 作品搜索、文章详情、视频详情、账号作品、账号搜索 |
+| 🚙 易车 | `client.yiche` | 6 | 作品搜索、文章详情、文章详情V2、视频详情、账号作品、账号搜索 |
 | 🚘 汽车之家 | `client.autohome` | 4 | 作品搜索、文章详情、视频详情、账号作品 |
 | 🔥 热点榜单 | `client.hotspot` | 3 | 各平台热点榜、全网热搜查询、全网聚合热点 TOP10 |
 | 🖼️ GPT 图片 | `client.gpt_image` | 2 | 图片生成、结果查询 |
@@ -382,6 +385,9 @@ client.youtube.get_comments(video_id="sa8AzBK4dao", sort_by="top")
 
 # 视频提文案（提取字幕/口播文案）
 client.youtube.get_transcript(video_url="https://www.youtube.com/watch?v=sa8AzBK4dao")
+
+# 获取视频字幕详情（视频信息 + 可用字幕语言列表）
+client.youtube.get_info(video_url="https://www.youtube.com/watch?v=sa8AzBK4dao")
 ```
 
 ### X (Twitter)
@@ -398,6 +404,15 @@ client.twitter.get_user(screen_name="elonmusk")
 
 # 获取推文评论
 client.twitter.get_comments(tweet_id="1957000000000000000")
+
+# 获取用户关注列表
+client.twitter.get_following(screen_name="elonmusk")
+
+# 获取用户发帖（screen_name / rest_id 至少传一个）
+client.twitter.get_user_works(screen_name="elonmusk")
+
+# X 热门账号榜（rank_date 必填，支持性别/行业筛选）
+client.twitter.get_hot_account_rank(rank_date="2026-09-23", page_num=1, gender="all")
 ```
 
 ### Instagram
@@ -414,6 +429,45 @@ client.instagram.get_comments(code_or_url="DRhvwVLAHAG", sort_by="recent")
 
 # 获取用户信息（username / user_id 至少传一个）
 client.instagram.get_user(username="natgeo")
+```
+
+### 微博
+
+```python
+# 搜索账号
+client.weibo.search_users(keyword="汽水音乐", page=1)
+
+# 获取微博内容详情
+client.weibo.get_work(opus_id="5200000000000000")
+
+# 获取用户详情
+client.weibo.get_user(user_id="7799374443")
+```
+
+### 百家号
+
+```python
+# 账号关键词搜索（第一页 page="0"，下一页传返回数据中的 page 值）
+client.baijiahao.search_users(keyword="头条", page="0")
+
+# 关键词搜索作品（pn 翻页 +10，sort="1" 焦点排序 / "2" 时间排序）
+client.baijiahao.search_works(keyword="新能源汽车", pn="0", sort="2")
+
+# 获取视频详情
+client.baijiahao.get_video(sv_id="1000000000000000000")
+
+# 获取作品内容 html
+client.baijiahao.get_article_html(article_id="1000000000000000000")
+
+# 获取账号信息
+client.baijiahao.get_user(uk="d0000000000000000")
+```
+
+### 知乎
+
+```python
+# 关键词搜索作品（offset +20 翻页，支持排序/时间范围/类型筛选）
+client.zhihu.search_works(keyword="人工智能", offset="0", sort="upvoted_count", vertical="answer")
 ```
 
 ### 懂车帝
@@ -440,6 +494,9 @@ client.yiche.search_works(keyword="小米SU7", page=1, source_type="xinwen")
 
 # 获取文章详情
 client.yiche.get_article(url="https://news.yiche.com/hao/wenzhang/xxx.html")
+
+# 获取文章详情 V2
+client.yiche.get_article_v2(url="https://news.yiche.com/hao/wenzhang/xxx.html")
 
 # 获取视频详情
 client.yiche.get_video(work_id="50000000")

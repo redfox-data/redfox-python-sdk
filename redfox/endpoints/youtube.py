@@ -7,7 +7,7 @@ class YouTubeAPI:
     """
     YouTube 平台 API 集合
 
-    包含视频搜索、视频详情、视频评论、视频提文案等接口。
+    包含视频搜索、视频详情、视频评论、视频提文案、字幕详情等接口。
     """
 
     def __init__(self, client):
@@ -102,3 +102,14 @@ class YouTubeAPI:
         if language is not None:
             data["language"] = language
         return self._client.post("/story/api/youtube/transcript", data=data, source=source)
+
+    def get_info(self, video_url: str, source: str = "获取 YouTube 视频字幕详情-SDK") -> dict:
+        """
+        获取 YouTube 视频字幕详情（视频信息 + 可用字幕语言列表）
+
+        :param video_url: YouTube 视频 URL 或视频 ID（必填）
+        :return: 视频字幕详情字典
+        """
+        return self._client.post(
+            "/story/api/youtube/info", data={"videoUrl": video_url}, source=source
+        )

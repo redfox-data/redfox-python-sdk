@@ -31,6 +31,9 @@ from .endpoints.doubao_image import DoubaoImageAPI
 from .endpoints.doubao_video import DoubaoVideoAPI
 from .endpoints.ai_search import AISearchAPI
 from .endpoints.tools import ToolsAPI
+from .endpoints.weibo import WeiboAPI
+from .endpoints.baijiahao import BaijiahaoAPI
+from .endpoints.zhihu import ZhihuAPI
 
 logger = logging.getLogger("redfox")
 
@@ -233,6 +236,9 @@ class RedFoxClient(_RequestMixin):
         self.doubao_video = DoubaoVideoAPI(self)
         self.ai_search = AISearchAPI(self)
         self.tools = ToolsAPI(self)
+        self.weibo = WeiboAPI(self)
+        self.baijiahao = BaijiahaoAPI(self)
+        self.zhihu = ZhihuAPI(self)
 
     def request(
         self,
@@ -453,6 +459,9 @@ class AsyncRedFoxClient(_RequestMixin):
         self.doubao_video = DoubaoVideoAPI(self)
         self.ai_search = AISearchAPI(self)
         self.tools = ToolsAPI(self)
+        self.weibo = WeiboAPI(self)
+        self.baijiahao = BaijiahaoAPI(self)
+        self.zhihu = ZhihuAPI(self)
 
     async def request(
         self,
