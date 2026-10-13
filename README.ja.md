@@ -217,7 +217,7 @@ client.xiaohongshu.get_daily_hot_rank(rank_date="2026-08-20", category="综合�
 client.xiaohongshu.get_weekly_hot_rank(rank_date="2026-08-20", category="综合全部")
 client.xiaohongshu.get_hot_accounts(date_type=1, rank_date="2026-08-20", type="综合全部")
 client.xiaohongshu.search_hot_notes(keyword="穿搭", start_date="2026-08-01", end_date="2026-08-20")
-client.xiaohongshu.get_dark_horse_notes(keyword="AI,穿搭", start_date="2026-08-01")
+client.xiaohongshu.get_dark_horse_notes(category="美妆", start_date="2026-08-01")
 
 # ─── 動画テキスト抽出 ───
 task = client.xiaohongshu.transcript_submit(url="https://www.xiaohongshu.com/explore/xxx")

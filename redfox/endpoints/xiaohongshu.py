@@ -300,17 +300,17 @@ class XiaohongshuAPI:
             data["endDate"] = end_date
         return self._client.post("/story/api/xhs/search/search", data=data, source=source)
 
-    def get_dark_horse_notes(self, keyword: str, start_date: str, source: str = "小红书黑马爆文榜-SDK") -> dict:
+    def get_dark_horse_notes(self, category: str, start_date: str, source: str = "小红书黑马爆文榜-SDK") -> dict:
         """
         小红书黑马爆文榜
 
-        :param keyword: 关键词（必填），多个关键词用逗号分隔，最多 5 个，总长度不超过 200
+        :param category: 分类（必填）
         :param start_date: 开始日期，格式 yyyy-MM-dd（必填），最长为最近 30 天，默认 30 天前
         :return: 黑马爆文榜字典
         """
         return self._client.post(
             "/story/api/cozeSkill/getLowPowderExplosiveArticle",
-            data={"keyword": keyword, "startDate": start_date},
+            data={"category": category, "startDate": start_date},
             source=source,
         )
 
