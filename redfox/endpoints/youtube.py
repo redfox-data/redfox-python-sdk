@@ -75,33 +75,23 @@ class YouTubeAPI:
     def get_transcript(
         self,
         video_url: str,
-        format: str = None,
-        include_timestamp: bool = None,
-        send_metadata: bool = None,
-        language: str = None,
         source: str = "提取 YouTube 视频字幕/文案-SDK",
     ) -> dict:
         """
-        YouTube 视频提文案（提取字幕/口播文案）
+        YouTube 视频字幕提取
 
-        :param video_url: YouTube 视频 URL 或视频 ID（必填），
-            支持完整 URL、短 URL（youtu.be）或仅视频 ID
-        :param format: 输出格式：json 或 text，默认 json
-        :param include_timestamp: 是否包含时间戳，默认 True
-        :param send_metadata: 是否包含视频元数据，默认 False
-        :param language: 语言优先级列表，逗号分隔的语言代码，如 "zh,en,asr"
-        :return: 文案提取结果字典
+        返回视频信息（标题、时长、发布时间、封面、描述）及各语言、
+        各格式（srt/vtt/ttml/json3）的字幕下载地址，含人工字幕与自动生成字幕。
+
+        :param video_url: YouTube 视频链接（必填），
+            如 "https://www.youtube.com/watch?v=jNQXAC9IVRw"
+        :return: 字幕提取结果字典，包含 subtitles 字幕轨道列表
         """
-        data: Dict[str, Any] = {"videoUrl": video_url}
-        if format is not None:
-            data["format"] = format
-        if include_timestamp is not None:
-            data["includeTimestamp"] = include_timestamp
-        if send_metadata is not None:
-            data["sendMetadata"] = send_metadata
-        if language is not None:
-            data["language"] = language
-        return self._client.post("/story/api/youtube/transcript", data=data, source=source)
+        return self._client.post(
+            "/story/api/parseWork/videoSubtitle/youtube",
+            data={"url": video_url},
+            source=source,
+        )
 
     def get_info(self, video_url: str, source: str = "获取 YouTube 视频字幕详情-SDK") -> dict:
         """
