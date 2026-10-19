@@ -16,22 +16,38 @@ class TikTokAPI:
     def search_users(
         self,
         keyword: str,
-        cursor: int = 0,
-        rid: str = None,
+        offset: str = "0",
+        count: str = "20",
+        follower_count_filter: int = None,
+        profile_type_filter: int = None,
+        other_pref_filter: int = None,
         source: str = "搜索 TikTok 账号-SDK",
     ) -> dict:
         """
         TikTok 关键词搜索账号
 
         :param keyword: 搜索关键词（必填）
-        :param cursor: 翻页游标，第一页为 0，每页 +10
-        :param rid: 数据返回的 rid，翻页时传入，第一页传空
+        :param offset: 偏移量，从 0 开始，翻页 +count
+        :param count: 每页数量，默认 20
+        :param follower_count_filter: 粉丝数筛选：1=0~1K，2=1K~10K，3=10K~100K，4=100K 以上，不传不限制
+        :param profile_type_filter: 账号类型筛选：1=认证用户，不传不限制
+        :param other_pref_filter: 其他偏好：1=按用户名相关性，不传不限制
         :return: 搜索结果字典，包含 cursor/hasMore/userList
         """
-        data: Dict[str, Any] = {"keyword": keyword, "cursor": cursor}
-        if rid is not None:
-            data["rid"] = rid
-        return self._client.post("/story/api/deepSearch/tk/searchUser", data=data, source=source)
+        data: Dict[str, Any] = {
+            "keyword": keyword,
+            "offset": offset,
+            "count": count,
+        }
+        if follower_count_filter is not None:
+            data["followerCountFilter"] = follower_count_filter
+        if profile_type_filter is not None:
+            data["profileTypeFilter"] = profile_type_filter
+        if other_pref_filter is not None:
+            data["otherPrefFilter"] = other_pref_filter
+        return self._client.post(
+            "/story/api/tiktok/ability/searchUser", data=data, source=source
+        )
 
     def search_videos(
         self,

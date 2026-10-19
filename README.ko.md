@@ -359,7 +359,7 @@ result = client.kuaishou.transcript_result(task_id=task["taskId"])
 
 ```python
 # 사용자 검색
-client.tiktok.search_users(keyword="tech", cursor=0)
+client.tiktok.search_users(keyword="tech", offset="0", count="20")
 
 # 비디오 검색
 client.tiktok.search_videos(keyword="AI", count="20", sort_type="0", region="US")
