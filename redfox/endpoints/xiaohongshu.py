@@ -304,13 +304,15 @@ class XiaohongshuAPI:
         """
         小红书黑马爆文榜
 
-        :param category: 分类（必填）
-        :param start_date: 开始日期，格式 yyyy-MM-dd（必填），最长为最近 30 天，默认 30 天前
-        :return: 黑马爆文榜字典
+        :param category: 分类（必填），取值如 综合全部、出行代步、医疗保健、
+            时尚穿搭、美味佳肴 等中文分类名
+        :param start_date: 榜单日期，格式 yyyy-MM-dd（必填），最长为最近 30 天；
+            后端字段为 rankDate
+        :return: 黑马爆文榜列表
         """
         return self._client.post(
             "/story/api/cozeSkill/getLowPowderExplosiveArticle",
-            data={"category": category, "startDate": start_date},
+            data={"category": category, "rankDate": start_date},
             source=source,
         )
 
