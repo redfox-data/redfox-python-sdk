@@ -3,7 +3,7 @@
 from .client import RedFoxClient, AsyncRedFoxClient
 from .exceptions import RedFoxAPIError, RedFoxAuthError, RedFoxRateLimitError
 
-__version__ = "0.7.0"
+__version__ = "0.7.4"
 __all__ = [
     "RedFoxClient",
     "AsyncRedFoxClient",

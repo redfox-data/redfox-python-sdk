@@ -205,8 +205,15 @@ class XiaohongshuAPI:
         :param task_id: 任务 ID（由 comment_submit 返回）
         :return: 评论结果字典
         """
-        return self._client.post(
-            "/story/api/xhs/commentResult", data={"taskId": task_id}, source=source
+        # /story/api/xhs/commentResult 是全平台唯一不从 JSON body 读 taskId 的 result
+        # 端点（只认 query/form），故同时用 query 参数与 body 传 taskId：query 保证当前
+        # 可用，body 兼容服务端日后改回 JSON body 的一致契约。
+        return self._client.request(
+            "POST",
+            "/story/api/xhs/commentResult",
+            params={"taskId": task_id},
+            data={"taskId": task_id},
+            source=source,
         )
 
     # ─── 榜单 ───────────────────────────────────────────
