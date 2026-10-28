@@ -7,7 +7,7 @@ class DongchediAPI:
     """
     懂车帝平台 API 集合
 
-    包含懂车帝作品搜索、作品详情、用户作品列表、用户搜索等接口。
+    包含懂车帝作品搜索、作品详情、用户作品列表、用户搜索、账号详情+作品列表等接口。
     """
 
     def __init__(self, client):
@@ -74,5 +74,18 @@ class DongchediAPI:
         return self._client.post(
             "/story/api/dongchedi/searchUser",
             data={"keyword": keyword, "offset": offset},
+            source=source,
+        )
+
+    def get_account_works(self, user_id: str, source: str = "懂车帝账号详情+作品列表-SDK") -> dict:
+        """
+        懂车帝账号详情+作品列表
+
+        :param user_id: 用户 ID（必填）
+        :return: 账号详情与作品列表字典，包含 account/workList
+        """
+        return self._client.post(
+            "/story/api/dongchedi/accountWorks",
+            data={"userId": user_id},
             source=source,
         )

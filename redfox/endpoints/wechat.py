@@ -350,3 +350,53 @@ class WechatAPI:
             params={"rankDate": rank_date},
             source=source,
         )
+
+    def get_headline_growth_rank(
+        self,
+        rank_date: str,
+        page: int = 1,
+        author_type: str = None,
+        sort: str = None,
+        source: str = "公众号头条增长榜-SDK",
+    ) -> dict:
+        """
+        公众号头条增长榜
+
+        榜单每周一下午 16:30 更新上周数据。
+
+        :param rank_date: 榜单时间（必填），统计周周一，格式 yyyy-MM-dd HH:mm:ss
+        :param page: 页码，范围 1 至 5，默认 1
+        :param author_type: 作者类别，不传则为全部：人文资讯 知识百科 健康养生
+                            时尚潮流 美食餐饮 乐活生活 旅游出行 搞笑幽默
+                            情感心理 体育娱乐 美容美体 文摘精选 民生资讯
+                            财富理财 科技数码 创投商业 汽车交通 房产楼市
+                            职场发展 教育考试 学术研究 企业品牌 时事新闻
+        :param sort: 排序字段：cur_read=本周头条阅读量，prev_read=上周头条阅读量，
+                     growth_val=增长值（默认），growth_pct=增长百分比
+        :return: 头条增长榜字典
+        """
+        data: Dict[str, Any] = {"rank_date": rank_date, "page": page}
+        if author_type is not None:
+            data["author_type"] = author_type
+        if sort is not None:
+            data["sort"] = sort
+        return self._client.post(
+            "/story/api/gzh/heima/rankList", data=data, source=source
+        )
+
+    def get_article_content_realtime(
+        self, article_url: str, source: str = "根据作品地址获取公众号作品（实时）-SDK"
+    ) -> dict:
+        """
+        根据作品地址获取公众号作品（实时）
+
+        通过文章链接实时查询公众号文章详细内容。
+
+        :param article_url: 文章链接（必填），如 https://mp.weixin.qq.com/s/xxx
+        :return: 文章详情字典，包含 articleTitle/articleContent/picUrl 等
+        """
+        return self._client.post(
+            "/story/api/gzh/ability/temp/article/content",
+            data={"articleUrl": article_url},
+            source=source,
+        )

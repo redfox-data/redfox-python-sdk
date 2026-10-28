@@ -1,4 +1,4 @@
-"""通用工具 API 端点（短视频下载 / 文件上传）"""
+"""通用工具 API 端点（短视频下载 / 文件上传 / 违禁词 / 提文案）"""
 
 from typing import Optional, Dict, Any
 
@@ -7,7 +7,8 @@ class ToolsAPI:
     """
     通用工具 API 集合
 
-    包含多平台短视频下载（去水印）和素材文件上传接口。
+    包含多平台短视频下载（去水印）、素材文件上传、多平台违禁词查询、
+    视频播放链接提取文案等接口。
     """
 
     def __init__(self, client):
@@ -155,5 +156,58 @@ class ToolsAPI:
             "/story/api/parseWork/videoGen/uploadFile",
             file=file,
             data={"format": format},
+            source=source,
+        )
+
+    # ─── 违禁词查询 ─────────────────────────────────────────
+
+    def sensitive_word_search(
+        self, content: str, source: str = "多平台违禁词查询-SDK"
+    ) -> dict:
+        """
+        多平台违禁词查询
+
+        :param content: 待检测文本（必填），字数需小于 3000 字
+        :return: 检测结果字典，包含标注后的 content（违规词用带 class 的
+                 span 标签包裹）、原始内容、命中的违规词类型列表
+        """
+        return self._client.post(
+            "/story/api/cozeSkill/sensitiveWordSearch",
+            data={"content": content},
+            source=source,
+        )
+
+    # ─── 视频播放链接提取文案 ────────────────────────────────
+
+    def audio_text_extract_submit(
+        self, url: str, source: str = "视频播放链接提取文案-提交任务-SDK"
+    ) -> dict:
+        """
+        视频播放链接提取文案 - 提交任务
+
+        输入可直接访问的视频播放地址，返回任务 ID。
+
+        :param url: 视频播放链接（必填）
+        :return: 包含 taskId 的字典
+        """
+        return self._client.post(
+            "/story/api/parseWork/audioTextExtract/submit/videoUrl",
+            data={"url": url},
+            source=source,
+        )
+
+    def audio_text_extract_result(
+        self, task_id: str, source: str = "视频播放链接提取文案-查询结果-SDK"
+    ) -> dict:
+        """
+        视频播放链接提取文案 - 查询结果
+
+        :param task_id: 任务 ID（由 audio_text_extract_submit 返回）
+        :return: 提取结果字典，包含完整文案 text 和带时间戳的分句 stampSents。
+                 status 取值 succeeded/processing/failed
+        """
+        return self._client.post(
+            "/story/api/parseWork/audioTextExtract/result",
+            data={"taskId": task_id},
             source=source,
         )

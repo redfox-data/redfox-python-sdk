@@ -7,7 +7,7 @@ class BilibiliAPI:
     """
     哔哩哔哩平台 API 集合
 
-    包含 B 站账号查询、作品搜索、作品详情等接口。
+    包含 B 站账号查询、作品搜索、作品详情、视频字幕提取等接口。
     """
 
     def __init__(self, client):
@@ -159,4 +159,17 @@ class BilibiliAPI:
         """
         return self._client.post(
             "/story/api/parseWork/bilibiliSubtitle/result", data={"taskId": task_id}, source=source
+        )
+
+    def get_subtitles(self, url: str, source: str = "哔哩哔哩视频字幕提取-SDK") -> dict:
+        """
+        哔哩哔哩视频字幕提取
+
+        输入 B 站视频链接，返回视频信息及各语言、各格式的字幕下载地址。
+
+        :param url: 视频链接（必填），如 https://www.bilibili.com/video/BV1ZmrxB6Eyy
+        :return: 字幕信息字典，包含 title/duration/subtitles（按语言分组）
+        """
+        return self._client.post(
+            "/story/api/parseWork/videoSubtitle/bili", data={"url": url}, source=source
         )

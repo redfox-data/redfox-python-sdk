@@ -34,6 +34,9 @@ from .endpoints.tools import ToolsAPI
 from .endpoints.weibo import WeiboAPI
 from .endpoints.baijiahao import BaijiahaoAPI
 from .endpoints.zhihu import ZhihuAPI
+from .endpoints.facebook import FacebookAPI
+from .endpoints.gemini_image import GeminiImageAPI
+from .endpoints.account import RedFoxAccountAPI
 
 logger = logging.getLogger("redfox")
 
@@ -239,6 +242,9 @@ class RedFoxClient(_RequestMixin):
         self.weibo = WeiboAPI(self)
         self.baijiahao = BaijiahaoAPI(self)
         self.zhihu = ZhihuAPI(self)
+        self.facebook = FacebookAPI(self)
+        self.gemini_image = GeminiImageAPI(self)
+        self.account = RedFoxAccountAPI(self)
 
     def request(
         self,
@@ -462,6 +468,9 @@ class AsyncRedFoxClient(_RequestMixin):
         self.weibo = WeiboAPI(self)
         self.baijiahao = BaijiahaoAPI(self)
         self.zhihu = ZhihuAPI(self)
+        self.facebook = FacebookAPI(self)
+        self.gemini_image = GeminiImageAPI(self)
+        self.account = RedFoxAccountAPI(self)
 
     async def request(
         self,

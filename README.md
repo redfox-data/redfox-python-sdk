@@ -12,7 +12,7 @@
   </a>
 </p>
 
-[RedFoxHub](https://redfox.hk/?source=github) Python SDK，提供 [抖音](https://redfox.hk/apis/douyin/0OT1E306)、[小红书](https://redfox.hk/apis/xiaohongshu/4IVIDHEN)、[公众号](https://redfox.hk/apis/gongzhonghao/6C4A77XR)、[B站](https://redfox.hk/apis/bilibili/TIN1NMTZ)、[今日头条](https://redfox.hk/apis/jinritoutiao/28CFGF5I)、[TikTok](https://redfox.hk/apis/tool-tiktok/20070019)、快手、视频号、YouTube、X (Twitter)、Instagram、微博、百家号、知乎、懂车帝、易车、汽车之家 17 大内容平台的数据采集接口，多平台热点榜单聚合接口，短视频去水印下载与素材上传工具，以及 GPT 图片生成、豆包图片/视频生成、AI 搜索（Kimi/豆包/Deepseek/元宝/千问/百度）AI 能力接口。
+[RedFoxHub](https://redfox.hk/?source=github) Python SDK，提供 [抖音](https://redfox.hk/apis/douyin/0OT1E306)、[小红书](https://redfox.hk/apis/xiaohongshu/4IVIDHEN)、[公众号](https://redfox.hk/apis/gongzhonghao/6C4A77XR)、[B站](https://redfox.hk/apis/bilibili/TIN1NMTZ)、[今日头条](https://redfox.hk/apis/jinritoutiao/28CFGF5I)、[TikTok](https://redfox.hk/apis/tool-tiktok/20070019)、快手、视频号、YouTube、X (Twitter)、Instagram、Facebook、微博、百家号、知乎、懂车帝、易车、汽车之家 18 大内容平台的数据采集接口，多平台热点榜单聚合接口，短视频去水印下载与素材上传工具、多平台违禁词查询，以及 GPT/Gemini 图片生成、豆包图片/视频生成、AI 搜索（Kimi/豆包/Deepseek/元宝/千问/百度）AI 能力接口。
 
 ## 为什么选择 RedFoxHub
 
@@ -125,27 +125,30 @@ result = client.ai_search.kimi_result(task_id=task["taskId"])
 |------|------|--------|------|
 | 📱 抖音 | `client.douyin` | 16 | 作品/账号搜索（优质库+广域库）、账号信息、作品详情、AI作品搜索、热榜/飙升榜、热门账号、视频提文案 |
 | 📕 小红书 | `client.xiaohongshu` | 15 | 笔记/账号搜索、账号信息、笔记详情、作品列表、AI笔记搜索、评论、日榜/周榜/黑马榜、热门账号、爆款洞察、视频提文案 |
-| 💬 公众号 | `client.wechat` | 16 | 文章/账号搜索（优质库+广域库）、账号信息、文章详情、作品列表、AI文章搜索、10W+榜、原创榜、实力榜、阅读增长榜 |
-| 📺 B站 | `client.bilibili` | 8 | 视频搜索、UP主搜索、UP主信息、UP主作品、视频详情、音频提取、视频提文案 |
+| 💬 公众号 | `client.wechat` | 18 | 文章/账号搜索（优质库+广域库）、账号信息、文章详情、作品列表、AI文章搜索、10W+榜、原创榜、实力榜、阅读增长榜、头条增长榜、文章实时详情 |
+| 📺 B站 | `client.bilibili` | 9 | 视频搜索、UP主搜索、UP主信息、UP主作品、视频详情、音频提取、视频提文案、字幕提取 |
 | 📰 今日头条 | `client.toutiao` | 5 | 内容搜索、作品详情、作品评论、账号搜索、账号作品列表 |
-| 🎵 TikTok | `client.tiktok` | 4 | 用户搜索、视频搜索、作品详情、用户作品列表 |
+| 🎵 TikTok | `client.tiktok` | 10 | 用户搜索、视频搜索、作品详情、用户作品、用户喜欢作品、关注列表、话题搜索、话题作品、视频评论、评论回复 |
 | 🎬 快手 | `client.kuaishou` | 6 | 作品搜索、作品详情、账号作品、账号搜索、视频提文案 |
 | 💚 视频号 | `client.wechat_channels` | 7 | 作品搜索、作品详情、账号作品、链接实时详情、账号搜索、链接提文案 |
 | ▶️ YouTube | `client.youtube` | 5 | 视频搜索、视频详情、视频评论、视频提文案（字幕提取）、字幕详情 |
 | 🐦 X (Twitter) | `client.twitter` | 7 | 推文搜索、推文详情、用户信息、推文评论、关注列表、用户发帖、热门账号榜 |
 | 📸 Instagram | `client.instagram` | 4 | 综合搜索、帖子详情、帖子评论、用户信息 |
-| 🔵 微博 | `client.weibo` | 3 | 账号搜索、内容详情、用户详情 |
+| 👥 Facebook | `client.facebook` | 4 | 主页信息、主页帖子列表、帖子详情、帖子评论 |
+| 🔵 微博 | `client.weibo` | 5 | 账号搜索、内容详情、用户详情、关键词搜索作品、微博热搜 |
 | 📰 百家号 | `client.baijiahao` | 5 | 账号搜索、作品搜索、视频详情、作品内容 html、账号信息 |
-| 💡 知乎 | `client.zhihu` | 1 | 关键词搜索作品 |
-| 🚗 懂车帝 | `client.dongchedi` | 4 | 作品搜索、作品详情、用户作品、用户搜索 |
+| 💡 知乎 | `client.zhihu` | 5 | 关键词搜索作品、文章详情、评论详情、账号详情、搜索热点 |
+| 🚗 懂车帝 | `client.dongchedi` | 5 | 作品搜索、作品详情、用户作品、用户搜索、账号详情+作品列表 |
 | 🚙 易车 | `client.yiche` | 6 | 作品搜索、文章详情、文章详情V2、视频详情、账号作品、账号搜索 |
 | 🚘 汽车之家 | `client.autohome` | 4 | 作品搜索、文章详情、视频详情、账号作品 |
 | 🔥 热点榜单 | `client.hotspot` | 3 | 各平台热点榜、全网热搜查询、全网聚合热点 TOP10 |
-| 🖼️ GPT 图片 | `client.gpt_image` | 2 | 图片生成、结果查询 |
+| 🖼️ GPT 图片 | `client.gpt_image` | 4 | GPT-Image-2/2.5 图片生成及结果查询 |
+| 🍌 Gemini 图片 | `client.gemini_image` | 2 | Nano Banana 2.1 图片生成、结果查询 |
 | 🎨 豆包图片 | `client.doubao_image` | 4 | Pro/Lite 图片生成及查询 |
-| 🎬 豆包视频 | `client.doubao_video` | 2 | 视频生成、结果查询 |
-| 🔍 AI 搜索 | `client.ai_search` | 12 | Kimi/豆包/Deepseek/元宝/千问/百度 搜索 |
-| 🛠️ 通用工具 | `client.tools` | 12 | 多平台短视频去水印下载、图片/素材上传 |
+| 🎬 豆包视频 | `client.doubao_video` | 4 | Seedance 2.0 视频生成及结果查询（新旧端点） |
+| 🔍 AI 搜索 | `client.ai_search` | 17 | Kimi/豆包/Deepseek/元宝/千问/百度 搜索、Kimi K3、豆包/千问商品卡搜索 |
+| 🛠️ 通用工具 | `client.tools` | 15 | 多平台短视频去水印下载、图片/素材上传、多平台违禁词查询、视频播放链接提文案 |
+| 💰 账户 | `client.account` | 2 | 余额查询、接口调用记录查询 |
 
 ## API 参考
 
@@ -676,6 +679,74 @@ task = client.doubao_video.submit(
     duration=5,
 )
 result = client.doubao_video.result(task_id=task["taskId"])
+```
+
+### Seedance 视频生成（新端点）
+
+```python
+# 文生视频
+task = client.doubao_video.seedance_submit(
+    prompt="一只猫在窗台晒太阳，暖色调",
+    aspect_ratio="16:9",
+    duration=5,
+    resolution="720p",
+    generate_audio=True,
+)
+result = client.doubao_video.seedance_result(task_id=task["taskId"])
+
+# 图生视频（首帧图）
+task = client.doubao_video.seedance_submit(
+    prompt="让画面动起来",
+    aspect_ratio="adaptive",
+    duration=5,
+    image_with_roles=[{"url": "https://example.com/photo.jpg", "role": "first_frame"}],
+)
+```
+
+### Gemini 图片生成
+
+```python
+# 文生图
+task = client.gemini_image.submit(
+    prompt="一只可爱的橘猫在晒太阳",
+    size="1:1",
+    resolution="2K",
+)
+result = client.gemini_image.result(task_id=task["taskId"])
+```
+
+### Facebook
+
+```python
+# 获取主页信息
+client.facebook.get_user(url="https://www.facebook.com/Meta")
+
+# 获取主页帖子列表（cursor 翻页）
+posts = client.facebook.get_user_posts(url="https://www.facebook.com/Meta")
+client.facebook.get_user_posts(page_id="xxx", cursor=posts["paginationToken"])
+
+# 获取帖子详情
+client.facebook.get_post(url="https://www.facebook.com/reel/1746412686633900")
+
+# 获取帖子评论
+client.facebook.get_post_comments(feedback_id="xxx")
+```
+
+### 账户
+
+```python
+# 查询余额
+client.account.balance()
+
+# 查询接口调用记录
+client.account.consume_flows(page_num=1, page_size=20)
+```
+
+### 违禁词查询
+
+```python
+# 多平台违禁词查询（小于 3000 字）
+client.tools.sensitive_word_search(content="这是一段待检测的文案")
 ```
 
 ## 错误处理

@@ -9,6 +9,8 @@ class AISearchAPI:
 
     支持 Kimi、豆包、Deepseek、元宝、千问、百度六种 AI 搜索引擎。
     每种引擎均为异步模式：先 submit 提交任务，再 result 查询结果。
+
+    另含 Kimi K3 纯文字搜索，以及豆包/千问含商品卡信息的纯文本搜索。
     """
 
     def __init__(self, client):
@@ -156,4 +158,73 @@ class AISearchAPI:
         """
         return self._client.post(
             "/story/api/deepSearch/bdResult", data={"taskId": task_id}, source=source
+        )
+
+    # ─── Kimi K3 ────────────────────────────────────────────
+
+    def kimi_k3_submit(self, inquiry_text: str, source: str = "Kimi K3 纯文字搜索-提交任务-SDK") -> dict:
+        """
+        kimi-K3 纯文字搜索 - 提交任务
+
+        :param inquiry_text: 输入文本（必填）
+        :return: 包含 taskId 的字典
+        """
+        return self._client.post(
+            "/story/api/kimi/submitK3", data={"inquiryText": inquiry_text}, source=source
+        )
+
+    # ─── 豆包（含商品卡信息） ─────────────────────────────────
+
+    def doubao_goods_submit(
+        self, inquiry_text: str, source: str = "豆包纯文本搜索（含商品卡）-提交任务-SDK"
+    ) -> dict:
+        """
+        豆包纯文本搜索（含商品卡信息） - 提交任务
+
+        :param inquiry_text: 搜索文本（必填）
+        :return: 包含 taskId 的字典
+        """
+        return self._client.post(
+            "/story/api/deepSearch/dbaSubmit", data={"inquiryText": inquiry_text}, source=source
+        )
+
+    def doubao_goods_result(
+        self, task_id: str, source: str = "豆包纯文本搜索（含商品卡）-查询结果-SDK"
+    ) -> dict:
+        """
+        豆包纯文本搜索（含商品卡信息） - 查询任务结果
+
+        :param task_id: 任务 ID（由 doubao_goods_submit 返回）
+        :return: 任务结果字典，包含参考文档 searchGuid、主回答 content、商品卡 cardData
+        """
+        return self._client.post(
+            "/story/api/deepSearch/dbaResult", data={"taskId": task_id}, source=source
+        )
+
+    # ─── 千问（含商品卡信息） ─────────────────────────────────
+
+    def qianwen_goods_submit(
+        self, inquiry_text: str, source: str = "千问纯文本搜索（含商品卡）-提交任务-SDK"
+    ) -> dict:
+        """
+        千问纯文本搜索（含商品卡信息） - 提交任务
+
+        :param inquiry_text: 搜索文本（必填）
+        :return: 包含 taskId 的字典
+        """
+        return self._client.post(
+            "/story/api/deepSearch/qwaSubmit", data={"inquiryText": inquiry_text}, source=source
+        )
+
+    def qianwen_goods_result(
+        self, task_id: str, source: str = "千问纯文本搜索（含商品卡）-查询结果-SDK"
+    ) -> dict:
+        """
+        千问纯文本搜索（含商品卡信息） - 查询任务结果
+
+        :param task_id: 任务 ID（由 qianwen_goods_submit 返回）
+        :return: 任务结果字典，包含 AI 导购结果 result、商品卡片 cardData
+        """
+        return self._client.post(
+            "/story/api/deepSearch/qwaResult", data={"taskId": task_id}, source=source
         )
