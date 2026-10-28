@@ -89,7 +89,7 @@ class ZhihuAPI:
         :param vertical: 类型：answer 回答；article 文章；zvide 视频
         :return: 作品列表
         """
-        data: Dict[str, Any] = {"keword": keyword, "offset": str(offset)}
+        data: Dict[str, Any] = {"keyword": keyword, "offset": str(offset)}
         if sort is not None:
             data["sort"] = sort
         if time_interval is not None:
