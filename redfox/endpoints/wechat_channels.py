@@ -21,6 +21,7 @@ class WechatChannelsAPI:
         sort: str = None,
         page: int = 1,
         size: int = 20,
+        exact_match: bool = None,
         source: str = "微信视频号关键词搜索作品-SDK",
     ) -> dict:
         """
@@ -30,11 +31,14 @@ class WechatChannelsAPI:
         :param sort: 排序方式：综合 / 最新 / 最多点赞 / 最多收藏，默认综合
         :param page: 页码，从 1 开始，默认 1
         :param size: 每页条数，默认 20，最大 50
+        :param exact_match: 是否精准匹配（默认 false）：false 模糊匹配，true 关键词作为完整短语必须包含在标题、摘要或作者中
         :return: 搜索结果字典
         """
         data: Dict[str, Any] = {"keyword": keyword, "page": page, "size": size}
         if sort is not None:
             data["sort"] = sort
+        if exact_match is not None:
+            data["exactMatch"] = exact_match
         return self._client.post("/story/api/sphAllData/searchWork", data=data, source=source)
 
     def get_work(self, video_id: str, source: str = "获取微信视频号单个作品详情-SDK") -> dict:

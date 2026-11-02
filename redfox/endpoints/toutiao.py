@@ -75,17 +75,24 @@ class ToutiaoAPI:
             data["searchId"] = search_id
         return self._client.post("/story/api/toutiao/searchAccount", data=data, source=source)
 
-    def get_user_works(self, category: str, token: str, source: str = "获取今日头条账号作品列表-SDK") -> dict:
+    def get_user_works(
+        self,
+        category: str,
+        token: str,
+        offset: str = "0",
+        source: str = "获取今日头条账号作品列表-SDK",
+    ) -> dict:
         """
         获取今日头条账号作品列表（实时）
 
         :param category: 内容分类（必填）：profile_all 全部；pc_profile_article 文章；
             pc_profile_video 视频；pc_profile_ugc 微头条；profile_wenda 问答；pc_profile_short_video 小视频
         :param token: web 端 uid（必填）
+        :param offset: 翻页参数（必填），第一页为 0
         :return: 作品列表字典
         """
         return self._client.post(
             "/story/api/toutiao/userWorkList",
-            data={"category": category, "token": token},
+            data={"category": category, "token": token, "offset": offset},
             source=source,
         )

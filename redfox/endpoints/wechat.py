@@ -79,6 +79,7 @@ class WechatAPI:
         keyword: str,
         offset: int = 0,
         sort_type: str = None,
+        exact_match: bool = None,
         source: str = "搜索公众号文章-SDK",
     ) -> dict:
         """
@@ -87,6 +88,7 @@ class WechatAPI:
         :param keyword: 搜索关键词（必填）
         :param offset: 偏移量，从 0 开始，每页 +20
         :param sort_type: 排序方式
+        :param exact_match: 是否精准匹配（默认 false）：false 模糊匹配，true 关键词作为完整短语必须包含在标题、摘要或作者中
         :return: 搜索结果字典
         """
         data: Dict[str, Any] = {"keyword": keyword}
@@ -94,6 +96,8 @@ class WechatAPI:
             data["offset"] = offset
         if sort_type is not None:
             data["sortType"] = sort_type
+        if exact_match is not None:
+            data["exactMatch"] = exact_match
         return self._client.post("/story/api/gzhData/searchArticle", data=data, source=source)
 
     def get_user_works(
@@ -169,6 +173,7 @@ class WechatAPI:
         keyword: str,
         offset: int = 0,
         sort_type: str = None,
+        exact_match: bool = None,
         source: str = "搜索公众号作品-SDK",
     ) -> dict:
         """
@@ -177,6 +182,7 @@ class WechatAPI:
         :param keyword: 搜索关键词（必填）
         :param offset: 偏移量，从 0 开始，每页 +20
         :param sort_type: 排序方式：0=默认，2=最新，4=最热
+        :param exact_match: 是否精准匹配（默认 false）：false 模糊匹配，true 关键词作为完整短语必须包含在标题、摘要或作者中
         :return: 搜索结果字典
         """
         data: Dict[str, Any] = {"keyword": keyword}
@@ -184,6 +190,8 @@ class WechatAPI:
             data["offset"] = offset
         if sort_type is not None:
             data["sortType"] = sort_type
+        if exact_match is not None:
+            data["exactMatch"] = exact_match
         return self._client.post("/story/api/gzh/data/searchArticle", data=data, source=source)
 
     def search_users_wide(self, keyword: str, offset: int = 0, source: str = "搜索公众号账号（广域库）-SDK") -> dict:

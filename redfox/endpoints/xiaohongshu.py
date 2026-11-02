@@ -66,6 +66,7 @@ class XiaohongshuAPI:
         keyword: str,
         offset: int = 0,
         sort_type: str = None,
+        exact_match: bool = None,
         source: str = "搜索小红书笔记-SDK",
     ) -> dict:
         """
@@ -74,6 +75,7 @@ class XiaohongshuAPI:
         :param keyword: 搜索关键词（必填）
         :param offset: 偏移量
         :param sort_type: 排序方式
+        :param exact_match: 是否精准匹配（默认 false）：false 模糊匹配，true 关键词作为完整短语必须包含在标题、摘要或作者中
         :return: 搜索结果字典
         """
         data: Dict[str, Any] = {"keyword": keyword}
@@ -81,6 +83,8 @@ class XiaohongshuAPI:
             data["offset"] = offset
         if sort_type is not None:
             data["sortType"] = sort_type
+        if exact_match is not None:
+            data["exactMatch"] = exact_match
         return self._client.post(
             "/story/api/xhsUser/searchArticle", data=data, source=source
         )

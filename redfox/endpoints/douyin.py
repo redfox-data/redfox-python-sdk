@@ -45,6 +45,8 @@ class DouyinAPI:
         keyword: str,
         offset: int = 0,
         sort_type: str = None,
+        start_date: str = None,
+        end_date: str = None,
         source: str = "搜索抖音作品（优质库）-SDK",
     ) -> dict:
         """
@@ -53,6 +55,8 @@ class DouyinAPI:
         :param keyword: 搜索关键词（必填）
         :param offset: 分页偏移量，从 0 开始，每次 +20
         :param sort_type: 排序方式，如 "default"
+        :param start_date: 开始日期，格式 yyyy-MM-dd
+        :param end_date: 结束日期，格式 yyyy-MM-dd
         :return: 搜索结果字典，包含 total/hasMore/list
         """
         data: Dict[str, Any] = {"keyword": keyword}
@@ -60,6 +64,10 @@ class DouyinAPI:
             data["offset"] = offset
         if sort_type is not None:
             data["sortType"] = sort_type
+        if start_date is not None:
+            data["startDate"] = start_date
+        if end_date is not None:
+            data["endDate"] = end_date
 
         return self._client.post("/story/api/dyData/searchArticle", data=data, source=source)
 
@@ -178,6 +186,7 @@ class DouyinAPI:
         end_date: str = None,
         page_num: int = 1,
         page_size: int = 10,
+        exact_match: bool = None,
         source: str = "搜索抖音作品（广域库）-SDK",
     ) -> dict:
         """
@@ -188,6 +197,7 @@ class DouyinAPI:
         :param end_date: 结束日期，格式 yyyy-MM-dd
         :param page_num: 页码，从 1 开始，默认 1
         :param page_size: 每页大小，默认 10，最大 50
+        :param exact_match: 是否精准匹配（默认 false）：false 模糊匹配，true 关键词作为完整短语必须包含在标题或作者中
         :return: 搜索结果字典，包含 total/pageNum/pageSize/list
         """
         data: Dict[str, Any] = {
@@ -199,6 +209,8 @@ class DouyinAPI:
             data["startDate"] = start_date
         if end_date is not None:
             data["endDate"] = end_date
+        if exact_match is not None:
+            data["exactMatch"] = exact_match
         return self._client.post("/story/api/dy/data/searchWork", data=data, source=source)
 
     def search_accounts_wide(

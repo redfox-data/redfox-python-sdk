@@ -76,6 +76,7 @@ class BilibiliAPI:
         page: int = 1,
         page_size: int = None,
         order: str = None,
+        exact_match: bool = None,
         source: str = "搜索 B 站视频-SDK",
     ) -> dict:
         """
@@ -85,6 +86,7 @@ class BilibiliAPI:
         :param page: 页码，从 1 开始（必填）
         :param page_size: 每页条数，默认 10，最大 50
         :param order: 排序：time=发布时间 / play=播放数 / like=点赞数 / comment=评论数 / favorite=收藏数，默认 time
+        :param exact_match: 是否精准匹配（默认 false）：false 模糊匹配，true 关键词作为完整短语必须包含在标题或作者中
         :return: 搜索结果字典
         """
         data: Dict[str, Any] = {"keyword": keyword, "page": str(page)}
@@ -92,6 +94,8 @@ class BilibiliAPI:
             data["pageSize"] = page_size
         if order is not None:
             data["order"] = order
+        if exact_match is not None:
+            data["exactMatch"] = exact_match
         return self._client.post("/story/api/bili/data/workSearch", data=data, source=source)
 
     def get_user_works(
