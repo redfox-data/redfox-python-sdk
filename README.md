@@ -12,7 +12,7 @@
   </a>
 </p>
 
-[RedFoxHub](https://redfox.hk/?source=github) Python SDK，提供 [抖音](https://redfox.hk/apis/douyin/0OT1E306)、[小红书](https://redfox.hk/apis/xiaohongshu/4IVIDHEN)、[公众号](https://redfox.hk/apis/gongzhonghao/6C4A77XR)、[B站](https://redfox.hk/apis/bilibili/TIN1NMTZ)、[今日头条](https://redfox.hk/apis/jinritoutiao/28CFGF5I)、[TikTok](https://redfox.hk/apis/tool-tiktok/20070019)、快手、视频号、YouTube、X (Twitter)、Instagram、Facebook、微博、百家号、知乎、懂车帝、易车、汽车之家 18 大内容平台的数据采集接口，多平台热点榜单聚合接口，短视频去水印下载与素材上传工具、多平台违禁词查询，以及 GPT/Gemini 图片生成、豆包图片/视频生成、AI 搜索（Kimi/豆包/Deepseek/元宝/千问/百度）AI 能力接口。
+[RedFoxHub](https://redfox.hk/?source=github) Python SDK，提供 [抖音](https://redfox.hk/apis/douyin/0OT1E306)、[小红书](https://redfox.hk/apis/xiaohongshu/4IVIDHEN)、[公众号](https://redfox.hk/apis/gongzhonghao/6C4A77XR)、[B站](https://redfox.hk/apis/bilibili/TIN1NMTZ)、[今日头条](https://redfox.hk/apis/jinritoutiao/28CFGF5I)、[TikTok](https://redfox.hk/apis/tool-tiktok/20070019)、快手、视频号、YouTube、X (Twitter)、Instagram、Facebook、微博、百家号、知乎、懂车帝、易车、汽车之家 18 大内容平台的数据采集接口，多平台热点榜单聚合接口，短视频去水印下载与素材上传工具、多平台违禁词查询，GPT/Gemini 图片生成、豆包图片/视频生成、AI 搜索（Kimi/豆包/Deepseek/元宝/千问/百度）AI 能力接口，以及 Amazon、Walmart 电商数据接口。
 
 ## 为什么选择 RedFoxHub
 
@@ -127,14 +127,16 @@ result = client.ai_search.kimi_result(task_id=task["taskId"])
 | 📕 小红书 | `client.xiaohongshu` | 15 | 笔记/账号搜索、账号信息、笔记详情、作品列表、AI笔记搜索、评论、日榜/周榜/黑马榜、热门账号、爆款洞察、视频提文案 |
 | 💬 公众号 | `client.wechat` | 18 | 文章/账号搜索（优质库+广域库）、账号信息、文章详情、作品列表、AI文章搜索、10W+榜、原创榜、实力榜、阅读增长榜、头条增长榜、文章实时详情 |
 | 📺 B站 | `client.bilibili` | 9 | 视频搜索、UP主搜索、UP主信息、UP主作品、视频详情、音频提取、视频提文案、字幕提取 |
-| 📰 今日头条 | `client.toutiao` | 5 | 内容搜索、作品详情、作品评论、账号搜索、账号作品列表 |
+| 📰 今日头条 | `client.toutiao` | 7 | 内容搜索、作品详情、作品评论、账号搜索、账号作品列表、账号详情、token转uid |
 | 🎵 TikTok | `client.tiktok` | 10 | 用户搜索、视频搜索、作品详情、用户作品、用户喜欢作品、关注列表、话题搜索、话题作品、视频评论、评论回复 |
 | 🎬 快手 | `client.kuaishou` | 6 | 作品搜索、作品详情、账号作品、账号搜索、视频提文案 |
-| 💚 视频号 | `client.wechat_channels` | 7 | 作品搜索、作品详情、账号作品、链接实时详情、账号搜索、链接提文案 |
+| 💚 视频号 | `client.wechat_channels` | 11 | 作品搜索、作品详情、账号作品、链接实时详情、账号搜索、链接提文案、eid/objectId 链接转换 |
 | ▶️ YouTube | `client.youtube` | 5 | 视频搜索、视频详情、视频评论、视频提文案（字幕提取）、字幕详情 |
 | 🐦 X (Twitter) | `client.twitter` | 7 | 推文搜索、推文详情、用户信息、推文评论、关注列表、用户发帖、热门账号榜 |
 | 📸 Instagram | `client.instagram` | 4 | 综合搜索、帖子详情、帖子评论、用户信息 |
 | 👥 Facebook | `client.facebook` | 4 | 主页信息、主页帖子列表、帖子详情、帖子评论 |
+| 🛒 Amazon | `client.amazon` | 4 | 关键词搜索商品、商品详情、商品评论、竞品卖家报价 |
+| 🛒 Walmart | `client.walmart` | 4 | 关键词搜索商品、商品详情、商品评论、市场卖家报价 |
 | 🔵 微博 | `client.weibo` | 5 | 账号搜索、内容详情、用户详情、关键词搜索作品、微博热搜 |
 | 📰 百家号 | `client.baijiahao` | 5 | 账号搜索、作品搜索、视频详情、作品内容 html、账号信息 |
 | 💡 知乎 | `client.zhihu` | 5 | 关键词搜索作品、文章详情、评论详情、账号详情、搜索热点 |
@@ -291,6 +293,18 @@ client.wechat_channels.search_users(account_name="央视", page=1)
 # 链接提文案
 task = client.wechat_channels.transcript_submit(url="https://weixin.qq.com/sph/xxx")
 result = client.wechat_channels.transcript_result(task_id=task["taskId"])
+
+# eid 转作品链接（微信桌面客户端可打开）
+client.wechat_channels.eid_to_channels_url(eid="export/UzFfBgAAxMmAZERLKSu6jMzT4DCLbmxb4hCd-baT08Fds2etfw")
+
+# eid 转 objectId
+client.wechat_channels.eid_to_object_id(eid="export/UzFfBgAAxNOnYDAif3yzjMzT4DCKPtNC6oGQxH41FMCrpaLicQ")
+
+# objectId 转分享短链
+client.wechat_channels.object_id_to_short_url(object_id="14964503453899164167")
+
+# objectId 转视频下载链接（返回标题、封面、下载地址）
+client.wechat_channels.object_id_to_video_url(object_id="14964503453899164167")
 ```
 
 ### B站
@@ -336,6 +350,12 @@ client.toutiao.search_users(name="科技")
 
 # 获取账号作品列表
 client.toutiao.get_user_works(category="profile_all", token="MS4wLjABAAAA...")
+
+# 获取账号详情
+client.toutiao.get_account(uid="95953206977")
+
+# 账号 token 转 uid
+client.toutiao.token_to_uid(token="MS4wLjABAAAA...")
 ```
 
 ### 快手
@@ -730,6 +750,40 @@ client.facebook.get_post(url="https://www.facebook.com/reel/1746412686633900")
 
 # 获取帖子评论
 client.facebook.get_post_comments(feedback_id="xxx")
+```
+
+### Amazon
+
+```python
+# 关键词搜索商品（cursor 翻页，站点默认 US）
+products = client.amazon.search_products(query="airpods pro")
+client.amazon.search_products(query="airpods pro", cursor=products["paginationToken"])
+
+# 获取商品详情（ASIN 来自搜索结果）
+client.amazon.get_product(asin="B0FQFB8FMG", country="US")
+
+# 获取商品评论（judgments="off" 返回精简评论页）
+client.amazon.get_reviews(asin="B0FQFB8FMG")
+
+# 获取竞品卖家报价
+client.amazon.get_sellers(asin="B0FQFB8FMG")
+```
+
+### Walmart
+
+```python
+# 关键词搜索商品（支持门店级定位与价格区间）
+products = client.walmart.search_products(query="airpods pro", max_price=200)
+client.walmart.search_products(query="airpods pro", zip_code="90210")
+
+# 获取商品详情（productId 来自搜索结果）
+client.walmart.get_product(product_id="5689919121")
+
+# 获取商品评论（limit 1~50，默认 10）
+client.walmart.get_reviews(product_id="5689919121", limit=50, rating=5)
+
+# 获取市场卖家报价
+client.walmart.get_offers(product_id="5689919121")
 ```
 
 ### 账户

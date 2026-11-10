@@ -105,6 +105,52 @@ class WechatChannelsAPI:
         }
         return self._client.post("/story/api/sphAllData/searchUser", data=data, source=source)
 
+    # ─── ID/链接转换（ability） ─────────────────────────────
+
+    def eid_to_channels_url(self, eid: str, source: str = "获取微信桌面客户端可打开的作品链接-SDK") -> dict:
+        """
+        获取微信桌面客户端可打开的作品链接
+
+        :param eid: 视频号作品 eid（必填）
+        :return: 包含 channelsUrl 的字典
+        """
+        return self._client.post(
+            "/story/api/sph/ability/eidToChannelsUrl", data={"eid": eid}, source=source
+        )
+
+    def eid_to_object_id(self, eid: str, source: str = "获取视频号objectId-SDK") -> dict:
+        """
+        通过 eid 转换获取视频号作品唯一 objectId
+
+        :param eid: 视频号作品 eid（必填）
+        :return: 包含 objectId 的字典
+        """
+        return self._client.post(
+            "/story/api/sph/ability/eidToObjectId", data={"eid": eid}, source=source
+        )
+
+    def object_id_to_short_url(self, object_id: str, source: str = "获取视频号分享链接-SDK") -> dict:
+        """
+        通过 objectId 获取视频号分享短链
+
+        :param object_id: 视频号作品原始 objectId（必填）
+        :return: 包含 shortUrl 的字典
+        """
+        return self._client.post(
+            "/story/api/sph/ability/objectIdToShortUrl", data={"objectId": object_id}, source=source
+        )
+
+    def object_id_to_video_url(self, object_id: str, source: str = "获取视频号视频下载链接-SDK") -> dict:
+        """
+        通过 objectId 获取视频号标题、封面及视频下载链接
+
+        :param object_id: 视频号作品 objectId（必填）
+        :return: 包含 title、cover、videoUrl、resources 等字段的字典
+        """
+        return self._client.post(
+            "/story/api/sph/ability/objectIdToVideoUrl", data={"objectId": object_id}, source=source
+        )
+
     # ─── 链接提文案 ─────────────────────────────────────────
 
     def transcript_submit(self, url: str, source: str = "微信视频号视频字幕/文案提取-SDK") -> dict:

@@ -96,3 +96,26 @@ class ToutiaoAPI:
             data={"category": category, "token": token, "offset": offset},
             source=source,
         )
+
+    def get_account(self, uid: str, source: str = "获取今日头条账号详情-SDK") -> dict:
+        """
+        获取今日头条账号详情（实时）
+
+        :param uid: 账号 UID（必填）
+        :return: 账号详情字典，含昵称、头像、简介、粉丝数、获赞数等
+        """
+        return self._client.post(
+            "/story/api/toutiao/accountDetail", data={"uid": uid}, source=source
+        )
+
+    def token_to_uid(self, token: str, source: str = "今日头条账号token转uid-SDK") -> dict:
+        """
+        今日头条账号 token 转 uid
+
+        :param token: web 端 token（必填），从账号主页 URL 获取，如
+            https://www.toutiao.com/c/user/token/{token}/
+        :return: 字典，data.uid 为账号 UID，可用于 get_account 等接口
+        """
+        return self._client.post(
+            "/story/api/toutiao/tokenToUid", data={"token": token}, source=source
+        )

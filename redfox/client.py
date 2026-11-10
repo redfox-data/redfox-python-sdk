@@ -36,6 +36,8 @@ from .endpoints.baijiahao import BaijiahaoAPI
 from .endpoints.zhihu import ZhihuAPI
 from .endpoints.facebook import FacebookAPI
 from .endpoints.gemini_image import GeminiImageAPI
+from .endpoints.amazon import AmazonAPI
+from .endpoints.walmart import WalmartAPI
 from .endpoints.account import RedFoxAccountAPI
 
 logger = logging.getLogger("redfox")
@@ -244,6 +246,8 @@ class RedFoxClient(_RequestMixin):
         self.zhihu = ZhihuAPI(self)
         self.facebook = FacebookAPI(self)
         self.gemini_image = GeminiImageAPI(self)
+        self.amazon = AmazonAPI(self)
+        self.walmart = WalmartAPI(self)
         self.account = RedFoxAccountAPI(self)
 
     def request(
@@ -470,6 +474,8 @@ class AsyncRedFoxClient(_RequestMixin):
         self.zhihu = ZhihuAPI(self)
         self.facebook = FacebookAPI(self)
         self.gemini_image = GeminiImageAPI(self)
+        self.amazon = AmazonAPI(self)
+        self.walmart = WalmartAPI(self)
         self.account = RedFoxAccountAPI(self)
 
     async def request(
