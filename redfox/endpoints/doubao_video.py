@@ -86,6 +86,8 @@ class DoubaoVideoAPI:
         generate_audio: bool = True,
         return_last_frame: bool = False,
         image_with_roles: Optional[List[Dict[str, Any]]] = None,
+        url: str = None,
+        role: str = None,
         source: str = "豆包 Seedance 2.0 视频生成（新端点）-SDK",
     ) -> dict:
         """
@@ -103,6 +105,9 @@ class DoubaoVideoAPI:
         :param image_with_roles: 参考图片列表，每项如
             {"url": "图片URL", "role": "first_frame/last_frame/reference_image"}，
             first_frame/last_frame 最多 1 张，reference_image 最多 9 张
+        :param url: 参考图片 URL
+        :param role: 图片角色标识：first_frame（首帧图，最多1张）、
+            last_frame（尾帧图，最多1张）、reference_image（参考图，最多9张）
         :return: 含 taskId 的字典
         """
         data: Dict[str, Any] = {
@@ -115,6 +120,10 @@ class DoubaoVideoAPI:
         }
         if image_with_roles:
             data["imageWithRoles"] = image_with_roles
+        if url is not None:
+            data["url"] = url
+        if role is not None:
+            data["role"] = role
         return self._client.post(
             "/story/api/parseWork/videoGen/seedanceSubmit", data=data, source=source
         )

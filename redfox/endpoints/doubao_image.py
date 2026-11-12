@@ -25,6 +25,7 @@ class DoubaoImageAPI:
         watermark: bool = True,
         optimize_prompt: bool = False,
         optimize_mode: str = "standard",
+        mode: str = None,
         source: str = "豆包 Seedream 5.0 Pro 图片生成-SDK",
     ) -> dict:
         """
@@ -38,6 +39,8 @@ class DoubaoImageAPI:
         :param watermark: 是否添加 AI 生成水印
         :param optimize_prompt: 是否开启提示词优化
         :param optimize_mode: 优化模式，standard/fast
+        :param mode: 提示词优化模式，standard（标准模式，质量更高，耗时较长）
+            / fast（快速模式，耗时更短，质量一般）
         :return: 包含 taskId 的字典
         """
         data: Dict[str, Any] = {
@@ -51,6 +54,8 @@ class DoubaoImageAPI:
             data["image"] = image
         if optimize_prompt:
             data["optimizePromptOptions"] = {"mode": optimize_mode}
+        if mode is not None:
+            data["mode"] = mode
         return self._client.post("/story/api/parseWork/imageGen/arkProSubmit", data=data, source=source)
 
     def pro_result(self, task_id: str, source: str = "查询 Seedream 5.0 Pro 任务结果-SDK") -> dict:
